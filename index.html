@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PressN'Pop UF</title>
+
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+
+    <style>
+
+        /* =========================
+           GRUND
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background-color: #fff9fb;
+            color: #333;
+        }
+
+
+        /* =========================
+           FÄRGER
+        ========================= */
+
+        :root {
+            --rosa: #d98aa4;
+            --morkrosa: #b85f7c;
+            --ljusrosa: #fbecef;
+            --cream: #fff9f4;
+            --guld: #c9a45c;
+            --text: #333;
+        }
+
+
+        /* =========================
+           TYPOGRAFI
+        ========================= */
+
+        h1,
+        h2,
+        h3 {
+            font-family: "Dancing Script", cursive;
+        }
+
+        p,
+        a,
+        .liten-text,
+        .meny a {
+            font-family: "Poppins", sans-serif;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        nav {
+            height: 85px;
+
+            background-color: rgba(255, 255, 255, 0.96);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 10px 7%;
+
+            position: sticky;
+            top: 0;
+
+            z-index: 1000;
+
+            box-shadow: 0 2px 15px rgba(0,0,0,0.07);
+        }
+
+
+        .logo {
+            height: 65px;
+            width: 65px;
+
+            object-fit: contain;
+
+            transition: 0.3s;
+        }
+
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+
+        .meny {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+
+        .meny a {
+            text-decoration: none;
+            color: #333;
+
+            font-size: 15px;
+
+            transition: 0.3s;
+        }
+
+
+        .meny a:hover {
+            color: var(--rosa);
+        }
+
+
+        .meny .bestall-knapp {
+            background-color: var(--rosa);
+            color: white;
+
+            padding: 11px 22px;
+
+            border-radius: 25px;
+        }
+
+
+        .meny .bestall-knapp:hover {
+            background-color: var(--morkrosa);
+            color: white;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+
+            min-height: 650px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 70px 9%;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 10% 20%,
+                    #f8dce5 0,
+                    transparent 20%
+                ),
+                radial-gradient(
+                    circle at 90% 80%,
+                    #f5d9df 0,
+                    transparent 22%
+                ),
+                #fff8f5;
+        }
+
+
+        /* Dekorativa cirklar */
+
+        .hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 350px;
+            height: 350px;
+
+            border: 1px solid #e8c6d0;
+
+            border-radius: 50%;
+
+            left: -170px;
+            top: -100px;
+
+        }
+
+
+        .hero::after {
+
+            content: "✦";
+
+            position: absolute;
+
+            color: var(--guld);
+
+            font-size: 35px;
+
+            right: 13%;
+            top: 100px;
+
+        }
+
+
+        .hero-text {
+            max-width: 570px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .liten-text {
+
+            color: var(--guld);
+
+            text-transform: uppercase;
+
+            letter-spacing: 4px;
+
+            font-size: 13px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        /* HUVUDRUBRIK */
+
+        .hero-text h1 {
+
+            font-family: "Dancing Script", cursive;
+
+            font-size: 76px;
+
+            font-weight: 600;
+
+            color: var(--morkrosa);
+
+            margin-bottom: 5px;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        .hero-text h2 {
+
+            font-family: "Dancing Script", cursive;
+
+            font-size: 34px;
+
+            font-weight: 500;
+
+            color: #555;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .hero-text p {
+
+            font-size: 18px;
+
+            line-height: 1.7;
+
+            color: #666;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        /* =========================
+           KNAPPAR
+        ========================= */
+
+        .knapp {
+
+            display: inline-block;
+
+            background-color: var(--rosa);
+
+            color: white;
+
+            padding: 14px 28px;
+
+            border-radius: 30px;
+
+            text-decoration: none;
+
+            font-weight: 500;
+
+            transition: 0.3s;
+
+            box-shadow: 0 5px 15px rgba(185,95,124,0.2);
+
+        }
+
+
+        .knapp:hover {
+
+            background-color: var(--morkrosa);
+
+            transform: translateY(-3px);
+
+            box-shadow: 0 8px 20px rgba(185,95,124,0.3);
+
+        }
+
+
+        /* =========================
+           HERO LOGGA
+        ========================= */
+
+        .hero-logo {
+
+            width: 430px;
+            height: 430px;
+
+            background-color: #fbecef;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            position: relative;
+
+            box-shadow:
+                0 15px 35px rgba(0,0,0,0.10);
+
+        }
+
+
+        .hero-logo::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 390px;
+            height: 390px;
+
+            border: 1px solid #e1bcc8;
+
+            border-radius: 50%;
+
+        }
+
+
+        .hero-logo::after {
+
+            content: "✦  ❀  ✦";
+
+            position: absolute;
+
+            bottom: 25px;
+
+            color: var(--guld);
+
+            font-size: 20px;
+
+            letter-spacing: 10px;
+
+        }
+
+
+        .hero-logo img {
+
+            width: 85%;
+
+            height: 85%;
+
+            object-fit: contain;
+
+            border-radius: 50%;
+
+        }
+
+
+        /* =========================
+           SEKTIONER
+        ========================= */
+
+        section {
+
+            padding: 90px 8%;
+
+            position: relative;
+
+        }
+
+
+        .rubrik {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+
+        }
+
+
+        .rubrik span {
+
+            color: var(--guld);
+
+            font-size: 14px;
+
+            letter-spacing: 3px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .rubrik h2 {
+
+            font-family: "Dancing Script", cursive;
+
+            font-size: 50px;
+
+            font-weight: 600;
+
+            color: var(--morkrosa);
+
+            margin-top: 8px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .rubrik p {
+
+            color: #777;
+
+            font-size: 17px;
+
+        }
+
+
+        /* =========================
+           NAGELKORT
+        ========================= */
+
+        .naglar {
+
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 30px;
+
+        }
+
+
+        .nagel-kort {
+
+            width: 280px;
+
+            background-color: white;
+
+            border-radius: 25px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 25px rgba(0,0,0,0.08);
+
+            transition: 0.3s;
+
+            border: 1px solid #f3dfe5;
+
+        }
+
+
+        .nagel-kort:hover {
+
+            transform: translateY(-8px);
+
+            box-shadow:
+                0 15px 30px rgba(0,0,0,0.12);
+
+        }
+
+
+        .nagel-kort img {
+
+            width: 100%;
+
+            height: 280px;
+
+            object-fit: cover;
+
+        }
+
+
+        .nagel-info {
+
+            padding: 24px;
+
+            text-align: center;
+
+        }
+
+
+        .nagel-info h3 {
+
+            font-family: "Dancing Script", cursive;
+
+            color: var(--morkrosa);
+
+            font-size: 30px;
+
+            font-weight: 600;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .nagel-info p {
+
+            color: #777;
+
+            line-height: 1.5;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        /* =========================
+           GOLDDEKORATION
+        ========================= */
+
+        .guld-symbol {
+
+            color: var(--guld);
+
+            font-size: 25px;
+
+            margin: 10px;
+
+        }
+
+
+        /* =========================
+           CUSTOM SEKTION
+        ========================= */
+
+        .custom {
+
+            background-color: var(--ljusrosa);
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 60px;
+
+            overflow: hidden;
+
+        }
+
+
+        .custom::before {
+
+            content: "✿";
+
+            position: absolute;
+
+            color: #e3bdca;
+
+            font-size: 130px;
+
+            right: -20px;
+
+            top: 20px;
+
+            opacity: 0.4;
+
+        }
+
+
+        .custom-text {
+
+            max-width: 570px;
+
+            z-index: 2;
+
+        }
+
+
+        .custom-text h2 {
+
+            font-family: "Dancing Script", cursive;
+
+            color: var(--morkrosa);
+
+            font-size: 48px;
+
+            font-weight: 600;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .custom-text p {
+
+            font-size: 18px;
+
+            line-height: 1.7;
+
+            color: #666;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .custom-bild {
+
+            width: 400px;
+
+            height: 400px;
+
+            border-radius: 50%;
+
+            background-color: white;
+
+            padding: 15px;
+
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+            z-index: 2;
+
+        }
+
+
+        .custom-bild img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+        }
+
+
+        /* =========================
+           OM OSS
+        ========================= */
+
+        .om-oss {
+
+            max-width: 850px;
+
+            margin: auto;
+
+            text-align: center;
+
+        }
+
+
+        .om-oss h2 {
+
+            font-family: "Dancing Script", cursive;
+
+            color: var(--morkrosa);
+
+            font-size: 50px;
+
+            font-weight: 600;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .om-oss p {
+
+            color: #666;
+
+            font-size: 18px;
+
+            line-height: 1.8;
+
+        }
+
+
+        /* =========================
+           BESTÄLLNING
+        ========================= */
+
+        .bestallning {
+
+            text-align: center;
+
+            background:
+                radial-gradient(
+                    circle at 20% 30%,
+                    #f8dce5,
+                    transparent 25%
+                ),
+                #fff0f4;
+
+            border-top: 1px solid #f0d8df;
+
+            border-bottom: 1px solid #f0d8df;
+
+        }
+
+
+        .bestallning h2 {
+
+            font-family: "Dancing Script", cursive;
+
+            color: var(--morkrosa);
+
+            font-size: 50px;
+
+            font-weight: 600;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .bestallning p {
+
+            max-width: 650px;
+
+            margin: auto;
+
+            font-size: 18px;
+
+            line-height: 1.7;
+
+            color: #666;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        /* =========================
+           KONTAKT
+        ========================= */
+
+        .kontakt {
+
+            text-align: center;
+
+        }
+
+
+        .kontakt h2 {
+
+            font-family: "Dancing Script", cursive;
+
+            color: var(--morkrosa);
+
+            font-size: 50px;
+
+            font-weight: 600;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .kontakt p {
+
+            margin: 10px;
+
+            font-size: 17px;
+
+            color: #666;
+
+        }
+
+
+        .kontakt a {
+
+            color: var(--morkrosa);
+
+            text-decoration: none;
+
+            font-weight: 500;
+
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            background-color: #b85f7c;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 35px;
+
+        }
+
+
+        footer .footer-logo {
+
+            width: 75px;
+
+            height: 75px;
+
+            background-color: white;
+
+            border-radius: 50%;
+
+            object-fit: contain;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        footer p {
+
+            margin: 7px;
+
+        }
+
+
+        /* =========================
+           MOBIL
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            nav {
+
+                height: auto;
+
+                flex-direction: column;
+
+                gap: 10px;
+
+                padding: 12px;
+
+            }
+
+
+            .meny {
+
+                gap: 12px;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+            }
+
+
+            .hero {
+
+                flex-direction: column;
+
+                text-align: center;
+
+                gap: 45px;
+
+            }
+
+
+            .hero-text h1 {
+
+                font-size: 55px;
+
+            }
+
+
+            .hero-text h2 {
+
+                font-size: 29px;
+
+            }
+
+
+            .hero-logo {
+
+                width: 320px;
+
+                height: 320px;
+
+            }
+
+
+            .hero-logo::before {
+
+                width: 290px;
+
+                height: 290px;
+
+            }
+
+
+            .custom {
+
+                flex-direction: column;
+
+                text-align: center;
+
+            }
+
+
+            .custom-bild {
+
+                width: 320px;
+
+                height: 320px;
+
+            }
+
+
+            .rubrik h2,
+            .om-oss h2,
+            .bestallning h2,
+            .kontakt h2 {
+
+                font-size: 42px;
+
+            }
+
+
+            .custom-text h2 {
+
+                font-size: 42px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <nav>
+
+        <!-- ER LOGGA -->
+
+        <a href="#hem">
+
+            <img
+                src="bilder/logo.png"
+                alt="PressN'Pop logotyp"
+                class="logo"
+            >
+
+        </a>
+
+
+        <div class="meny">
+
+            <a href="#hem">Hem</a>
+
+            <a href="#naglar">Naglar</a>
+
+            <a href="#custom">Custom</a>
+
+            <a href="#omoss">Om oss</a>
+
+            <a href="#kontakt">Kontakt</a>
+
+            <a href="#bestall" class="bestall-knapp">
+                Beställ
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section class="hero" id="hem">
+
+
+        <div class="hero-text">
+
+            <div class="liten-text">
+                Handgjorda press-on nails
+            </div>
+
+            <h1>PressN'Pop</h1>
+
+            <h2>Your nails, your style.</h2>
+
+            <p>
+                Upptäck handgjorda press-on naglar skapade
+                för dig som vill uttrycka din personliga stil.
+                Enkelt, snyggt och precis som du vill ha det.
+            </p>
+
+            <a href="#naglar" class="knapp">
+                Upptäck våra naglar
+            </a>
+
+        </div>
+
+
+        <!-- LOGGAN -->
+
+        <div class="hero-logo">
+
+            <img
+                src="bilder/logo.png"
+                alt="PressN'Pop"
+            >
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         VÅRA NAGLAR
+    ========================== -->
+
+    <section id="naglar">
+
+        <div class="rubrik">
+
+            <span>PressN'Pop</span>
+
+            <h2>Våra naglar</h2>
+
+            <p>
+                Hitta din favoritdesign
+            </p>
+
+        </div>
+
+
+        <div class="naglar">
+
+
+            <!-- KORT 1 -->
+
+            <div class="nagel-kort">
+
+                <img
+                    src="bilder/nagel1.jpg"
+                    alt="Press-on naglar"
+                >
+
+                <div class="nagel-info">
+
+                    <h3>Pink Glam</h3>
+
+                    <p>
+                        En feminin design med rosa detaljer
+                        för en elegant look.
+                    </p>
+
+                    <a href="#bestall" class="knapp">
+                        Beställ
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- KORT 2 -->
+
+            <div class="nagel-kort">
+
+                <img
+                    src="bilder/nagel2.jpg"
+                    alt="Press-on naglar"
+                >
+
+                <div class="nagel-info">
+
+                    <h3>Classic</h3>
+
+                    <p>
+                        Stilrena naglar som passar
+                        till alla tillfällen.
+                    </p>
+
+                    <a href="#bestall" class="knapp">
+                        Beställ
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- KORT 3 -->
+
+            <div class="nagel-kort">
+
+                <img
+                    src="bilder/nagel3.jpg"
+                    alt="Press-on naglar"
+                >
+
+                <div class="nagel-info">
+
+                    <h3>Dreamy</h3>
+
+                    <p>
+                        En unik design för dig som
+                        vill ha något extra.
+                    </p>
+
+                    <a href="#bestall" class="knapp">
+                        Beställ
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         CUSTOM
+    ========================== -->
+
+    <section class="custom" id="custom">
+
+
+        <div class="custom-text">
+
+            <div class="guld-symbol">
+                ✦
+            </div>
+
+            <h2>
+                Skapa något som är helt ditt
+            </h2>
+
+            <p>
+                Hittar du inte den perfekta designen?
+                Inga problem!
+            </p>
+
+            <p>
+                Med PressN'Pop kan du skapa dina egna
+                press-on naglar. Välj färg, form, mönster
+                och detaljer och låt oss skapa din idé.
+            </p>
+
+            <a href="#bestall" class="knapp">
+                Skapa din design
+            </a>
+
+        </div>
+
+
+        <div class="custom-bild">
+
+            <img
+                src="bilder/custom.jpg"
+                alt="Custom nageldesign"
+            >
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         OM OSS
+    ========================== -->
+
+    <section id="omoss">
+
+        <div class="om-oss">
+
+            <div class="guld-symbol">
+                ✦
+            </div>
+
+            <h2>Om PressN'Pop</h2>
+
+            <p>
+                PressN'Pop är ett UF-företag som skapar
+                handgjorda press-on naglar med fokus på
+                personlig stil och kreativitet.
+            </p>
+
+            <br>
+
+            <p>
+                Vi vill göra det enkelt att få snygga naglar
+                hemma, samtidigt som våra kunder får möjlighet
+                att välja en design som verkligen passar dem.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         BESTÄLL
+    ========================== -->
+
+    <section class="bestallning" id="bestall">
+
+        <div class="guld-symbol">
+            ✦
+        </div>
+
+        <h2>
+            Redo för dina nya naglar?
+        </h2>
+
+        <p>
+            Välj en av våra designs eller skapa ett
+            helt eget set. Kontakta oss för att beställa.
+        </p>
+
+        <a href="#kontakt" class="knapp">
+            Beställ dina naglar
+        </a>
+
+    </section>
+
+
+
+    <!-- =========================
+         KONTAKT
+    ========================== -->
+
+    <section class="kontakt" id="kontakt">
+
+        <div class="rubrik">
+
+            <span>PressN'Pop UF</span>
+
+            <h2>Kontakta oss</h2>
+
+            <p>
+                Har du frågor eller vill du beställa?
+                Hör gärna av dig!
+            </p>
+
+        </div>
+
+
+        <p>
+            Instagram:
+            <a href="#">
+                @pressnpop_uf
+            </a>
+        </p>
+
+
+        <p>
+            E-post:
+            <a href="mailto:pressnpop.uf@gmail.com">
+                pressnpop.uf@gmail.com
+            </a>
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <img
+            src="bilder/logo.png"
+            alt="PressN'Pop logotyp"
+            class="footer-logo"
+        >
+
+        <p>
+            PressN'Pop UF
+        </p>
+
+        <p>
+            Handgjorda press-on naglar ♡
+        </p>
+
+        <p>
+            © 2026 PressN'Pop
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
