@@ -2711,7 +2711,7 @@
             </button>
 
             <button class="knapp" onclick="submitCustomNails()">
-                Skicka förfrågan
+                Gå till betalning
             </button>
 
         </div>
@@ -2922,7 +2922,7 @@
             </button>
 
             <button class="knapp" onclick="submitCustomToes()">
-                Skicka förfrågan
+                Gå till betalning
             </button>
 
         </div>
@@ -2962,6 +2962,41 @@
 ===================================================== -->
 
 <script>
+
+    /* =====================================================
+       STRIPE / BACKEND
+    ===================================================== */
+
+    // ÄNDRA DENNA RAD till adressen där ni publicerar server.js.
+    const BACKEND_URL = "https://pnp-backend.onrender.com";
+
+    async function startStripeCheckout(orderType, payload, files = {}) {
+        const formData = new FormData();
+        formData.append("orderType", orderType);
+        formData.append("payload", JSON.stringify(payload));
+
+        Object.entries(files).forEach(([field, file]) => {
+            if (file) formData.append(field, file);
+        });
+
+        try {
+            const response = await fetch(`${BACKEND_URL}/create-checkout-session`, {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.url) {
+                throw new Error(result.error || "Kunde inte starta betalningen.");
+            }
+
+            window.location.href = result.url;
+        } catch (error) {
+            console.error(error);
+            alert("Något gick fel när betalningen skulle startas. Försök igen ♡");
+        }
+    }
 
     /* =====================================================
        STORLEKSDATA
@@ -3320,74 +3355,29 @@
     }
 
 
-    function submitOrder() {
-
+    async function submitOrder() {
         const name =
             document.getElementById("orderName").value.trim();
-
         const email =
             document.getElementById("orderEmail").value.trim();
-
         const message =
             document.getElementById("orderMessage").value.trim();
-
         const sizes =
             getNailSizeValues("order");
 
-
         if (!name || !email) {
-
             alert("Fyll i ditt namn och din e-post ♡");
             return;
-
         }
 
-
-        const subject =
-            "Ny beställning – PressN'Pop UF";
-
-
-        const body = `Hej PressN'Pop!
-
-Jag vill beställa:
-
-Design: ${orderData.design}
-
-Storlekar:
-Tumme: ${sizes.thumb}
-Pekfinger: ${sizes.index}
-Långfinger: ${sizes.middle}
-Ringfinger: ${sizes.ring}
-Lillfinger: ${sizes.pinky}
-
-Namn: ${name}
-E-post: ${email}
-
-Meddelande:
-${message || "Inget meddelande."}
-
-Skickat via PressN'Pop hemsida.`;
-
-
-        window.location.href =
-            "mailto:pressnpop.uf@gmail.com" +
-            "?subject=" +
-            encodeURIComponent(subject) +
-            "&body=" +
-            encodeURIComponent(body);
-
-
-        document
-            .querySelectorAll("#orderModal .step")
-            .forEach(step => step.classList.remove("active"));
-
-
-        document
-            .getElementById("orderSuccess")
-            .classList.add("active");
-
+        await startStripeCheckout("ready_nails", {
+            design: orderData.design,
+            sizes,
+            name,
+            email,
+            message
+        });
     }
-
 
     /* =====================================================
        FÄRDIGA TÅR
@@ -3538,65 +3528,28 @@ Skickat via PressN'Pop hemsida.`;
     }
 
 
-    function submitToeOrder() {
-
+    async function submitToeOrder() {
         const name =
             document.getElementById("toeOrderName").value.trim();
-
         const email =
             document.getElementById("toeOrderEmail").value.trim();
-
         const message =
             document.getElementById("toeOrderMessage").value.trim();
 
-
         if (!name || !email) {
-
             alert("Fyll i ditt namn och din e-post ♡");
             return;
-
         }
 
-
-        const subject =
-            "Ny tåbeställning – PressN'Pop UF";
-
-
-        const body = `Hej PressN'Pop!
-
-Jag vill beställa:
-
-Tådesign: ${toeOrderData.design}
-Storlek: ${toeOrderData.size} (${toeSizes[toeOrderData.size]})
-
-Namn: ${name}
-E-post: ${email}
-
-Meddelande:
-${message || "Inget meddelande."}
-
-Skickat via PressN'Pop hemsida.`;
-
-
-        window.location.href =
-            "mailto:pressnpop.uf@gmail.com" +
-            "?subject=" +
-            encodeURIComponent(subject) +
-            "&body=" +
-            encodeURIComponent(body);
-
-
-        document
-            .querySelectorAll("#toeOrderModal .step")
-            .forEach(step => step.classList.remove("active"));
-
-
-        document
-            .getElementById("toeOrderSuccess")
-            .classList.add("active");
-
+        await startStripeCheckout("ready_toes", {
+            design: toeOrderData.design,
+            size: toeOrderData.size,
+            sizeMeasurement: toeSizes[toeOrderData.size] || "",
+            name,
+            email,
+            message
+        });
     }
-
 
     /* =====================================================
        CUSTOM NAGLAR
@@ -3829,87 +3782,46 @@ Skickat via PressN'Pop hemsida.`;
     }
 
 
-    function submitCustomNails() {
-
+    async function submitCustomNails() {
         const name =
             document.getElementById("customNailName").value.trim();
-
         const email =
             document.getElementById("customNailEmail").value.trim();
-
         const changes =
             document.getElementById("customNailChanges").value.trim();
-
         const inspo =
             document.getElementById("customNailInspo").files[0];
-
         const hand =
             document.getElementById("customHandImage").files[0];
-
-
         const sizes =
             getNailSizeValues("custom");
 
-
         if (!name || !email) {
-
             alert("Fyll i ditt namn och din e-post ♡");
             return;
-
         }
 
+        if (!inspo || !hand) {
+            alert("Ladda upp både inspo-bild och hand-bild först ♡");
+            return;
+        }
 
-        const subject =
-            "Custom nails – PressN'Pop UF";
-
-
-        const body = `Hej PressN'Pop!
-
-Jag vill skapa ett custom set.
-
-Form: ${customNailData.form}
-Längd: ${customNailData.length}
-
-Storlekar:
-Tumme: ${sizes.thumb}
-Pekfinger: ${sizes.index}
-Långfinger: ${sizes.middle}
-Ringfinger: ${sizes.ring}
-Lillfinger: ${sizes.pinky}
-
-Inspo-bild: ${inspo ? inspo.name : "Ingen"}
-Bild på hand: ${hand ? hand.name : "Ingen"}
-
-Ändringar från inspo-bilden:
-${changes || "Inga särskilda ändringar."}
-
-Namn: ${name}
-E-post: ${email}
-
-OBS: Bilderna valdes i beställningsformuläret.
-
-Skickat via PressN'Pop hemsida.`;
-
-
-        window.location.href =
-            "mailto:pressnpop.uf@gmail.com" +
-            "?subject=" +
-            encodeURIComponent(subject) +
-            "&body=" +
-            encodeURIComponent(body);
-
-
-        document
-            .querySelectorAll("#customNailsModal .step")
-            .forEach(step => step.classList.remove("active"));
-
-
-        document
-            .getElementById("customNailSuccess")
-            .classList.add("active");
-
+        await startStripeCheckout(
+            "custom_nails",
+            {
+                form: customNailData.form,
+                length: customNailData.length,
+                sizes,
+                changes,
+                name,
+                email
+            },
+            {
+                inspoImage: inspo,
+                handImage: hand
+            }
+        );
     }
-
 
     /* =====================================================
        CUSTOM TÅR
@@ -4068,73 +3980,40 @@ Skickat via PressN'Pop hemsida.`;
     }
 
 
-    function submitCustomToes() {
-
+    async function submitCustomToes() {
         const name =
             document.getElementById("customToeName").value.trim();
-
         const email =
             document.getElementById("customToeEmail").value.trim();
-
         const changes =
             document.getElementById("customToeChanges").value.trim();
-
         const inspo =
             document.getElementById("customToeInspo").files[0];
 
-
         if (!name || !email) {
-
             alert("Fyll i ditt namn och din e-post ♡");
             return;
-
         }
 
+        if (!inspo) {
+            alert("Ladda upp en inspo-bild först ♡");
+            return;
+        }
 
-        const subject =
-            "Custom toes – PressN'Pop UF";
-
-
-        const body = `Hej PressN'Pop!
-
-Jag vill skapa ett custom tå-set.
-
-Storlek:
-${customToeData.size} (${toeSizes[customToeData.size]})
-
-Inspo-bild:
-${inspo ? inspo.name : "Ingen"}
-
-Ändringar från inspo-bilden:
-${changes || "Inga särskilda ändringar."}
-
-Namn: ${name}
-E-post: ${email}
-
-OBS: Inspo-bilden valdes i beställningsformuläret.
-
-Skickat via PressN'Pop hemsida.`;
-
-
-        window.location.href =
-            "mailto:pressnpop.uf@gmail.com" +
-            "?subject=" +
-            encodeURIComponent(subject) +
-            "&body=" +
-            encodeURIComponent(body);
-
-
-        document
-            .querySelectorAll("#customToesModal .step")
-            .forEach(step => step.classList.remove("active"));
-
-
-        document
-            .getElementById("customToeSuccess")
-            .classList.add("active");
-
+        await startStripeCheckout(
+            "custom_toes",
+            {
+                size: customToeData.size,
+                sizeMeasurement: toeSizes[customToeData.size] || "",
+                changes,
+                name,
+                email
+            },
+            {
+                inspoImage: inspo
+            }
+        );
     }
-
 
     /* =====================================================
        VISA UPPLADDADE FILNAMN
