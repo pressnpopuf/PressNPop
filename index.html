@@ -1100,6 +1100,10 @@
     }
 
 
+    .quantity-control { display:flex; align-items:center; justify-content:center; gap:18px; margin-top:8px; }
+    .quantity-control button { width:36px; height:36px; border-radius:50%; border:1px solid #efd6de; background:#fff; color:var(--morkrosa); cursor:pointer; font-size:20px; }
+    .quantity-control span { min-width:24px; text-align:center; font-weight:600; color:#555; }
+
     /* =====================================================
        MOBIL
     ===================================================== */
@@ -1214,6 +1218,37 @@
 
     @media (max-width: 500px) {
 
+        #productModal .product-modal-box {
+            padding: 20px 14px;
+        }
+
+        #productModal .product-detail-grid {
+            grid-template-columns: minmax(0, 0.9fr) minmax(220px, 1.1fr);
+            gap: 12px;
+        }
+
+        #productModal .product-detail-content h2 {
+            font-size: 30px;
+        }
+
+        #productModal .product-description,
+        #productModal .product-label {
+            font-size: 11px;
+        }
+
+        #productModal .product-choice h3 {
+            font-size: 13px;
+        }
+
+        #productModal .choice-button {
+            padding: 8px 9px;
+            font-size: 11px;
+        }
+
+        #productModal .product-size-grid {
+            grid-template-columns: 1fr;
+        }
+
         .logo-text {
             font-size: 26px;
         }
@@ -1244,6 +1279,647 @@
         }
     }
 
+
+
+    /* =====================================================
+       NYTT: PRODUKTDETALJ + VARUKORG
+       Behåller befintlig design, färger och typsnitt.
+    ===================================================== */
+
+    .cart-button {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border: 1px solid #efd6de;
+        background: #fff;
+        color: var(--morkrosa);
+        padding: 10px 15px;
+        border-radius: 24px;
+        cursor: pointer;
+        font-family: "Poppins", sans-serif;
+        font-size: 13px;
+        box-shadow: 0 5px 15px rgba(70, 35, 45, 0.06);
+        transition: 0.25s;
+    }
+
+    .cart-button:hover {
+        border-color: var(--rosa);
+        transform: translateY(-2px);
+    }
+
+    .cart-icon {
+        font-size: 18px;
+        line-height: 1;
+    }
+
+    .cart-count {
+        min-width: 21px;
+        height: 21px;
+        padding: 0 5px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: var(--rosa);
+        color: white;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .product-card {
+        cursor: pointer;
+    }
+
+    .product-card .nagel-bild img {
+        transition: transform 0.35s;
+    }
+
+    .product-card:hover .nagel-bild img {
+        transform: scale(1.03);
+    }
+
+    .product-modal-box {
+        background: #fffaf8;
+        width: 100%;
+        max-width: 1120px;
+        max-height: 94vh;
+        overflow-y: auto;
+        border-radius: 30px;
+        padding: 32px;
+        position: relative;
+        box-shadow: 0 25px 70px rgba(0,0,0,0.2);
+    }
+
+    .back-button {
+        border: none;
+        background: transparent;
+        color: var(--morkrosa);
+        font-family: "Poppins", sans-serif;
+        font-size: 14px;
+        cursor: pointer;
+        padding: 4px 0 18px;
+    }
+
+    .product-detail-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+        gap: 38px;
+        align-items: start;
+        min-height: 0;
+    }
+
+    /* Naglar och tår använder exakt samma tvåkolumnsvy.
+       Bildgalleriet ligger alltid till vänster och alla val till höger. */
+    #productModal .product-detail-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+    }
+
+    #productModal .product-detail-content {
+        min-width: 0;
+        max-height: calc(90vh - 120px);
+        overflow-y: auto;
+        padding-right: 8px;
+    }
+
+    #productModal .product-gallery {
+        position: sticky;
+        top: 0;
+        align-self: start;
+    }
+
+    .product-gallery {
+        min-width: 0;
+    }
+
+    .gallery-main {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: 24px;
+        overflow: hidden;
+        background: #f8e9ed;
+        border: 1px solid #f0dbe2;
+    }
+
+    .gallery-main img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .gallery-thumbs {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding: 12px 2px 6px;
+        scroll-snap-type: x mandatory;
+    }
+
+    .gallery-thumb {
+        flex: 0 0 86px;
+        width: 86px;
+        height: 86px;
+        padding: 0;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 2px solid transparent;
+        background: white;
+        cursor: pointer;
+        scroll-snap-align: start;
+    }
+
+    .gallery-thumb.active {
+        border-color: var(--rosa);
+    }
+
+    .gallery-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .gallery-hint {
+        color: #999;
+        font-size: 11px;
+        text-align: center;
+        margin-top: 4px;
+    }
+
+    .product-detail-content {
+        padding: 4px 0;
+    }
+
+    .product-label {
+        color: var(--guld);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-size: 11px;
+    }
+
+    .product-detail-content h2 {
+        color: var(--morkrosa);
+        font-size: 48px;
+        line-height: 1;
+        margin: 7px 0 10px;
+    }
+
+    .product-description {
+        color: #777;
+        line-height: 1.7;
+        font-size: 14px;
+        margin-bottom: 22px;
+    }
+
+    .product-choice {
+        margin: 20px 0;
+        padding-top: 18px;
+        border-top: 1px solid #f0dce1;
+    }
+
+    .product-choice h3 {
+        color: var(--morkrosa);
+        font-family: "Poppins", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .color-options,
+    .length-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+    .choice-button {
+        border: 1px solid #e7d4da;
+        background: white;
+        color: #555;
+        border-radius: 13px;
+        padding: 11px 15px;
+        cursor: pointer;
+        font-family: "Poppins", sans-serif;
+        font-size: 13px;
+        transition: 0.2s;
+    }
+
+    .choice-button:hover {
+        border-color: var(--rosa);
+    }
+
+    .choice-button.selected {
+        background: var(--ljusrosa);
+        border: 2px solid var(--rosa);
+        color: var(--morkrosa);
+        font-weight: 600;
+    }
+
+    .color-choice {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .color-dot {
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        border: 1px solid rgba(0,0,0,0.12);
+        flex: 0 0 auto;
+    }
+
+    .choice-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .choice-heading span {
+        color: #999;
+        font-size: 11px;
+    }
+
+    .product-size-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .product-size-grid label {
+        display: grid;
+        gap: 5px;
+        color: #666;
+        font-size: 12px;
+    }
+
+    .product-size-grid select {
+        width: 100%;
+        padding: 11px 12px;
+        border-radius: 12px;
+        border: 1px solid #e6d3d9;
+        background: white;
+        font-family: "Poppins", sans-serif;
+        color: #555;
+        outline: none;
+    }
+
+    .product-size-grid select:focus {
+        border-color: var(--rosa);
+    }
+
+    .product-bottom-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-top: 26px;
+    }
+
+    .quantity-control {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #e6d3d9;
+        background: white;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .quantity-control button {
+        width: 42px;
+        height: 45px;
+        border: none;
+        background: white;
+        color: var(--morkrosa);
+        font-size: 22px;
+        cursor: pointer;
+    }
+
+    .quantity-control span {
+        min-width: 34px;
+        text-align: center;
+        font-weight: 600;
+        color: #555;
+    }
+
+    .add-cart-button {
+        flex: 1;
+    }
+
+    .cart-box {
+        background: #fffaf8;
+        width: 100%;
+        max-width: 700px;
+        max-height: 90vh;
+        overflow-y: auto;
+        border-radius: 30px;
+        padding: 35px;
+        position: relative;
+        box-shadow: 0 25px 70px rgba(0,0,0,0.2);
+    }
+
+    .cart-box h2 {
+        color: var(--morkrosa);
+        font-size: 45px;
+        margin-bottom: 5px;
+    }
+
+    .cart-item {
+        display: grid;
+        grid-template-columns: 82px 1fr auto;
+        gap: 14px;
+        align-items: center;
+        background: white;
+        border: 1px solid #efdce2;
+        border-radius: 18px;
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .cart-item-image {
+        width: 82px;
+        height: 82px;
+        border-radius: 13px;
+        object-fit: cover;
+    }
+
+    .cart-item-info h3 {
+        color: var(--morkrosa);
+        font-family: "Poppins", sans-serif;
+        font-size: 15px;
+        margin-bottom: 4px;
+    }
+
+    .cart-item-info p {
+        color: #888;
+        font-size: 11px;
+        line-height: 1.55;
+        margin: 2px 0;
+    }
+
+    .cart-item-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .cart-item-actions button {
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+        border: 1px solid #e6d3d9;
+        background: white;
+        color: var(--morkrosa);
+        cursor: pointer;
+    }
+
+    .cart-remove {
+        font-size: 11px !important;
+        width: auto !important;
+        padding: 0 8px;
+    }
+
+    .cart-empty {
+        text-align: center;
+        padding: 45px 20px;
+        color: #777;
+    }
+
+    .cart-empty-icon {
+        font-size: 42px;
+        margin-bottom: 10px;
+    }
+
+    .cart-empty h3 {
+        color: var(--morkrosa);
+        font-size: 30px;
+        margin-bottom: 8px;
+    }
+
+    .cart-footer {
+        border-top: 1px solid #efdce2;
+        padding-top: 20px;
+        margin-top: 18px;
+    }
+
+    .cart-total {
+        display: flex;
+        justify-content: space-between;
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .cart-total strong {
+        color: var(--morkrosa);
+    }
+
+    .cart-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .cart-actions .knapp {
+        flex: 1;
+    }
+
+    .cart-checkout-note {
+        text-align: center;
+        color: #999;
+        font-size: 11px;
+        margin-top: 12px;
+    }
+
+    .payment-methods {
+        margin: 28px auto 8px;
+        max-width: 760px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .payment-title {
+        font-size: 12px;
+        opacity: 0.9;
+        margin-bottom: 13px;
+    }
+
+    .payment-logos {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+    .payment-logo {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 35px;
+        padding: 7px 12px;
+        border-radius: 9px;
+        background: white;
+        color: #333;
+        font-family: Arial, sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+        letter-spacing: 0.3px;
+    }
+
+    .payment-logo.mastercard {
+        font-size: 10px;
+    }
+
+    .payment-logo.amex {
+        font-size: 8px;
+    }
+
+    .payment-logo.klarna {
+        font-family: Arial, sans-serif;
+        font-size: 15px;
+    }
+
+    .payment-note {
+        opacity: 0.7;
+        font-size: 10px !important;
+        margin-top: 10px !important;
+    }
+
+    @media (max-width: 850px) {
+        .cart-button {
+            padding: 8px 11px;
+            font-size: 11px;
+        }
+
+        /* Behåll samma upplägg för tår och naglar även på mindre skärmar. */
+        .product-detail-grid,
+        #productModal .product-detail-grid {
+            grid-template-columns: minmax(0, 0.95fr) minmax(290px, 1.05fr);
+            gap: 20px;
+        }
+
+        .product-modal-box {
+            padding: 25px 20px;
+        }
+
+        #productModal .product-detail-content {
+            max-height: calc(90vh - 105px);
+        }
+
+        .product-detail-content h2 {
+            font-size: 42px;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .cart-button > span:nth-child(2) {
+            display: none;
+        }
+
+        .cart-button {
+            padding: 8px 9px;
+        }
+
+        .product-size-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .product-bottom-row {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .quantity-control {
+            align-self: flex-start;
+        }
+
+        .cart-box {
+            padding: 28px 18px;
+        }
+
+        .cart-item {
+            grid-template-columns: 60px 1fr;
+        }
+
+        .cart-item-image {
+            width: 60px;
+            height: 60px;
+        }
+
+        .cart-item-actions {
+            grid-column: 2;
+        }
+
+        .cart-actions {
+            flex-direction: column;
+        }
+    }
+
+
+/* FINAL PRODUCT MODAL LAYOUT — same for nails and toes */
+#productModal .product-modal-box {
+    width: min(1180px, calc(100vw - 32px));
+    max-height: 96vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 30px 34px;
+}
+
+#productModal .product-detail-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(430px, 1fr);
+    gap: 34px;
+    align-items: start;
+}
+
+#productModal .product-detail-content {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+}
+
+#productModal .product-gallery {
+    position: sticky;
+    top: 0;
+}
+
+#productModal .product-size-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+}
+
+@media (max-width: 850px) {
+    #productModal .product-modal-box {
+        width: min(100%, calc(100vw - 20px));
+        max-height: 96vh;
+        padding: 24px 20px;
+    }
+
+    #productModal .product-detail-grid {
+        grid-template-columns: minmax(0, .9fr) minmax(300px, 1.1fr);
+        gap: 20px;
+    }
+
+    #productModal .product-detail-content {
+        max-height: none;
+        overflow: visible;
+    }
+}
+
+@media (max-width: 600px) {
+    #productModal .product-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #productModal .product-gallery {
+        position: static;
+    }
+
+    #productModal .product-size-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 </style>
 
 <!-- =====================================================
@@ -1269,6 +1945,12 @@
     <a href="#bestall" class="bestall-knapp">
         Beställ
     </a>
+
+    <button class="cart-button" type="button" onclick="openCart()" aria-label="Öppna varukorg">
+        <span class="cart-icon">🛒</span>
+        <span>Varukorg</span>
+        <span class="cart-count" id="cartCount">0</span>
+    </button>
 
 </div>
 
@@ -1352,7 +2034,7 @@
 
     <div class="naglar">
 
-        <div class="nagel-kort">
+        <div class="nagel-kort product-card" onclick="openProductDetail(1)">
             <div class="nagel-bild">
                 <img src="bilder/nagel1.jpg" alt="Pink Glam naglar"
                      onerror="this.style.display='none'">
@@ -1362,13 +2044,13 @@
                 <h3>Pink Glam</h3>
                 <p>Rosa, feminin och lite extra glam.</p>
 
-                <button class="knapp" onclick="openOrder('Pink Glam')">
-                    Beställ
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Pink Glam')">
+                    Visa produkt
                 </button>
             </div>
         </div>
 
-        <div class="nagel-kort">
+        <div class="nagel-kort product-card" onclick="openProductDetail(2)">
             <div class="nagel-bild">
                 <img src="bilder/nagel2.jpg" alt="Classic naglar"
                      onerror="this.style.display='none'">
@@ -1378,13 +2060,13 @@
                 <h3>Classic</h3>
                 <p>Enkel, stilren och passar till allt.</p>
 
-                <button class="knapp" onclick="openOrder('Classic')">
-                    Beställ
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Classic')">
+                    Visa produkt
                 </button>
             </div>
         </div>
 
-        <div class="nagel-kort">
+        <div class="nagel-kort product-card" onclick="openProductDetail(3)">
             <div class="nagel-bild">
                 <img src="bilder/nagel3.jpg" alt="Dreamy naglar"
                      onerror="this.style.display='none'">
@@ -1394,13 +2076,13 @@
                 <h3>Dreamy</h3>
                 <p>Mjuk, söt och perfekt för dig som vill ha något extra.</p>
 
-                <button class="knapp" onclick="openOrder('Dreamy')">
-                    Beställ
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Dreamy')">
+                    Visa produkt
                 </button>
             </div>
         </div>
 
-        <div class="nagel-kort">
+        <div class="nagel-kort product-card" onclick="openProductDetail(4)">
             <div class="nagel-bild">
                 <img src="bilder/nagel4.jpg" alt="Cherry Kiss naglar"
                      onerror="this.style.display='none'">
@@ -1410,13 +2092,13 @@
                 <h3>Cherry Kiss</h3>
                 <p>En lekfull design med en touch av rött.</p>
 
-                <button class="knapp" onclick="openOrder('Cherry Kiss')">
-                    Beställ
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Cherry Kiss')">
+                    Visa produkt
                 </button>
             </div>
         </div>
 
-        <div class="nagel-kort">
+        <div class="nagel-kort product-card" onclick="openProductDetail(5)">
             <div class="nagel-bild">
                 <img src="bilder/nagel5.jpg" alt="Soft Blossom naglar"
                      onerror="this.style.display='none'">
@@ -1426,13 +2108,13 @@
                 <h3>Soft Blossom</h3>
                 <p>Inspirerad av blommor och vår hibiskus-look.</p>
 
-                <button class="knapp" onclick="openOrder('Soft Blossom')">
-                    Beställ
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Soft Blossom')">
+                    Visa produkt
                 </button>
             </div>
         </div>
 
-        <div class="nagel-kort">
+        <div class="nagel-kort product-card" onclick="openProductDetail(6)">
             <div class="nagel-bild">
                 <img src="bilder/nagel6.jpg" alt="Golden Hour naglar"
                      onerror="this.style.display='none'">
@@ -1442,8 +2124,8 @@
                 <h3>Golden Hour</h3>
                 <p>Rosa toner med eleganta gulddetaljer.</p>
 
-                <button class="knapp" onclick="openOrder('Golden Hour')">
-                    Beställ
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Golden Hour')">
+                    Visa produkt
                 </button>
             </div>
         </div>
@@ -1484,7 +2166,7 @@
 
     <div class="naglar">
 
-        <div class="nagel-kort">
+        <div class="nagel-kort product-card" onclick="openToeProductDetail('Pink Glam Toes')">
             <div class="nagel-bild">
                 <img src="bilder/tå1.jpg" alt="Pink Glam Toes"
                      onerror="this.style.display='none'">
@@ -1494,13 +2176,13 @@
                 <h3>Pink Glam Toes</h3>
                 <p>Den rosa och glammiga favoriten.</p>
 
-                <button class="knapp" onclick="openToeOrder('Pink Glam Toes')">
-                    Beställ
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openToeOrder('Pink Glam Toes')">
+                    Välj och lägg i varukorg
                 </button>
             </div>
         </div>
 
-        <div class="nagel-kort">
+        <div class="nagel-kort product-card" onclick="openToeProductDetail('Classic Toes')">
             <div class="nagel-bild">
                 <img src="bilder/tå2.jpg" alt="Classic Toes"
                      onerror="this.style.display='none'">
@@ -1510,13 +2192,13 @@
                 <h3>Classic Toes</h3>
                 <p>Stilrena tår som passar till allt.</p>
 
-                <button class="knapp" onclick="openToeOrder('Classic Toes')">
-                    Beställ
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openToeOrder('Classic Toes')">
+                    Välj och lägg i varukorg
                 </button>
             </div>
         </div>
 
-        <div class="nagel-kort">
+        <div class="nagel-kort product-card" onclick="openToeProductDetail('Dreamy Toes')">
             <div class="nagel-bild">
                 <img src="bilder/tå3.jpg" alt="Dreamy Toes"
                      onerror="this.style.display='none'">
@@ -1526,13 +2208,13 @@
                 <h3>Dreamy Toes</h3>
                 <p>Söt, mjuk och lite extra.</p>
 
-                <button class="knapp" onclick="openToeOrder('Dreamy Toes')">
-                    Beställ
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openToeOrder('Dreamy Toes')">
+                    Välj och lägg i varukorg
                 </button>
             </div>
         </div>
 
-        <div class="nagel-kort">
+        <div class="nagel-kort product-card" onclick="openToeProductDetail('Cherry Kiss Toes')">
             <div class="nagel-bild">
                 <img src="bilder/tå4.jpg" alt="Cherry Kiss Toes"
                      onerror="this.style.display='none'">
@@ -1542,13 +2224,13 @@
                 <h3>Cherry Kiss Toes</h3>
                 <p>En lekfull tådesign med röd touch.</p>
 
-                <button class="knapp" onclick="openToeOrder('Cherry Kiss Toes')">
-                    Beställ
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openToeOrder('Cherry Kiss Toes')">
+                    Välj och lägg i varukorg
                 </button>
             </div>
         </div>
 
-        <div class="nagel-kort">
+        <div class="nagel-kort product-card" onclick="openToeProductDetail('Soft Blossom Toes')">
             <div class="nagel-bild">
                 <img src="bilder/tå5.jpg" alt="Soft Blossom Toes"
                      onerror="this.style.display='none'">
@@ -1558,13 +2240,13 @@
                 <h3>Soft Blossom Toes</h3>
                 <p>Blommig och feminin med vår egen look.</p>
 
-                <button class="knapp" onclick="openToeOrder('Soft Blossom Toes')">
-                    Beställ
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openToeOrder('Soft Blossom Toes')">
+                    Välj och lägg i varukorg
                 </button>
             </div>
         </div>
 
-        <div class="nagel-kort">
+        <div class="nagel-kort product-card" onclick="openToeProductDetail('Golden Hour Toes')">
             <div class="nagel-bild">
                 <img src="bilder/tå6.jpg" alt="Golden Hour Toes"
                      onerror="this.style.display='none'">
@@ -1574,8 +2256,8 @@
                 <h3>Golden Hour Toes</h3>
                 <p>Rosa toner med eleganta gulddetaljer.</p>
 
-                <button class="knapp" onclick="openToeOrder('Golden Hour Toes')">
-                    Beställ
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openToeOrder('Golden Hour Toes')">
+                    Välj och lägg i varukorg
                 </button>
             </div>
         </div>
@@ -1921,7 +2603,7 @@
     set. Vi gör resten.
 </p>
 
-<button class="knapp" onclick="openOrder('')">
+<button class="knapp" onclick="document.getElementById('naglar').scrollIntoView({behavior:'smooth'});">
     Beställ dina naglar
 </button>
 
@@ -2015,11 +2697,165 @@
     Handgjorda press-on nails från Eskilstuna ♡
 </p>
 
+<div class="payment-methods" aria-label="Betalningsmetoder">
+    <p class="payment-title">Betala tryggt med</p>
+    <div class="payment-logos">
+        <span class="payment-logo visa">VISA</span>
+        <span class="payment-logo mastercard">Mastercard</span>
+        <span class="payment-logo amex">AMERICAN EXPRESS</span>
+        <span class="payment-logo klarna">Klarna.</span>
+        <span class="payment-logo apple">Apple Pay</span>
+        <span class="payment-logo google">Google Pay</span>
+    </div>
+    <p class="payment-note">Tillgängliga betalningsmetoder visas i Stripe-kassan.</p>
+</div>
+
 <p class="footer-small">
     © 2026 PressN'Pop UF
 </p>
 
 </footer>
+
+<!-- =====================================================
+     PRODUKTDETALJ
+===================================================== -->
+
+<div class="modal product-modal" id="productModal">
+    <div class="product-modal-box">
+        <button class="close" type="button" onclick="closeModal('productModal')" aria-label="Stäng">×</button>
+
+        <button class="back-button" type="button" onclick="closeModal('productModal')">
+            ← Tillbaka
+        </button>
+
+        <div class="product-detail-grid">
+            <div class="product-gallery">
+                <div class="gallery-main">
+                    <img id="productMainImage" src="" alt="">
+                </div>
+
+                <div class="gallery-thumbs" id="productThumbs"></div>
+
+                <div class="gallery-hint">Skrolla åt höger för fler bilder →</div>
+            </div>
+
+            <div class="product-detail-content">
+                <span class="product-label">PressN'Pop</span>
+                <h2 id="productTitle">Produkt</h2>
+                <p id="productDescription" class="product-description"></p>
+
+                <div class="product-choice">
+                    <h3>Välj färg</h3>
+                    <div class="color-options" id="productColors"></div>
+                </div>
+
+                <div class="product-choice" id="productLengthChoice">
+                    <h3>Välj längd</h3>
+                    <div class="length-options">
+                        <button type="button" class="choice-button" data-length="Short" onclick="selectProductLength(this)">Short</button>
+                        <button type="button" class="choice-button" data-length="Medium" onclick="selectProductLength(this)">Medium</button>
+                        <button type="button" class="choice-button" data-length="Long" onclick="selectProductLength(this)">Long</button>
+                    </div>
+                </div>
+
+                <div class="product-choice">
+                    <div class="choice-heading">
+                        <h3 id="productSizeHeading">Välj storlek för varje finger</h3>
+                        <span id="productSizeHint">0 = störst · 9 = minst</span>
+                    </div>
+
+                    <div class="product-size-grid">
+                        <label id="productThumbLabel">Tumme<select id="productThumbSize"></select></label>
+                        <label id="productIndexLabel">Pekfinger<select id="productIndexSize"></select></label>
+                        <label id="productMiddleLabel">Långfinger<select id="productMiddleSize"></select></label>
+                        <label id="productRingLabel">Ringfinger<select id="productRingSize"></select></label>
+                        <label id="productPinkyLabel">Lillfinger<select id="productPinkySize"></select></label>
+                    </div>
+                </div>
+
+                <div class="product-bottom-row">
+                    <div class="quantity-control">
+                        <button type="button" onclick="changeProductQuantity(-1)" aria-label="Minska antal">−</button>
+                        <span id="productQuantity">1</span>
+                        <button type="button" onclick="changeProductQuantity(1)" aria-label="Öka antal">+</button>
+                    </div>
+
+                    <button class="knapp add-cart-button" type="button" onclick="addCurrentProductToCart()">
+                        Lägg i varukorg
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     VARUKORG
+===================================================== -->
+
+<div class="modal cart-modal" id="cartModal">
+    <div class="cart-box">
+        <button class="close" type="button" onclick="closeModal('cartModal')" aria-label="Stäng">×</button>
+
+        <h2>Din varukorg</h2>
+        <p class="modal-subtitle">Kontrollera dina produkter innan du går vidare till betalning.</p>
+
+        <div id="cartItems"></div>
+
+        <div class="cart-empty" id="cartEmpty">
+            <div class="cart-empty-icon">🛒</div>
+            <h3>Varukorgen är tom</h3>
+            <p>Välj en design och lägg den i varukorgen.</p>
+        </div>
+
+        <div class="cart-footer" id="cartFooter">
+            <div class="cart-total">
+                <span>Antal produkter</span>
+                <strong id="cartTotalQuantity">0</strong>
+            </div>
+
+            <div class="cart-actions">
+                <button class="knapp knapp-outline" type="button" onclick="closeModal('cartModal')">
+                    Fortsätt shoppa
+                </button>
+                <button class="knapp" type="button" onclick="checkoutCart()">
+                    Gå till betalning
+                </button>
+            </div>
+            <p class="cart-checkout-note">Betalningen slutförs säkert via Stripe.</p>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     KUNDUPPGIFTER VID BETALNING
+===================================================== -->
+
+<div class="modal" id="cartCheckoutModal">
+    <div class="modal-box">
+        <button class="close" type="button" onclick="closeModal('cartCheckoutModal')">×</button>
+        <h2>Dina uppgifter ♡</h2>
+        <p class="modal-subtitle">Fyll i dina uppgifter en gång när du är klar med hela varukorgen.</p>
+
+        <div class="form-group">
+            <label>Namn</label>
+            <input type="text" id="cartCheckoutName" placeholder="Ditt namn" autocomplete="name">
+        </div>
+        <div class="form-group">
+            <label>E-post</label>
+            <input type="email" id="cartCheckoutEmail" placeholder="din@email.se" autocomplete="email">
+        </div>
+        <div class="form-group">
+            <label>Meddelande / övrigt</label>
+            <textarea id="cartCheckoutMessage" placeholder="T.ex. när du behöver beställningen..."></textarea>
+        </div>
+
+        <div class="step-buttons">
+            <button class="knapp knapp-outline" type="button" onclick="closeModal('cartCheckoutModal')">← Tillbaka</button>
+            <button class="knapp" type="button" onclick="finalizeCartCheckout()">Fortsätt till betalning →</button>
+        </div>
+    </div>
+</div>
 
 <!-- =====================================================
      BESTÄLL FÄRDIG DESIGN
@@ -2031,10 +2867,10 @@
 
     <button class="close" onclick="closeModal('orderModal')">×</button>
 
-    <h2>Beställ ♡</h2>
+    <h2>Lägg i varukorg ♡</h2>
 
     <p class="modal-subtitle">
-        Fyll i dina uppgifter så kan vi kontakta dig om din beställning.
+        Välj dina alternativ och lägg produkten i varukorgen.
     </p>
 
     <div class="progress">
@@ -2163,16 +2999,6 @@
         </div>
 
         <div class="form-group">
-            <label>Namn</label>
-            <input type="text" id="orderName" placeholder="Ditt namn">
-        </div>
-
-        <div class="form-group">
-            <label>E-post</label>
-            <input type="email" id="orderEmail" placeholder="din@email.se">
-        </div>
-
-        <div class="form-group">
             <label>Meddelande / övrigt</label>
 
             <textarea
@@ -2183,6 +3009,15 @@
 
         <div class="summary" id="orderSummary"></div>
 
+        <div class="form-group quantity-group">
+            <label>Antal</label>
+            <div class="quantity-control">
+                <button type="button" onclick="changeModalQuantity('orderQuantity', -1)">−</button>
+                <span id="orderQuantity">1</span>
+                <button type="button" onclick="changeModalQuantity('orderQuantity', 1)">+</button>
+            </div>
+        </div>
+
         <div class="step-buttons">
 
             <button class="knapp knapp-outline" onclick="nextOrderStep(2)">
@@ -2190,8 +3025,7 @@
             </button>
 
             <button class="knapp" onclick="submitOrder()">
-                Skicka beställning
-            </button>
+                Lägg i varukorg</button>
 
         </div>
 
@@ -2238,8 +3072,14 @@
     <h2>Beställ ♡</h2>
 
     <p class="modal-subtitle">
-        Beställ din valda tådesign.
+        Välj bilder, färg och storlek för alla fem tår.
     </p>
+
+    <div class="toe-modal-gallery" style="margin:18px 0;">
+        <div class="gallery-main"><img id="toeOrderMainImage" src="" alt=""></div>
+        <div class="gallery-thumbs" id="toeOrderThumbs"></div>
+        <div class="gallery-hint">Skrolla åt höger för fler bilder →</div>
+    </div>
 
     <div class="progress">
         <span class="toe-progress active"></span>
@@ -2284,6 +3124,11 @@
 
         </div>
 
+        <div class="product-choice toe-color-choice" style="margin-top:20px;">
+            <h3>Välj färg</h3>
+            <div class="color-options" id="toeOrderColors"></div>
+        </div>
+
         <button class="knapp" onclick="nextToeOrderStep(2)">
             Nästa →
         </button>
@@ -2304,12 +3149,12 @@
             Måtten för tår är preliminära och kan uppdateras senare.
         </div>
 
-        <div class="form-group">
-            <label>Storlek</label>
-
-            <select id="toeOrderSize">
-                <option value="">Välj storlek</option>
-            </select>
+        <div class="size-selection toe-size-selection">
+            <div class="finger-row"><label>Stortå</label><select id="toeOrderBig"></select></div>
+            <div class="finger-row"><label>Tå 2</label><select id="toeOrderSecond"></select></div>
+            <div class="finger-row"><label>Tå 3</label><select id="toeOrderThird"></select></div>
+            <div class="finger-row"><label>Tå 4</label><select id="toeOrderFourth"></select></div>
+            <div class="finger-row"><label>Lilltå</label><select id="toeOrderPinky"></select></div>
         </div>
 
         <div class="step-buttons">
@@ -2336,16 +3181,6 @@
         </div>
 
         <div class="form-group">
-            <label>Namn</label>
-            <input type="text" id="toeOrderName" placeholder="Ditt namn">
-        </div>
-
-        <div class="form-group">
-            <label>E-post</label>
-            <input type="email" id="toeOrderEmail" placeholder="din@email.se">
-        </div>
-
-        <div class="form-group">
             <label>Meddelande / övrigt</label>
 
             <textarea
@@ -2356,6 +3191,15 @@
 
         <div class="summary" id="toeOrderSummary"></div>
 
+        <div class="form-group quantity-group">
+            <label>Antal</label>
+            <div class="quantity-control">
+                <button type="button" onclick="changeModalQuantity('toeOrderQuantity', -1)">−</button>
+                <span id="toeOrderQuantity">1</span>
+                <button type="button" onclick="changeModalQuantity('toeOrderQuantity', 1)">+</button>
+            </div>
+        </div>
+
         <div class="step-buttons">
 
             <button class="knapp knapp-outline" onclick="nextToeOrderStep(2)">
@@ -2363,8 +3207,7 @@
             </button>
 
             <button class="knapp" onclick="submitToeOrder()">
-                Skicka beställning
-            </button>
+                Lägg i varukorg</button>
 
         </div>
 
@@ -2483,10 +3326,6 @@
                 Long
             </div>
 
-            <div class="option" onclick="selectCustomNail(this, 'length', 'Extra Long')">
-                Extra Long
-            </div>
-
         </div>
 
         <div class="step-buttons">
@@ -2571,7 +3410,7 @@
     </div>
 
 
-    <!-- STEG 4 INSPO + HAND -->
+    <!-- STEG 4 INSPO -->
 
     <div class="step" id="customNailStep4">
 
@@ -2595,27 +3434,6 @@
             </div>
 
             <div class="file-name" id="customNailInspoName"></div>
-
-        </div>
-
-        <div class="form-group">
-
-            <label>
-                Bild på din hand
-            </label>
-
-            <input
-                type="file"
-                id="customHandImage"
-                accept="image/*"
-                onchange="showFileName('customHandImage', 'customHandImageName')"
-            >
-
-            <div class="file-help">
-                Skicka en tydlig bild på din hand bredvid en 5 krona så hjälper vi dig att mäta rätt storlek.
-            </div>
-
-            <div class="file-name" id="customHandImageName"></div>
 
         </div>
 
@@ -2678,31 +3496,16 @@
             6. Dina uppgifter
         </div>
 
-        <div class="form-group">
-
-            <label>Namn</label>
-
-            <input
-                type="text"
-                id="customNailName"
-                placeholder="Ditt namn"
-            >
-
-        </div>
-
-        <div class="form-group">
-
-            <label>E-post</label>
-
-            <input
-                type="email"
-                id="customNailEmail"
-                placeholder="din@email.se"
-            >
-
-        </div>
-
         <div class="summary" id="customNailSummary"></div>
+
+        <div class="form-group quantity-group">
+            <label>Antal</label>
+            <div class="quantity-control">
+                <button type="button" onclick="changeModalQuantity('customNailQuantity', -1)">−</button>
+                <span id="customNailQuantity">1</span>
+                <button type="button" onclick="changeModalQuantity('customNailQuantity', 1)">+</button>
+            </div>
+        </div>
 
         <div class="step-buttons">
 
@@ -2711,8 +3514,7 @@
             </button>
 
             <button class="knapp" onclick="submitCustomNails()">
-                Gå till betalning
-            </button>
+                Lägg i varukorg</button>
 
         </div>
 
@@ -2889,31 +3691,16 @@
             4. Dina uppgifter
         </div>
 
-        <div class="form-group">
-
-            <label>Namn</label>
-
-            <input
-                type="text"
-                id="customToeName"
-                placeholder="Ditt namn"
-            >
-
-        </div>
-
-        <div class="form-group">
-
-            <label>E-post</label>
-
-            <input
-                type="email"
-                id="customToeEmail"
-                placeholder="din@email.se"
-            >
-
-        </div>
-
         <div class="summary" id="customToeSummary"></div>
+
+        <div class="form-group quantity-group">
+            <label>Antal</label>
+            <div class="quantity-control">
+                <button type="button" onclick="changeModalQuantity('customToeQuantity', -1)">−</button>
+                <span id="customToeQuantity">1</span>
+                <button type="button" onclick="changeModalQuantity('customToeQuantity', 1)">+</button>
+            </div>
+        </div>
 
         <div class="step-buttons">
 
@@ -2922,8 +3709,7 @@
             </button>
 
             <button class="knapp" onclick="submitCustomToes()">
-                Gå till betalning
-            </button>
+                Lägg i varukorg</button>
 
         </div>
 
@@ -2974,8 +3760,7 @@
         const formData = new FormData();
         formData.append("orderType", orderType);
         formData.append("payload", JSON.stringify(payload));
-
-        Object.entries(files).forEach(([field, file]) => {
+        Object.entries(files || {}).forEach(([field, file]) => {
             if (file) formData.append(field, file);
         });
 
@@ -2984,19 +3769,36 @@
                 method: "POST",
                 body: formData
             });
-
             const result = await response.json();
-
             if (!response.ok || !result.url) {
                 throw new Error(result.error || "Kunde inte starta betalningen.");
             }
-
             window.location.href = result.url;
         } catch (error) {
-            console.error(error);
-            alert("Något gick fel när betalningen skulle startas. Försök igen ♡");
+            console.error("Stripe checkout error:", error);
+            alert(error.message || "Något gick fel. Försök igen ♡");
         }
     }
+
+    function addItemToCart(item) {
+        if (!item || !item.name) return;
+        const normalized = {
+            cartId: item.cartId || makeCartId(),
+            type: item.type || "ready_nails",
+            productId: item.productId ?? null,
+            name: String(item.name),
+            image: item.image || "bilder/logo.png",
+            color: item.color || "",
+            length: item.length || "",
+            sizes: item.sizes || {},
+            quantity: Math.max(1, Math.min(99, Number(item.quantity) || 1)),
+            customer: item.customer || null,
+            options: item.options || {}
+        };
+        cart.push(normalized);
+        saveCart();
+    }
+
 
     /* =====================================================
        STORLEKSDATA
@@ -3356,28 +4158,16 @@
 
 
     async function submitOrder() {
-        const name =
-            document.getElementById("orderName").value.trim();
-        const email =
-            document.getElementById("orderEmail").value.trim();
-        const message =
-            document.getElementById("orderMessage").value.trim();
-        const sizes =
-            getNailSizeValues("order");
-
-        if (!name || !email) {
-            alert("Fyll i ditt namn och din e-post ♡");
-            return;
-        }
-
-        await startStripeCheckout("ready_nails", {
-            design: orderData.design,
-            sizes,
-            name,
-            email,
-            message
-        });
+        const message = document.getElementById("orderMessage").value.trim();
+        const sizes = getNailSizeValues("order");
+        if (!orderData.design) return alert("Välj en design först ♡");
+        if (!allNailSizesSelected("order")) return alert("Välj en storlek för alla fem fingrar ♡");
+        addItemToCart({ cartId:makeCartId(), type:"ready_nails", productId:"nail-"+slugify(orderData.design), name:orderData.design, image:"bilder/nagel1.jpg", color:orderData.color || "Original", length:orderData.length || "", sizes, quantity:getModalQuantity("orderQuantity"), customer:null, options:{design:orderData.design,color:orderData.color || "Original",length:orderData.length || "",sizes,message} });
+        closeModal("orderModal");
+        openCart();
     }
+
+
 
     /* =====================================================
        FÄRDIGA TÅR
@@ -3385,35 +4175,15 @@
 
     let toeOrderData = {
         design: "",
-        size: ""
+        sizes: { big: "", second: "", third: "", fourth: "", pinky: "" },
+        color: ""
     };
 
 
     function openToeOrder(design) {
-
-        toeOrderData = {
-            design: design || "",
-            size: ""
-        };
-
-        document
-            .getElementById("toeOrderModal")
-            .classList.add("active");
-
-        showToeOrderStep(1);
-
-        document
-            .querySelectorAll("#toeOrderStep1 .option")
-            .forEach(option => {
-
-                option.classList.remove("selected");
-
-                if (option.textContent.trim() === design) {
-                    option.classList.add("selected");
-                }
-
-            });
-
+        // Tår ska använda exakt samma produktvy som Våra Naglar:
+        // bildgalleri till vänster och färg/storlek/antal till höger.
+        openToeProductDetail(design);
     }
 
 
@@ -3431,6 +4201,97 @@
 
     }
 
+
+    function toeImageBase(design) {
+        const map = {
+            "Pink Glam Toes": 1,
+            "Classic Toes": 2,
+            "Dreamy Toes": 3,
+            "Cherry Kiss Toes": 4,
+            "Soft Blossom Toes": 5,
+            "Golden Hour Toes": 6
+        };
+        return map[design] || 1;
+    }
+
+    function renderToeOrderGallery() {
+        const main = document.getElementById("toeOrderMainImage");
+        const thumbs = document.getElementById("toeOrderThumbs");
+        if (!main || !thumbs) return;
+        const n = toeImageBase(toeOrderData.design);
+        const images = [`bilder/tå${n}.jpg`, `bilder/tå${n}-2.jpg`, `bilder/tå${n}-3.jpg`];
+        main.src = images[0];
+        main.alt = toeOrderData.design || "Tådesign";
+        main.onerror = () => { main.src = `bilder/tå${n}.jpg`; };
+        thumbs.innerHTML = "";
+        images.forEach((src, i) => {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.className = "gallery-thumb" + (i === 0 ? " active" : "");
+            b.innerHTML = `<img src="${src}" alt="${toeOrderData.design} bild ${i+1}">`;
+            const im = b.querySelector("img");
+            im.onerror = () => { im.src = `bilder/tå${n}.jpg`; };
+            b.onclick = () => {
+                main.src = src;
+                main.onerror = () => { main.src = `bilder/tå${n}.jpg`; };
+                thumbs.querySelectorAll(".gallery-thumb").forEach(x => x.classList.remove("active"));
+                b.classList.add("active");
+            };
+            thumbs.appendChild(b);
+        });
+    }
+
+    function renderToeOrderSizes() {
+        [
+            ["toeOrderBig", "big"], ["toeOrderSecond", "second"], ["toeOrderThird", "third"],
+            ["toeOrderFourth", "fourth"], ["toeOrderPinky", "pinky"]
+        ].forEach(([id, key]) => {
+            createSizeOptions(id, toeSizes, "Välj storlek");
+            const el = document.getElementById(id);
+            if (el) el.value = toeOrderData.sizes[key] || "";
+        });
+    }
+
+    function getToeSizesFromForm() {
+        return {
+            big: document.getElementById("toeOrderBig").value,
+            second: document.getElementById("toeOrderSecond").value,
+            third: document.getElementById("toeOrderThird").value,
+            fourth: document.getElementById("toeOrderFourth").value,
+            pinky: document.getElementById("toeOrderPinky").value
+        };
+    }
+
+    function allToeSizesSelected() {
+        return Object.values(getToeSizesFromForm()).every(v => v !== "");
+    }
+
+    function renderToeOrderColors() {
+        const container = document.getElementById("toeOrderColors");
+        if (!container) return;
+        const colors = [
+            { name: "Original", value: "Original", hex: "#e8a7b8" },
+            { name: "Baby pink", value: "Baby pink", hex: "#f7cbd8" },
+            { name: "Nude", value: "Nude", hex: "#d8b09e" },
+            { name: "Vit", value: "Vit", hex: "#ffffff" },
+            { name: "Röd", value: "Röd", hex: "#b94b65" },
+            { name: "Lavendel", value: "Lavendel", hex: "#c7b7dc" }
+        ];
+        container.innerHTML = "";
+        colors.forEach((color, index) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "choice-button color-choice" + ((toeOrderData.color || index === 0) === color.value ? " selected" : "");
+            button.innerHTML = `<span class="color-dot" style="background:${color.hex}"></span>${color.name}`;
+            button.onclick = () => {
+                toeOrderData.color = color.value;
+                container.querySelectorAll(".choice-button").forEach(item => item.classList.remove("selected"));
+                button.classList.add("selected");
+            };
+            container.appendChild(button);
+        });
+        if (!toeOrderData.color) toeOrderData.color = colors[0].value;
+    }
 
     function showToeOrderStep(number) {
 
@@ -3461,21 +4322,11 @@
 
 
         if (number === 2) {
-
-            createSizeOptions(
-                "toeOrderSize",
-                toeSizes,
-                "Välj storlek"
-            );
-
+            renderToeOrderSizes();
         }
 
 
         if (number === 3) {
-
-            const selectedSize =
-                document.getElementById("toeOrderSize").value;
-
             document.getElementById("toeOrderSummary").innerHTML = `
 
                 <strong>Din beställning</strong>
@@ -3483,11 +4334,14 @@
                 <p>
                     Tådesign: ${toeOrderData.design || "Inte vald"}
                 </p>
+                <p>Färg: ${toeOrderData.color || "Original"}</p>
 
-                <p>
-                    Storlek: ${selectedSize || "Inte vald"}
-                    ${selectedSize ? "(" + toeSizes[selectedSize] + ")" : ""}
-                </p>
+                <p><strong>Storlekar:</strong></p>
+                <p>Stortå: ${toeOrderData.sizes.big || "Inte vald"}</p>
+                <p>Tå 2: ${toeOrderData.sizes.second || "Inte vald"}</p>
+                <p>Tå 3: ${toeOrderData.sizes.third || "Inte vald"}</p>
+                <p>Tå 4: ${toeOrderData.sizes.fourth || "Inte vald"}</p>
+                <p>Lilltå: ${toeOrderData.sizes.pinky || "Inte vald"}</p>
 
             `;
 
@@ -3499,27 +4353,23 @@
     function nextToeOrderStep(number) {
 
         if (number === 2 && !toeOrderData.design) {
-
             alert("Välj en tådesign först ♡");
             return;
+        }
 
+        if (number === 2 && !toeOrderData.color) {
+            alert("Välj en färg först ♡");
+            return;
         }
 
 
         if (number === 3) {
-
-            const size =
-                document.getElementById("toeOrderSize").value;
-
-            if (!size) {
-
-                alert("Välj en storlek först ♡");
+            const sizes = getToeSizesFromForm();
+            if (!Object.values(sizes).every(v => v !== "")) {
+                alert("Välj en storlek för alla fem tår ♡");
                 return;
-
             }
-
-            toeOrderData.size = size;
-
+            toeOrderData.sizes = sizes;
         }
 
 
@@ -3529,27 +4379,15 @@
 
 
     async function submitToeOrder() {
-        const name =
-            document.getElementById("toeOrderName").value.trim();
-        const email =
-            document.getElementById("toeOrderEmail").value.trim();
-        const message =
-            document.getElementById("toeOrderMessage").value.trim();
-
-        if (!name || !email) {
-            alert("Fyll i ditt namn och din e-post ♡");
-            return;
-        }
-
-        await startStripeCheckout("ready_toes", {
-            design: toeOrderData.design,
-            size: toeOrderData.size,
-            sizeMeasurement: toeSizes[toeOrderData.size] || "",
-            name,
-            email,
-            message
-        });
+        const message = document.getElementById("toeOrderMessage").value.trim();
+        const sizes = getToeSizesFromForm();
+        if (!toeOrderData.design || !allToeSizesSelected()) return alert("Välj design och storlek för alla fem tår först ♡");
+        toeOrderData.sizes = sizes;
+        addItemToCart({ cartId:makeCartId(), type:"ready_toes", productId:"toe-"+slugify(toeOrderData.design), name:toeOrderData.design, image:`bilder/tå${toeImageBase(toeOrderData.design)}.jpg`, color:toeOrderData.color || "Original", length:"", sizes, quantity:getModalQuantity("toeOrderQuantity"), customer:null, options:{design:toeOrderData.design,color:toeOrderData.color || "Original",sizes,sizeMeasurements:Object.fromEntries(Object.entries(sizes).map(([k,v])=>[k,toeSizes[v]||""])),message} });
+        closeModal("toeOrderModal");
+        openCart();
     }
+
 
     /* =====================================================
        CUSTOM NAGLAR
@@ -3567,7 +4405,6 @@
             pinky: ""
         },
         inspo: "",
-        hand: "",
         changes: ""
 
     };
@@ -3587,12 +4424,12 @@
                 pinky: ""
             },
             inspo: "",
-            hand: "",
-            changes: ""
+                changes: ""
 
         };
 
 
+        document.getElementById("customNailQuantity").textContent="1";
         document
             .getElementById("customNailsModal")
             .classList.add("active");
@@ -3667,9 +4504,6 @@
             const inspo =
                 document.getElementById("customNailInspo").files[0];
 
-            const hand =
-                document.getElementById("customHandImage").files[0];
-
             const changes =
                 document.getElementById("customNailChanges").value.trim();
 
@@ -3698,11 +4532,6 @@
                 <p>
                     Inspo-bild:
                     ${inspo ? inspo.name : "Ingen bild vald"}
-                </p>
-
-                <p>
-                    Hand-bild:
-                    ${hand ? hand.name : "Ingen bild vald"}
                 </p>
 
                 <p>
@@ -3752,9 +4581,6 @@
             const inspo =
                 document.getElementById("customNailInspo").files[0];
 
-            const hand =
-                document.getElementById("customHandImage").files[0];
-
 
             if (!inspo) {
 
@@ -3763,16 +4589,6 @@
 
             }
 
-
-            if (!hand) {
-
-                alert(
-                    "Ladda upp en bild på din hand bredvid en 5 krona så att vi kan hjälpa dig med storleken ♡"
-                );
-
-                return;
-
-            }
 
         }
 
@@ -3783,45 +4599,45 @@
 
 
     async function submitCustomNails() {
-        const name =
-            document.getElementById("customNailName").value.trim();
-        const email =
-            document.getElementById("customNailEmail").value.trim();
-        const changes =
-            document.getElementById("customNailChanges").value.trim();
-        const inspo =
-            document.getElementById("customNailInspo").files[0];
-        const hand =
-            document.getElementById("customHandImage").files[0];
-        const sizes =
-            getNailSizeValues("custom");
+        const changes = document.getElementById("customNailChanges").value.trim();
+        const inspo = document.getElementById("customNailInspo").files[0];
+        const sizes = getNailSizeValues("custom");
+        if (!inspo) return alert("Ladda upp en inspo-bild först ♡");
+        if (!allNailSizesSelected("custom")) return alert("Välj storlek för alla fem fingrar ♡");
 
-        if (!name || !email) {
-            alert("Fyll i ditt namn och din e-post ♡");
-            return;
-        }
+        const cartId = makeCartId();
+        const inspoData = await fileToDataURL(inspo);
 
-        if (!inspo || !hand) {
-            alert("Ladda upp både inspo-bild och hand-bild först ♡");
-            return;
-        }
+        // Unikt multipart-fältnamn per varukorgsrad.
+        const inspoField = "file_" + cartId;
+        cartUploadFiles.set(cartId, inspo);
 
-        await startStripeCheckout(
-            "custom_nails",
-            {
-                form: customNailData.form,
-                length: customNailData.length,
+        addItemToCart({
+            cartId,
+            type:"custom_nails",
+            productId:"custom_nails",
+            name:"Custom Nails",
+            image:"bilder/custom.jpg",
+            color:"",
+            length:customNailData.length || "",
+            sizes,
+            quantity:getModalQuantity("customNailQuantity"),
+            customer:null,
+            options:{
+                form:customNailData.form,
+                length:customNailData.length,
                 sizes,
                 changes,
-                name,
-                email
-            },
-            {
-                inspoImage: inspo,
-                handImage: hand
+                inspoFile:inspo.name,
+                inspoField,
+                inspoData
             }
-        );
+        });
+
+        closeModal("customNailsModal");
+        openCart();
     }
+
 
     /* =====================================================
        CUSTOM TÅR
@@ -3847,6 +4663,7 @@
         };
 
 
+        document.getElementById("customToeQuantity").textContent="1";
         document
             .getElementById("customToesModal")
             .classList.add("active");
@@ -3981,39 +4798,44 @@
 
 
     async function submitCustomToes() {
-        const name =
-            document.getElementById("customToeName").value.trim();
-        const email =
-            document.getElementById("customToeEmail").value.trim();
-        const changes =
-            document.getElementById("customToeChanges").value.trim();
-        const inspo =
-            document.getElementById("customToeInspo").files[0];
+        const changes = document.getElementById("customToeChanges").value.trim();
+        const inspo = document.getElementById("customToeInspo").files[0];
+        const size = customToeData.size || document.getElementById("customToeSize").value;
+        if (!inspo) return alert("Ladda upp en inspo-bild först ♡");
+        if (!size) return alert("Välj en storlek först ♡");
 
-        if (!name || !email) {
-            alert("Fyll i ditt namn och din e-post ♡");
-            return;
-        }
+        const cartId = makeCartId();
+        const inspoData = await fileToDataURL(inspo);
 
-        if (!inspo) {
-            alert("Ladda upp en inspo-bild först ♡");
-            return;
-        }
+        // Unikt multipart-fältnamn per varukorgsrad.
+        const inspoField = "file_" + cartId;
+        cartUploadFiles.set(cartId, inspo);
 
-        await startStripeCheckout(
-            "custom_toes",
-            {
-                size: customToeData.size,
-                sizeMeasurement: toeSizes[customToeData.size] || "",
+        addItemToCart({
+            cartId,
+            type:"custom_toes",
+            productId:"custom_toes",
+            name:"Custom Toes",
+            image:"bilder/custom.jpg",
+            color:"",
+            length:"",
+            sizes:{toe:size},
+            quantity:getModalQuantity("customToeQuantity"),
+            customer:null,
+            options:{
+                size,
+                sizeMeasurement:toeSizes[size] || "",
                 changes,
-                name,
-                email
-            },
-            {
-                inspoImage: inspo
+                inspoFile:inspo.name,
+                inspoField,
+                inspoData
             }
-        );
+        });
+
+        closeModal("customToesModal");
+        openCart();
     }
+
 
     /* =====================================================
        VISA UPPLADDADE FILNAMN
@@ -4087,5 +4909,501 @@
     ===================================================== */
 
     setupToeSizes();
+
+
+
+    /* =====================================================
+       PRODUKTER + VARUKORG
+       Frontend-varukorg sparas lokalt i webbläsaren.
+    ===================================================== */
+
+    const readyToes = [
+        { name: "Pink Glam Toes", description: "Den rosa och glammiga favoriten.", image: "bilder/tå1.jpg", images: ["bilder/tå1.jpg","bilder/tå1-2.jpg","bilder/tå1-3.jpg"] },
+        { name: "Classic Toes", description: "Stilrena tår som passar till allt.", image: "bilder/tå2.jpg", images: ["bilder/tå2.jpg","bilder/tå2-2.jpg","bilder/tå2-3.jpg"] },
+        { name: "Dreamy Toes", description: "Söt, mjuk och lite extra.", image: "bilder/tå3.jpg", images: ["bilder/tå3.jpg","bilder/tå3-2.jpg","bilder/tå3-3.jpg"] },
+        { name: "Cherry Kiss Toes", description: "En lekfull tådesign med röd touch.", image: "bilder/tå4.jpg", images: ["bilder/tå4.jpg","bilder/tå4-2.jpg","bilder/tå4-3.jpg"] },
+        { name: "Soft Blossom Toes", description: "Blommig och feminin med vår egen look.", image: "bilder/tå5.jpg", images: ["bilder/tå5.jpg","bilder/tå5-2.jpg","bilder/tå5-3.jpg"] },
+        { name: "Golden Hour Toes", description: "Rosa toner med eleganta gulddetaljer.", image: "bilder/tå6.jpg", images: ["bilder/tå6.jpg","bilder/tå6-2.jpg","bilder/tå6-3.jpg"] }
+    ];
+
+    const toeColors = [
+        { name: "Original", value: "Original", hex: "#e8a7b8" },
+        { name: "Baby pink", value: "Baby pink", hex: "#f7cbd8" },
+        { name: "Nude", value: "Nude", hex: "#d8b09e" },
+        { name: "Vit", value: "Vit", hex: "#ffffff" },
+        { name: "Röd", value: "Röd", hex: "#b94b65" },
+        { name: "Lavendel", value: "Lavendel", hex: "#c7b7dc" }
+    ];
+
+    const readyProducts = [
+        {
+            id: 1,
+            name: "Pink Glam",
+            description: "Rosa, feminin och lite extra glam.",
+            image: "bilder/nagel1.jpg",
+            images: ["bilder/nagel1.jpg", "bilder/nagel1-2.jpg", "bilder/nagel1-3.jpg"],
+            colors: [
+                { name: "Original rosa", value: "Original rosa", hex: "#e7a1b8" },
+                { name: "Baby pink", value: "Baby pink", hex: "#f7cbd8" },
+                { name: "Vit", value: "Vit", hex: "#ffffff" },
+                { name: "Röd", value: "Röd", hex: "#b94b65" }
+            ]
+        },
+        {
+            id: 2,
+            name: "Classic",
+            description: "Enkel, stilren och passar till allt.",
+            image: "bilder/nagel2.jpg",
+            images: ["bilder/nagel2.jpg", "bilder/nagel2-2.jpg", "bilder/nagel2-3.jpg"],
+            colors: [
+                { name: "Original nude", value: "Original nude", hex: "#e7c7b9" },
+                { name: "Nude", value: "Nude", hex: "#d8b09e" },
+                { name: "Vit", value: "Vit", hex: "#ffffff" },
+                { name: "Rosa", value: "Rosa", hex: "#e8a7bb" }
+            ]
+        },
+        {
+            id: 3,
+            name: "Dreamy",
+            description: "Mjuk, söt och perfekt för dig som vill ha något extra.",
+            image: "bilder/nagel3.jpg",
+            images: ["bilder/nagel3.jpg", "bilder/nagel3-2.jpg", "bilder/nagel3-3.jpg"],
+            colors: [
+                { name: "Original", value: "Original", hex: "#e8c6d0" },
+                { name: "Baby pink", value: "Baby pink", hex: "#f7cbd8" },
+                { name: "Lavendel", value: "Lavendel", hex: "#c7b7dc" },
+                { name: "Vit", value: "Vit", hex: "#ffffff" }
+            ]
+        },
+        {
+            id: 4,
+            name: "Cherry Kiss",
+            description: "En lekfull design med en touch av rött.",
+            image: "bilder/nagel4.jpg",
+            images: ["bilder/nagel4.jpg", "bilder/nagel4-2.jpg", "bilder/nagel4-3.jpg"],
+            colors: [
+                { name: "Original röd", value: "Original röd", hex: "#b94b65" },
+                { name: "Mörkröd", value: "Mörkröd", hex: "#8d2946" },
+                { name: "Rosa", value: "Rosa", hex: "#e8a7bb" },
+                { name: "Vit", value: "Vit", hex: "#ffffff" }
+            ]
+        },
+        {
+            id: 5,
+            name: "Soft Blossom",
+            description: "Inspirerad av blommor och vår hibiskus-look.",
+            image: "bilder/nagel5.jpg",
+            images: ["bilder/nagel5.jpg", "bilder/nagel5-2.jpg", "bilder/nagel5-3.jpg"],
+            colors: [
+                { name: "Original", value: "Original", hex: "#e9c1cc" },
+                { name: "Rosa", value: "Rosa", hex: "#e8a7bb" },
+                { name: "Vit", value: "Vit", hex: "#ffffff" },
+                { name: "Lavendel", value: "Lavendel", hex: "#c7b7dc" }
+            ]
+        },
+        {
+            id: 6,
+            name: "Golden Hour",
+            description: "Rosa toner med eleganta gulddetaljer.",
+            image: "bilder/nagel6.jpg",
+            images: ["bilder/nagel6.jpg", "bilder/nagel6-2.jpg", "bilder/nagel6-3.jpg"],
+            colors: [
+                { name: "Original rosa/guld", value: "Original rosa/guld", hex: "#dca7a9" },
+                { name: "Champagne", value: "Champagne", hex: "#e7d0a6" },
+                { name: "Rosa", value: "Rosa", hex: "#e8a7bb" },
+                { name: "Vit", value: "Vit", hex: "#ffffff" }
+            ]
+        }
+    ];
+
+    function makeCartId() { return Date.now() + "-" + Math.random().toString(16).slice(2); }
+    function slugify(value) { return String(value || "").toLowerCase().replace(/[^a-z0-9åäö]+/gi, "-").replace(/^-|-$/g, ""); }
+    function changeModalQuantity(id, amount) { const el=document.getElementById(id); if(!el) return; el.textContent=Math.max(1,Math.min(99,Number(el.textContent||1)+amount)); }
+    function getModalQuantity(id) { return Math.max(1,Math.min(99,Number(document.getElementById(id)?.textContent||1))); }
+    function fileToDataURL(file) { return new Promise((resolve,reject)=>{ const r=new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(file); }); }
+
+    // Faktiska uppladdade filer hålls i minnet tills checkout skickas.
+    // localStorage kan inte lagra File-objekt, därför används cartId som koppling.
+    const cartUploadFiles = new Map();
+
+    let cart = JSON.parse(localStorage.getItem("pressnpopCart") || "[]");
+    let currentProduct = null;
+    let currentProductType = "nails";
+    let currentProductState = {
+        color: "",
+        length: "Medium",
+        quantity: 1
+    };
+
+    function saveCart() {
+        localStorage.setItem("pressnpopCart", JSON.stringify(cart));
+        updateCartUI();
+    }
+
+    function getProductByName(name) {
+        return readyProducts.find(product => product.name === name);
+    }
+
+    function openProductDetail(id) {
+        const product = readyProducts.find(item => item.id === Number(id));
+        if (!product) return;
+
+        currentProductType = "nails";
+        currentProduct = product;
+        currentProductState = { color: product.colors[0].value, length: "Medium", quantity: 1 };
+
+        setupUnifiedProductModal(product, false);
+    }
+
+    function openToeProductDetail(name) {
+        const product = readyToes.find(item => item.name === name);
+        if (!product) return;
+
+        currentProductType = "toes";
+        currentProduct = { ...product, id: "toe-" + slugify(product.name), colors: toeColors };
+        currentProductState = { color: toeColors[0].value, length: "", quantity: 1 };
+
+        setupUnifiedProductModal(currentProduct, true);
+    }
+
+    function setupUnifiedProductModal(product, isToe) {
+        document.getElementById("productTitle").textContent = product.name;
+        document.getElementById("productDescription").textContent = product.description;
+        document.getElementById("productQuantity").textContent = "1";
+        renderProductColors(product);
+        renderProductGallery(product);
+
+        const lengthChoice = document.getElementById("productLengthChoice");
+        const sizeHeading = document.getElementById("productSizeHeading");
+        const sizeHint = document.getElementById("productSizeHint");
+        const labels = [
+            ["productThumbLabel", isToe ? "Stortå" : "Tumme"],
+            ["productIndexLabel", isToe ? "Tå 2" : "Pekfinger"],
+            ["productMiddleLabel", isToe ? "Tå 3" : "Långfinger"],
+            ["productRingLabel", isToe ? "Tå 4" : "Ringfinger"],
+            ["productPinkyLabel", isToe ? "Lilltå" : "Lillfinger"]
+        ];
+        labels.forEach(([id, text]) => { document.getElementById(id).firstChild.textContent = text; });
+
+        if (isToe) {
+            lengthChoice.style.display = "none";
+            sizeHeading.textContent = "Välj storlek för varje tå";
+            sizeHint.textContent = "Välj en storlek för alla 5 tår";
+            setupToeProductSizeSelectors();
+        } else {
+            lengthChoice.style.display = "block";
+            sizeHeading.textContent = "Välj storlek för varje finger";
+            sizeHint.textContent = "0 = störst · 9 = minst";
+            setupProductSizeSelectors();
+            document.querySelectorAll(".length-options .choice-button").forEach(button => {
+                button.classList.toggle("selected", button.dataset.length === "Medium");
+            });
+        }
+
+        document.getElementById("productModal").classList.add("active");
+    }
+
+    function setupToeProductSizeSelectors() {
+        const ids = ["productThumbSize","productIndexSize","productMiddleSize","productRingSize","productPinkySize"];
+        ids.forEach(id => {
+            const select = document.getElementById(id);
+            select.innerHTML = '<option value="">Välj</option>';
+            Object.keys(toeSizes).forEach(size => {
+                const option = document.createElement("option");
+                option.value = size;
+                option.textContent = `Storlek ${size} – ${toeSizes[size]}`;
+                select.appendChild(option);
+            });
+        });
+    }
+
+    function openProductDetailByName(name) {
+        const product = getProductByName(name);
+        if (product) openProductDetail(product.id);
+    }
+
+    function renderProductColors(product) {
+        const container = document.getElementById("productColors");
+        container.innerHTML = "";
+
+        product.colors.forEach((color, index) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "choice-button color-choice" + (index === 0 ? " selected" : "");
+            button.innerHTML = `<span class="color-dot" style="background:${color.hex}"></span>${color.name}`;
+            button.onclick = () => {
+                currentProductState.color = color.value;
+                container.querySelectorAll(".choice-button").forEach(item => item.classList.remove("selected"));
+                button.classList.add("selected");
+            };
+            container.appendChild(button);
+        });
+    }
+
+    function renderProductGallery(product) {
+        const main = document.getElementById("productMainImage");
+        const thumbs = document.getElementById("productThumbs");
+
+        main.src = product.images[0];
+        main.alt = product.name;
+        thumbs.innerHTML = "";
+
+        product.images.forEach((src, index) => {
+            const thumb = document.createElement("button");
+            thumb.type = "button";
+            thumb.className = "gallery-thumb" + (index === 0 ? " active" : "");
+            thumb.innerHTML = `<img src="${src}" alt="${product.name} bild ${index + 1}">`;
+
+            const img = thumb.querySelector("img");
+            img.onerror = () => {
+                img.src = product.image;
+            };
+
+            thumb.onclick = () => {
+                main.src = src;
+                main.onerror = () => {
+                    main.src = product.image;
+                };
+                thumbs.querySelectorAll(".gallery-thumb").forEach(item => item.classList.remove("active"));
+                thumb.classList.add("active");
+            };
+
+            thumbs.appendChild(thumb);
+        });
+
+        main.onerror = () => {
+            main.src = product.image;
+        };
+    }
+
+    function setupProductSizeSelectors() {
+        const ids = [
+            "productThumbSize",
+            "productIndexSize",
+            "productMiddleSize",
+            "productRingSize",
+            "productPinkySize"
+        ];
+
+        const sizes = nailSizes.Almond;
+
+        ids.forEach(id => {
+            const select = document.getElementById(id);
+            select.innerHTML = '<option value="">Välj</option>';
+            Object.keys(sizes).forEach(size => {
+                const option = document.createElement("option");
+                option.value = size;
+                option.textContent = `Storlek ${size} – ${sizes[size]}`;
+                select.appendChild(option);
+            });
+        });
+    }
+
+    function selectProductLength(button) {
+        currentProductState.length = button.dataset.length;
+        document.querySelectorAll(".length-options .choice-button").forEach(item => {
+            item.classList.remove("selected");
+        });
+        button.classList.add("selected");
+    }
+
+    function changeProductQuantity(amount) {
+        currentProductState.quantity = Math.max(
+            1,
+            Math.min(99, currentProductState.quantity + amount)
+        );
+        document.getElementById("productQuantity").textContent = currentProductState.quantity;
+    }
+
+    function getProductSizes() {
+        return {
+            thumb: document.getElementById("productThumbSize").value,
+            index: document.getElementById("productIndexSize").value,
+            middle: document.getElementById("productMiddleSize").value,
+            ring: document.getElementById("productRingSize").value,
+            pinky: document.getElementById("productPinkySize").value
+        };
+    }
+
+    function productSizesComplete(sizes) {
+        return Object.values(sizes).every(value => value !== "");
+    }
+
+    function addCurrentProductToCart() {
+        if (!currentProduct) return;
+
+        const sizes = getProductSizes();
+
+        if (!currentProductState.color) {
+            alert("Välj en färg först ♡");
+            return;
+        }
+
+        if (currentProductType === "nails" && !currentProductState.length) {
+            alert("Välj en längd först ♡");
+            return;
+        }
+
+        if (!productSizesComplete(sizes)) {
+            alert(currentProductType === "toes" ? "Välj en storlek för alla fem tår ♡" : "Välj en storlek för alla fem fingrar ♡");
+            return;
+        }
+
+        const item = {
+            cartId: makeCartId(),
+            type: currentProductType === "toes" ? "ready_toes" : "ready_nails",
+            productId: currentProduct.id,
+            name: currentProduct.name,
+            image: currentProduct.image,
+            color: currentProductState.color,
+            length: currentProductType === "toes" ? "" : currentProductState.length,
+            sizes,
+            quantity: currentProductState.quantity,
+            customer: null,
+            options: currentProductType === "toes" ? { design: currentProduct.name, color: currentProductState.color, sizes, sizeMeasurements: Object.fromEntries(Object.entries(sizes).map(([k,v]) => [k, toeSizes[v] || ""])) } : { design: currentProduct.name, color: currentProductState.color, length: currentProductState.length, sizes }
+        };
+
+        cart.push(item);
+        saveCart();
+        closeModal("productModal");
+        openCart();
+    }
+
+    function updateCartUI() {
+        const count = cart.reduce((total, item) => total + Number(item.quantity || 0), 0);
+        const countEl = document.getElementById("cartCount");
+        const totalQuantityEl = document.getElementById("cartTotalQuantity");
+
+        if (countEl) countEl.textContent = count;
+        if (totalQuantityEl) totalQuantityEl.textContent = count;
+
+        const container = document.getElementById("cartItems");
+        const empty = document.getElementById("cartEmpty");
+        const footer = document.getElementById("cartFooter");
+
+        if (!container || !empty || !footer) return;
+
+        if (!cart.length) {
+            container.innerHTML = "";
+            empty.style.display = "block";
+            footer.style.display = "none";
+            return;
+        }
+
+        empty.style.display = "none";
+        footer.style.display = "block";
+
+        container.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <img class="cart-item-image" src="${item.image}" alt="${item.name}">
+                <div class="cart-item-info">
+                    <h3>${item.name}</h3>
+                    <p>Färg: ${item.color}</p>
+                    <p>Längd: ${item.length}</p>
+                    <p>Storlek: ${item.sizes.thumb || item.sizes.toe || "-"}/${item.sizes.index || "-"}/${item.sizes.middle || "-"}/${item.sizes.ring || "-"}/${item.sizes.pinky || "-"}</p>
+                </div>
+                <div class="cart-item-actions">
+                    <button type="button" onclick="changeCartQuantity('${item.cartId}', -1)">−</button>
+                    <strong>${item.quantity}</strong>
+                    <button type="button" onclick="changeCartQuantity('${item.cartId}', 1)">+</button>
+                    <button type="button" class="cart-remove" onclick="removeCartItem('${item.cartId}')">Ta bort</button>
+                </div>
+            </div>
+        `).join("");
+    }
+
+    function openCart() {
+        updateCartUI();
+        document.getElementById("cartModal").classList.add("active");
+    }
+
+    function changeCartQuantity(cartId, amount) {
+        const item = cart.find(product => product.cartId === cartId);
+        if (!item) return;
+
+        item.quantity = Math.max(0, Math.min(99, Number(item.quantity) + amount));
+
+        if (item.quantity === 0) {
+            cart = cart.filter(product => product.cartId !== cartId);
+            cartUploadFiles.delete(cartId);
+        }
+
+        saveCart();
+    }
+
+    function removeCartItem(cartId) {
+        cart = cart.filter(item => item.cartId !== cartId);
+        cartUploadFiles.delete(cartId);
+        saveCart();
+    }
+
+    async function checkoutCart() {
+        cart = cart.filter(item => item && item.name && Number(item.quantity) > 0);
+        saveCart();
+
+        if (!cart.length) {
+            alert("Din varukorg är tom ♡");
+            return;
+        }
+
+        // Namn och e-post fylls bara i en gång, när hela varukorgen ska betalas.
+        document.getElementById("cartCheckoutName").value = "";
+        document.getElementById("cartCheckoutEmail").value = "";
+        document.getElementById("cartCheckoutMessage").value = "";
+        document.getElementById("cartCheckoutModal").classList.add("active");
+    }
+
+    async function finalizeCartCheckout() {
+        cart = cart.filter(item => item && item.name && Number(item.quantity) > 0);
+        if (!cart.length) {
+            alert("Din varukorg är tom ♡");
+            closeModal("cartCheckoutModal");
+            return;
+        }
+
+        const name = document.getElementById("cartCheckoutName").value.trim();
+        const email = document.getElementById("cartCheckoutEmail").value.trim();
+        const message = document.getElementById("cartCheckoutMessage").value.trim();
+
+        if (!name || !email) {
+            alert("Fyll i ditt namn och din e-post ♡");
+            return;
+        }
+
+        const checkoutItems = cart.map(item => ({
+            productId: item.productId ?? null,
+            name: String(item.name),
+            image: item.image || "",
+            color: item.color || "",
+            length: item.length || "",
+            sizes: item.sizes || {},
+            quantity: Math.max(1, Math.min(99, Number(item.quantity) || 1)),
+            customer: { name, email, message },
+            type: item.type || "ready_nails",
+            options: item.options || {}
+        }));
+
+        closeModal("cartCheckoutModal");
+
+        // Skicka varje uppladdad custom-bild som en egen multipart-fil.
+        // Payloaden innehåller inspoField så backend kan koppla filen
+        // till exakt rätt cartId även när flera custom-produkter finns.
+        const files = {};
+        for (const item of cart) {
+            const field = item?.options?.inspoField;
+            const file = cartUploadFiles.get(item.cartId);
+            if (field && file) {
+                files[field] = file;
+            }
+        }
+
+        await startStripeCheckout("cart", {
+            cart: checkoutItems,
+            customer: { name, email, message },
+            source: "pressnpop-web"
+        }, files);
+    }
+
+    updateCartUI();
 
 </script>
