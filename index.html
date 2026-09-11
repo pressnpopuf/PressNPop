@@ -5357,20 +5357,68 @@
 
     /* =====================================================
        KONTO / AUTH
-    ===================================================== */
+       ===================================================== */
+
+    // Samma nyckel används av login, signup, checkout och orderhistorik.
+    const AUTH_TOKEN_KEY = "pressnpopAccessToken";
+    const REFRESH_TOKEN_KEY = "pressnpopRefreshToken";
+
     function getAccessToken() {
-        return localStorage.getItem("pressnpopAccessToken") || "";
+        return localStorage.getItem(AUTH_TOKEN_KEY) || "";
+    }
+
+    function saveSession(data) {
+        const accessToken = data?.access_token || data?.session?.access_token || "";
+        const refreshToken = data?.refresh_token || data?.session?.refresh_token || "";
+        if (!accessToken) return false;
+
+        localStorage.setItem(AUTH_TOKEN_KEY, accessToken);
+        if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+        return true;
+    }
+
+    function clearSession() {
+        localStorage.removeItem(AUTH_TOKEN_KEY);
+        localStorage.removeItem(REFRESH_TOKEN_KEY);
     }
 
     async function apiJson(path, options = {}) {
         const headers = { ...(options.headers || {}) };
-        if (options.body && !headers["Content-Type"]) headers["Content-Type"] = "application/json";
+
+        if (options.body && !headers["Content-Type"]) {
+            headers["Content-Type"] = "application/json";
+        }
+
         const token = getAccessToken();
-        if (token) headers.Authorization = `Bearer ${token}`;
-        const response = await fetch(`${BACKEND_URL}${path}`, { ...options, headers });
+        if (token) {
+            headers.Authorization = `Bearer ${token}`;
+        }
+
+        let response;
+        try {
+            response = await fetch(`${BACKEND_URL}${path}`, {
+                ...options,
+                headers
+            });
+        } catch (error) {
+            throw new Error(
+                "Kunde inte ansluta till PressN'Pop-servern. Kontrollera att backend är igång."
+            );
+        }
+
         let data = {};
-        try { data = await response.json(); } catch (_) {}
-        if (!response.ok) throw new Error(data.error || "Något gick fel.");
+        try {
+            data = await response.json();
+        } catch (_) {}
+
+        if (!response.ok) {
+            throw new Error(
+                data.error ||
+                data.message ||
+                `Serverfel (${response.status}).`
+            );
+        }
+
         return data;
     }
 
@@ -5380,26 +5428,23 @@
             signup: "accountSignupView",
             orders: "accountOrdersView"
         };
-        Object.values(views).forEach(id => document.getElementById(id)?.classList.remove("active"));
-        document.getElementById(views[view])?.classList.add("active");
-        document.querySelectorAll("#accountTabs .account-tab").forEach((b, i) => b.classList.toggle("active", ["login","signup","orders"][i] === view));
-        if (view === "orders") loadOrderHistory();
-    }
 
-    async function openAccount() {
-        document.getElementById("accountModal").classList.add("active");
-        if (getAccessToken()) {
-            try {
-                const data = await apiJson("/auth/me");
-                updateAccountUI(data.user);
-                showAccountView("orders");
-            } catch (_) {
-                localStorage.removeItem("pressnpopAccessToken");
-                localStorage.removeItem("pressnpopRefreshToken");
-                showAccountView("login");
-            }
-        } else {
-            showAccountView("login");
+        Object.values(views).forEach(id => {
+            document.getElementById(id)?.classList.remove("active");
+        });
+
+        const target = document.getElementById(views[view]);
+        if (target) target.classList.add("active");
+
+        document.querySelectorAll("#accountTabs .account-tab").forEach((button, index) => {
+            button.classList.toggle(
+                "active",
+                ["login", "signup", "orders"][index] === view
+            );
+        });
+
+        if (view === "orders") {
+            loadOrderHistory();
         }
     }
 
@@ -5407,54 +5452,184 @@
         const button = document.getElementById("accountButton");
         const status = document.getElementById("accountStatus");
         const name = user?.user_metadata?.name || user?.email || "Kund";
-        if (button) button.textContent = user ? `♡ ${name}` : "♡ Konto";
-        if (status) status.innerHTML = user ? `<strong>Inloggad som:</strong> ${user.email || ""}` : "Du är inte inloggad.";
+
+        if (button) {
+            button.textContent = user ? `♡ ${name}` : "♡ Konto";
+        }
+
+        if (status) {
+            status.innerHTML = user
+                ? `<strong>Inloggad som:</strong> ${user.email || ""}`
+                : "Du är inte inloggad.";
+        }
+    }
+
+    async function openAccount() {
+        const modal = document.getElementById("accountModal");
+        if (modal) modal.classList.add("active");
+
+        const token = getAccessToken();
+
+        if (!token) {
+            updateAccountUI(null);
+            showAccountView("login");
+            return;
+        }
+
+        try {
+            const data = await apiJson("/auth/me");
+            updateAccountUI(data.user);
+            fillCheckoutFromUser(data.user);
+            showAccountView("orders");
+        } catch (error) {
+            clearSession();
+            updateAccountUI(null);
+            showAccountView("login");
+        }
     }
 
     async function loginAccount() {
-        const email = document.getElementById("loginEmail").value.trim();
-        const password = document.getElementById("loginPassword").value;
+        const emailEl = document.getElementById("loginEmail");
+        const passwordEl = document.getElementById("loginPassword");
         const message = document.getElementById("loginMessage");
-        if (!email || !password) { message.textContent = "Fyll i e-post och lösenord."; return; }
+
+        const email = emailEl?.value.trim().toLowerCase() || "";
+        const password = passwordEl?.value || "";
+
+        if (!email || !password) {
+            if (message) message.textContent = "Fyll i e-post och lösenord.";
+            return;
+        }
+
+        if (message) message.textContent = "Loggar in...";
+
         try {
-            const data = await apiJson("/auth/login", { method:"POST", body:JSON.stringify({email,password}) });
-            localStorage.setItem("pressnpopAccessToken", data.access_token);
-            if (data.refresh_token) localStorage.setItem("pressnpopRefreshToken", data.refresh_token);
-            updateAccountUI(data.user);
-            message.textContent = "Du är nu inloggad ♡";
-            fillCheckoutFromUser(data.user);
+            const data = await apiJson("/auth/login", {
+                method: "POST",
+                body: JSON.stringify({ email, password })
+            });
+
+            if (!saveSession(data)) {
+                throw new Error("Servern skickade ingen inloggningssession.");
+            }
+
+            const user = data.user || (await apiJson("/auth/me")).user;
+
+            updateAccountUI(user);
+            fillCheckoutFromUser(user);
+
+            if (message) message.textContent = "Du är nu inloggad ♡";
             showAccountView("orders");
-        } catch (error) { message.textContent = error.message; }
+
+        } catch (error) {
+            clearSession();
+            if (message) message.textContent = error.message || "Kunde inte logga in.";
+            console.error("Login error:", error);
+        }
     }
 
     async function signupAccount() {
-        const name = document.getElementById("signupName").value.trim();
-        const email = document.getElementById("signupEmail").value.trim();
-        const password = document.getElementById("signupPassword").value;
+        const nameEl = document.getElementById("signupName");
+        const emailEl = document.getElementById("signupEmail");
+        const passwordEl = document.getElementById("signupPassword");
         const message = document.getElementById("signupMessage");
-        if (!email || !password) { message.textContent = "Fyll i e-post och lösenord."; return; }
+
+        const name = nameEl?.value.trim() || "";
+        const email = emailEl?.value.trim().toLowerCase() || "";
+        const password = passwordEl?.value || "";
+
+        if (!name) {
+            if (message) message.textContent = "Fyll i ditt namn.";
+            return;
+        }
+
+        if (!email || !password) {
+            if (message) message.textContent = "Fyll i e-post och lösenord.";
+            return;
+        }
+
+        if (password.length < 6) {
+            if (message) message.textContent = "Lösenordet måste vara minst 6 tecken.";
+            return;
+        }
+
+        if (message) message.textContent = "Skapar konto...";
+
         try {
-            const data = await apiJson("/auth/signup", { method:"POST", body:JSON.stringify({name,email,password}) });
-            if (data.session?.access_token) {
-                localStorage.setItem("pressnpopAccessToken", data.session.access_token);
-                if (data.session.refresh_token) localStorage.setItem("pressnpopRefreshToken", data.session.refresh_token);
-                updateAccountUI(data.user);
-                fillCheckoutFromUser(data.user);
-                message.textContent = "Kontot skapades och du är inloggad ♡";
-                showAccountView("orders");
-            } else {
-                message.textContent = data.message || "Kontot skapades. Kontrollera din e-post om verifiering krävs.";
-                showAccountView("login");
+            const signupData = await apiJson("/auth/signup", {
+                method: "POST",
+                body: JSON.stringify({ name, email, password })
+            });
+
+            // Om backend redan gav en session: logga in direkt.
+            let sessionData = signupData;
+
+            // Om signup inte gav token försöker vi logga in direkt med samma uppgifter.
+            if (!saveSession(sessionData)) {
+                if (message) message.textContent = "Kontot skapades – loggar in...";
+
+                const loginData = await apiJson("/auth/login", {
+                    method: "POST",
+                    body: JSON.stringify({ email, password })
+                });
+
+                sessionData = loginData;
+
+                if (!saveSession(sessionData)) {
+                    throw new Error(
+                        "Kontot skapades, men automatisk inloggning kunde inte slutföras. Om e-postbekräftelse krävs behöver du bekräfta e-posten först."
+                    );
+                }
             }
-        } catch (error) { message.textContent = error.message; }
+
+            let user = sessionData.user || sessionData.session?.user || null;
+
+            // Hämta användaren från backend efter att token sparats.
+            try {
+                const me = await apiJson("/auth/me");
+                user = me.user || user;
+            } catch (_) {}
+
+            if (!user) {
+                throw new Error("Kontot skapades men användaren kunde inte hämtas.");
+            }
+
+            updateAccountUI(user);
+            fillCheckoutFromUser(user);
+
+            if (message) message.textContent = "Kontot skapades – du är nu inloggad ♡";
+
+            // Viktigt: användaren hamnar direkt på Mina beställningar.
+            showAccountView("orders");
+
+            // Rensa signup-formuläret efter lyckad registrering.
+            if (passwordEl) passwordEl.value = "";
+
+        } catch (error) {
+            console.error("Signup error:", error);
+            if (message) message.textContent = error.message || "Kunde inte skapa kontot.";
+        }
     }
+
+    // Alias om någon äldre del av sidan använder createAccount().
+    window.createAccount = function(email, password, name = "") {
+        const emailEl = document.getElementById("signupEmail");
+        const passwordEl = document.getElementById("signupPassword");
+        const nameEl = document.getElementById("signupName");
+        if (emailEl) emailEl.value = email || "";
+        if (passwordEl) passwordEl.value = password || "";
+        if (nameEl) nameEl.value = name || "";
+        return signupAccount();
+    };
 
     function fillCheckoutFromUser(user) {
         if (!user) return;
+
         const name = user.user_metadata?.name || "";
         const email = user.email || "";
         const nameInput = document.getElementById("cartCheckoutName");
         const emailInput = document.getElementById("cartCheckoutEmail");
+
         if (nameInput && name) nameInput.value = name;
         if (emailInput && email) emailInput.value = email;
     }
@@ -5462,38 +5637,90 @@
     async function loadOrderHistory() {
         const list = document.getElementById("orderHistoryList");
         const status = document.getElementById("accountStatus");
+
         if (!getAccessToken()) {
             if (status) status.textContent = "Logga in för att se dina beställningar.";
             if (list) list.innerHTML = '<div class="history-empty">Du har inte loggat in ännu.</div>';
             return;
         }
+
         if (list) list.innerHTML = '<div class="history-empty">Laddar beställningar...</div>';
+
         try {
             const me = await apiJson("/auth/me");
             updateAccountUI(me.user);
+            fillCheckoutFromUser(me.user);
+
             const data = await apiJson("/orders");
-            const orders = data.orders || [];
+            const orders = Array.isArray(data.orders) ? data.orders : [];
+
             if (!orders.length) {
-                list.innerHTML = '<div class="history-empty">Du har inga beställningar ännu ♡</div>';
+                if (list) list.innerHTML = '<div class="history-empty">Du har inga beställningar ännu ♡</div>';
                 return;
             }
-            list.innerHTML = orders.map(order => {
-                const date = order.created_at ? new Date(order.created_at).toLocaleString("sv-SE") : "";
-                const statusText = order.payment_status === "paid" ? "Betald" : "Pågående";
-                return `<div class="history-order">\n                    <div class="history-order-top"><span class="history-order-number">${order.order_number || order.order_id}</span><span class="history-order-status">${statusText}</span></div>\n                    <p><strong>${order.product_name || "Beställning"}</strong></p>\n                    <p>Summa: ${Number(order.price_sek || 0).toLocaleString("sv-SE", {minimumFractionDigits:2, maximumFractionDigits:2})} kr</p>\n                    <p>Datum: ${date}</p>\n                </div>`;
-            }).join("");
+
+            if (list) {
+                list.innerHTML = orders.map(order => {
+                    const date = order.created_at
+                        ? new Date(order.created_at).toLocaleString("sv-SE")
+                        : "";
+                    const statusText = order.payment_status === "paid" ? "Betald" : "Pågående";
+                    const orderNumber = order.order_number || order.order_id || "-";
+                    const productName = order.product_name || "Beställning";
+                    const price = Number(order.price_sek || 0).toLocaleString("sv-SE", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+
+                    return `<div class="history-order">
+                        <div class="history-order-top">
+                            <span class="history-order-number">${orderNumber}</span>
+                            <span class="history-order-status">${statusText}</span>
+                        </div>
+                        <p><strong>${productName}</strong></p>
+                        <p>Summa: ${price} kr</p>
+                        <p>Datum: ${date}</p>
+                    </div>`;
+                }).join("");
+            }
         } catch (error) {
-            list.innerHTML = `<div class="history-empty">${error.message}</div>`;
+            if (list) list.innerHTML = `<div class="history-empty">${error.message}</div>`;
         }
     }
 
     function logoutAccount() {
-        localStorage.removeItem("pressnpopAccessToken");
-        localStorage.removeItem("pressnpopRefreshToken");
+        clearSession();
         updateAccountUI(null);
         showAccountView("login");
-        document.getElementById("loginMessage").textContent = "Du är utloggad.";
+
+        const message = document.getElementById("loginMessage");
+        if (message) message.textContent = "Du är utloggad.";
     }
+
+    async function restoreAccountSession() {
+        if (!getAccessToken()) {
+            updateAccountUI(null);
+            return;
+        }
+
+        try {
+            const data = await apiJson("/auth/me");
+            updateAccountUI(data.user);
+            fillCheckoutFromUser(data.user);
+        } catch (error) {
+            clearSession();
+            updateAccountUI(null);
+        }
+    }
+
+    // Gör funktionerna säkert åtkomliga från inline onclick-attribut.
+    window.openAccount = openAccount;
+    window.showAccountView = showAccountView;
+    window.loginAccount = loginAccount;
+    window.signupAccount = signupAccount;
+    window.logoutAccount = logoutAccount;
+    window.loadOrderHistory = loadOrderHistory;
+    window.getAccessToken = getAccessToken;
 
     function updateCartUI() {
         const count = cart.reduce((total, item) => total + Number(item.quantity || 0), 0);
@@ -5638,7 +5865,9 @@
         }, files);
     }
 
-    updateCartUI();
-    updateAccountUI(null);
+    document.addEventListener("DOMContentLoaded", function () {
+        updateCartUI();
+        restoreAccountSession();
+    });
 
 </script>
