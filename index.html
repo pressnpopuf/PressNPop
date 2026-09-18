@@ -1856,106 +1856,6 @@
         }
     }
 
-
-/* FINAL PRODUCT MODAL LAYOUT — same for nails and toes */
-#productModal .product-modal-box {
-    width: min(1180px, calc(100vw - 32px));
-    max-height: 96vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 30px 34px;
-}
-
-#productModal .product-detail-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(430px, 1fr);
-    gap: 34px;
-    align-items: start;
-}
-
-#productModal .product-detail-content {
-    max-height: none;
-    overflow: visible;
-    padding-right: 0;
-}
-
-#productModal .product-gallery {
-    position: sticky;
-    top: 0;
-}
-
-#productModal .product-size-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 9px;
-}
-
-@media (max-width: 850px) {
-    #productModal .product-modal-box {
-        width: min(100%, calc(100vw - 20px));
-        max-height: 96vh;
-        padding: 24px 20px;
-    }
-
-    #productModal .product-detail-grid {
-        grid-template-columns: minmax(0, .9fr) minmax(300px, 1.1fr);
-        gap: 20px;
-    }
-
-    #productModal .product-detail-content {
-        max-height: none;
-        overflow: visible;
-    }
-}
-
-@media (max-width: 600px) {
-    #productModal .product-detail-grid {
-        grid-template-columns: 1fr;
-    }
-
-    #productModal .product-gallery {
-        position: static;
-    }
-
-    #productModal .product-size-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-
-
-    /* =====================================================
-       KONTO / ORDERHISTORIK
-    ===================================================== */
-    .account-button {
-        border: 1px solid #efd6de;
-        background: #fff;
-        color: var(--morkrosa);
-        padding: 10px 15px;
-        border-radius: 24px;
-        cursor: pointer;
-        font-family: "Poppins", sans-serif;
-        font-size: 13px;
-        transition: .25s;
-    }
-    .account-button:hover { border-color: var(--rosa); transform: translateY(-2px); }
-    .account-panel { max-width: 760px; }
-    .account-tabs { display:flex; gap:8px; margin-bottom:22px; }
-    .account-tab { flex:1; border:1px solid #efd6de; background:#fff; color:var(--morkrosa); padding:11px; border-radius:13px; cursor:pointer; font-family:"Poppins",sans-serif; }
-    .account-tab.active { background:var(--ljusrosa); border-color:var(--rosa); font-weight:600; }
-    .account-view { display:none; }
-    .account-view.active { display:block; }
-    .account-status { background:#fff; border:1px solid #efdce2; border-radius:16px; padding:15px; margin-bottom:18px; color:#666; }
-    .account-status strong { color:var(--morkrosa); }
-    .account-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:15px; }
-    .account-actions .knapp { flex:1; min-width:150px; }
-    .order-history-list { display:grid; gap:12px; max-height:50vh; overflow:auto; }
-    .history-order { background:#fff; border:1px solid #efdce2; border-radius:16px; padding:16px; }
-    .history-order-top { display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom:8px; }
-    .history-order-number { color:var(--morkrosa); font-weight:600; }
-    .history-order-status { font-size:11px; padding:5px 9px; border-radius:20px; background:#f8e8ed; color:var(--morkrosa); }
-    .history-order p { color:#777; font-size:12px; margin:4px 0; }
-    .history-empty { text-align:center; padding:30px 10px; color:#888; }
-    @media (max-width:850px) { .account-button { padding:8px 11px; font-size:11px; } }
-
 </style>
 
 <!-- =====================================================
@@ -1981,10 +1881,6 @@
     <a href="#bestall" class="bestall-knapp">
         Beställ
     </a>
-
-    <button class="account-button" type="button" onclick="openAccount()" id="accountButton">
-        ♡ Konto
-    </button>
 
     <button class="cart-button" type="button" onclick="openCart()" aria-label="Öppna varukorg">
         <span class="cart-icon">🛒</span>
@@ -2747,7 +2643,7 @@
         <span class="payment-logo apple">Apple Pay</span>
         <span class="payment-logo google">Google Pay</span>
     </div>
-    <p class="payment-note">Tillgängliga betalningsmetoder visas i Stripe-kassan.</p>
+    <p class="payment-note">Betalning sker via Swish efter att beställningen har skickats.</p>
 </div>
 
 <p class="footer-small">
@@ -2755,47 +2651,6 @@
 </p>
 
 </footer>
-
-<!-- =====================================================
-     KONTO
-===================================================== -->
-<div class="modal" id="accountModal">
-    <div class="modal-box account-panel">
-        <button class="close" type="button" onclick="closeModal('accountModal')">×</button>
-        <h2>Mitt konto ♡</h2>
-        <p class="modal-subtitle">Skapa konto, logga in och se dina tidigare beställningar.</p>
-
-        <div class="account-tabs" id="accountTabs">
-            <button class="account-tab active" type="button" onclick="showAccountView('login')">Logga in</button>
-            <button class="account-tab" type="button" onclick="showAccountView('signup')">Skapa konto</button>
-            <button class="account-tab" type="button" onclick="showAccountView('orders')">Mina beställningar</button>
-        </div>
-
-        <div class="account-view active" id="accountLoginView">
-            <div class="form-group"><label>E-post</label><input type="email" id="loginEmail" autocomplete="email" placeholder="din@email.se"></div>
-            <div class="form-group"><label>Lösenord</label><input type="password" id="loginPassword" autocomplete="current-password" placeholder="Ditt lösenord"></div>
-            <button class="knapp" type="button" onclick="loginAccount()">Logga in</button>
-            <p id="loginMessage" class="file-help"></p>
-        </div>
-
-        <div class="account-view" id="accountSignupView">
-            <div class="form-group"><label>Namn</label><input type="text" id="signupName" autocomplete="name" placeholder="Ditt namn"></div>
-            <div class="form-group"><label>E-post</label><input type="email" id="signupEmail" autocomplete="email" placeholder="din@email.se"></div>
-            <div class="form-group"><label>Lösenord</label><input type="password" id="signupPassword" autocomplete="new-password" placeholder="Minst 6 tecken"></div>
-            <button class="knapp" type="button" onclick="signupAccount()">Skapa konto</button>
-            <p id="signupMessage" class="file-help"></p>
-        </div>
-
-        <div class="account-view" id="accountOrdersView">
-            <div class="account-status" id="accountStatus">Du är inte inloggad.</div>
-            <div class="account-actions">
-                <button class="knapp" type="button" onclick="loadOrderHistory()">Uppdatera historik</button>
-                <button class="knapp knapp-outline" type="button" onclick="logoutAccount()">Logga ut</button>
-            </div>
-            <div id="orderHistoryList" class="order-history-list" style="margin-top:18px;"></div>
-        </div>
-    </div>
-</div>
 
 <!-- =====================================================
      PRODUKTDETALJ
@@ -2903,7 +2758,7 @@
                     Gå till betalning
                 </button>
             </div>
-            <p class="cart-checkout-note">Betalningen slutförs säkert via Stripe.</p>
+            <p class="cart-checkout-note">När du skickar beställningen öppnas ditt e-postprogram med hela varukorgen färdig att skicka till oss.</p>
         </div>
     </div>
 </div>
@@ -2915,25 +2770,65 @@
 <div class="modal" id="cartCheckoutModal">
     <div class="modal-box">
         <button class="close" type="button" onclick="closeModal('cartCheckoutModal')">×</button>
-        <h2>Dina uppgifter ♡</h2>
-        <p class="modal-subtitle">Fyll i dina uppgifter en gång när du är klar med hela varukorgen.</p>
+        <h2>Slutför din beställning ♡</h2>
+        <p class="modal-subtitle">Fyll i uppgifterna en gång. Vi använder förnamn, efternamn och telefonnummer exakt som du anger dem för att kunna matcha beställningen med din Swish-betalning.</p>
 
         <div class="form-group">
-            <label>Namn</label>
-            <input type="text" id="cartCheckoutName" placeholder="Ditt namn" autocomplete="name">
+            <label>Förnamn *</label>
+            <input type="text" id="cartCheckoutFirstName" placeholder="Ditt förnamn" autocomplete="given-name" maxlength="100">
         </div>
         <div class="form-group">
-            <label>E-post</label>
-            <input type="email" id="cartCheckoutEmail" placeholder="din@email.se" autocomplete="email">
+            <label>Efternamn *</label>
+            <input type="text" id="cartCheckoutLastName" placeholder="Ditt efternamn" autocomplete="family-name" maxlength="100">
         </div>
+        <div class="form-group">
+            <label>Telefonnummer som du använder vid Swish-betalningen *</label>
+            <input type="tel" id="cartCheckoutPhone" placeholder="07x xxx xx xx" autocomplete="tel" maxlength="30">
+            <p class="file-help">Skriv samma nummer som är kopplat till den Swish-betalning du kommer att göra.</p>
+        </div>
+        <div class="form-group">
+            <label>E-post *</label>
+            <input type="email" id="cartCheckoutEmail" placeholder="din@email.se" autocomplete="email" maxlength="320">
+        </div>
+
+        <div class="form-group">
+            <label>Leverans</label>
+            <select id="cartCheckoutDelivery" onchange="toggleDeliveryAddress()">
+                <option value="pickup">Hämta upp</option>
+                <option value="shipping">Frakt</option>
+            </select>
+        </div>
+
+        <div id="cartShippingFields" style="display:none;">
+            <div class="form-group">
+                <label>Adress *</label>
+                <input type="text" id="cartCheckoutAddress" placeholder="Gatuadress" autocomplete="street-address" maxlength="200">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-group">
+                    <label>Postnummer *</label>
+                    <input type="text" id="cartCheckoutPostal" placeholder="123 45" autocomplete="postal-code" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label>Ort *</label>
+                    <input type="text" id="cartCheckoutCity" placeholder="Eskilstuna" autocomplete="address-level2" maxlength="100">
+                </div>
+            </div>
+        </div>
+
         <div class="form-group">
             <label>Meddelande / övrigt</label>
             <textarea id="cartCheckoutMessage" placeholder="T.ex. när du behöver beställningen..."></textarea>
         </div>
 
+        <div style="background:#fbecef;border:1px solid #f0d6df;border-radius:15px;padding:15px;margin-bottom:18px;color:#666;font-size:13px;line-height:1.7;">
+            <strong style="color:var(--morkrosa);">Så fungerar beställningen</strong><br>
+            När du trycker på knappen öppnas ditt e-postprogram med beställningen färdigskriven. Kontrollera uppgifterna och skicka mailet till oss. Därefter gör du Swish-betalningen enligt våra betalningsinstruktioner.
+        </div>
+
         <div class="step-buttons">
             <button class="knapp knapp-outline" type="button" onclick="closeModal('cartCheckoutModal')">← Tillbaka</button>
-            <button class="knapp" type="button" onclick="finalizeCartCheckout()">Fortsätt till betalning →</button>
+            <button class="knapp" type="button" onclick="finalizeCartCheckout()">Skicka beställning via mail →</button>
         </div>
     </div>
 </div>
@@ -3831,60 +3726,151 @@
 <script>
 
     /* =====================================================
-       STRIPE / BACKEND
+       BESTÄLLNING VIA E-POST
     ===================================================== */
 
-    // ÄNDRA DENNA RAD till adressen där ni publicerar server.js.
-    const BACKEND_URL = "https://pnp-backend.onrender.com";
+    const ORDER_EMAIL = "pressnpop.uf@gmail.com";
 
-    async function startStripeCheckout(orderType, payload, files = {}) {
-        const formData = new FormData();
-        formData.append("orderType", orderType);
-        formData.append("payload", JSON.stringify(payload));
-        Object.entries(files || {}).forEach(([field, file]) => {
-            if (file) formData.append(field, file);
+    function escapeEmailText(value) {
+        return String(value ?? "")
+            .replace(/\r?\n/g, " ")
+            .trim();
+    }
+
+    function toggleDeliveryAddress() {
+        const delivery = document.getElementById("cartCheckoutDelivery").value;
+        const fields = document.getElementById("cartShippingFields");
+        if (fields) fields.style.display = delivery === "shipping" ? "block" : "none";
+    }
+
+    function formatCartItemForEmail(item, index) {
+        const lines = [];
+        lines.push(`${index}. ${escapeEmailText(item.name)}`);
+        lines.push(`   Antal: ${Number(item.quantity) || 1}`);
+        if (item.color) lines.push(`   Färg: ${escapeEmailText(item.color)}`);
+        if (item.length) lines.push(`   Längd: ${escapeEmailText(item.length)}`);
+
+        const sizes = item.sizes || {};
+        const labels = { thumb:"Tumme", index:"Pekfinger", middle:"Långfinger", ring:"Ringfinger", pinky:"Lillfinger", toe:"Tå" };
+        const sizeLines = Object.entries(sizes)
+            .filter(([, value]) => value !== undefined && value !== null && String(value) !== "")
+            .map(([key, value]) => `      ${labels[key] || key}: ${escapeEmailText(value)}`);
+        if (sizeLines.length) {
+            lines.push("   Storlekar:");
+            lines.push(...sizeLines);
+        }
+
+        const options = item.options || {};
+        if (options.form) lines.push(`   Form: ${escapeEmailText(options.form)}`);
+        if (options.changes) lines.push(`   Ändringar: ${escapeEmailText(options.changes)}`);
+        if (options.inspoFile) lines.push(`   Inspo-bild: ${escapeEmailText(options.inspoFile)} (bifoga bilden i mailet om den inte följer med automatiskt)`);
+        return lines.join("\n");
+    }
+
+    function checkoutCart() {
+        cart = cart.filter(item => item && item.name && Number(item.quantity) > 0);
+        saveCart();
+
+        if (!cart.length) {
+            alert("Din varukorg är tom ♡");
+            return;
+        }
+
+        [
+            "cartCheckoutFirstName", "cartCheckoutLastName", "cartCheckoutPhone",
+            "cartCheckoutEmail", "cartCheckoutAddress", "cartCheckoutPostal",
+            "cartCheckoutCity", "cartCheckoutMessage"
+        ].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = "";
         });
 
-        try {
-            const headers = {};
-            const accessToken = localStorage.getItem("pressnpopAccessToken");
-            if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
+        document.getElementById("cartCheckoutDelivery").value = "pickup";
+        toggleDeliveryAddress();
+        document.getElementById("cartCheckoutModal").classList.add("active");
+    }
 
-            const response = await fetch(`${BACKEND_URL}/create-checkout-session`, {
-                method: "POST",
-                headers,
-                body: formData
-            });
-            const result = await response.json();
-            if (!response.ok || !result.url) {
-                throw new Error(result.error || "Kunde inte starta betalningen.");
-            }
-            window.location.href = result.url;
+    function finalizeCartCheckout() {
+        cart = cart.filter(item => item && item.name && Number(item.quantity) > 0);
+        saveCart();
+
+        if (!cart.length) {
+            alert("Din varukorg är tom ♡");
+            closeModal("cartCheckoutModal");
+            return;
+        }
+
+        const firstName = escapeEmailText(document.getElementById("cartCheckoutFirstName").value);
+        const lastName = escapeEmailText(document.getElementById("cartCheckoutLastName").value);
+        const phone = escapeEmailText(document.getElementById("cartCheckoutPhone").value);
+        const email = escapeEmailText(document.getElementById("cartCheckoutEmail").value);
+        const delivery = document.getElementById("cartCheckoutDelivery").value;
+        const address = escapeEmailText(document.getElementById("cartCheckoutAddress").value);
+        const postal = escapeEmailText(document.getElementById("cartCheckoutPostal").value);
+        const city = escapeEmailText(document.getElementById("cartCheckoutCity").value);
+        const message = escapeEmailText(document.getElementById("cartCheckoutMessage").value);
+
+        if (!firstName || !lastName || !phone || !email) {
+            alert("Fyll i förnamn, efternamn, telefonnummer och e-post ♡");
+            return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            alert("Kontrollera e-postadressen ♡");
+            return;
+        }
+
+        if (delivery === "shipping" && (!address || !postal || !city)) {
+            alert("Fyll i adress, postnummer och ort för frakt ♡");
+            return;
+        }
+
+        const fullName = `${firstName} ${lastName}`;
+        const deliveryText = delivery === "shipping"
+            ? `Frakt\n${address}\n${postal} ${city}`
+            : "Hämta upp";
+
+        const itemText = cart.map((item, index) => formatCartItemForEmail(item, index + 1)).join("\n\n");
+        const totalQuantity = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+
+        const subject = `Beställning PressN'Pop – ${fullName}`;
+        const body = [
+            "NY BESTÄLLNING – PRESSN'POP",
+            "",
+            "KUNDUPPGIFTER",
+            `Förnamn: ${firstName}`,
+            `Efternamn: ${lastName}`,
+            `Telefonnummer (samma som används vid Swish): ${phone}`,
+            `E-post: ${email}`,
+            "",
+            "LEVERANS",
+            deliveryText,
+            "",
+            "BESTÄLLNING",
+            itemText,
+            "",
+            `Totalt antal produkter: ${totalQuantity}`,
+            "",
+            "ÖVRIGT",
+            message || "Inget meddelande",
+            "",
+            "VIKTIGT OM SWISH",
+            `Swish-betalningen ska göras med telefonnumret: ${phone}`,
+            "Kontrollera att namn och telefonnummer ovan stämmer med Swish-betalningen så att vi kan matcha betalningen med beställningen.",
+            "",
+            "PressN'Pop UF"
+        ].join("\n");
+
+        const mailto = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+        try {
+            closeModal("cartCheckoutModal");
+            window.location.href = mailto;
         } catch (error) {
-            console.error("Stripe checkout error:", error);
-            alert(error.message || "Något gick fel. Försök igen ♡");
+            console.error("Kunde inte öppna e-postprogrammet:", error);
+            alert("Kunde inte öppna ditt e-postprogram. Kopiera beställningen eller försök från en enhet med e-postprogram installerat.");
         }
     }
-
-    function addItemToCart(item) {
-        if (!item || !item.name) return;
-        const normalized = {
-            cartId: item.cartId || makeCartId(),
-            type: item.type || "ready_nails",
-            productId: item.productId ?? null,
-            name: String(item.name),
-            image: item.image || "bilder/logo.png",
-            color: item.color || "",
-            length: item.length || "",
-            sizes: item.sizes || {},
-            quantity: Math.max(1, Math.min(99, Number(item.quantity) || 1)),
-            customer: item.customer || null,
-            options: item.options || {}
-        };
-        cart.push(normalized);
-        saveCart();
-    }
-
 
     /* =====================================================
        STORLEKSDATA
@@ -4690,35 +4676,8 @@
         const sizes = getNailSizeValues("custom");
         if (!inspo) return alert("Ladda upp en inspo-bild först ♡");
         if (!allNailSizesSelected("custom")) return alert("Välj storlek för alla fem fingrar ♡");
-
-        const cartId = makeCartId();
-        // Skicka bilden som riktig multipart-fil, inte som base64 i payloaden.
-        // Detta förhindrar Multer-felet "Field value too long".
-        // Unikt multipart-fältnamn per varukorgsrad.
-        const inspoField = "file_" + cartId;
-        cartUploadFiles.set(cartId, inspo);
-
-        addItemToCart({
-            cartId,
-            type:"custom_nails",
-            productId:"custom_nails",
-            name:"Custom Nails",
-            image:"bilder/custom.jpg",
-            color:"",
-            length:customNailData.length || "",
-            sizes,
-            quantity:getModalQuantity("customNailQuantity"),
-            customer:null,
-            options:{
-                form:customNailData.form,
-                length:customNailData.length,
-                sizes,
-                changes,
-                inspoFile:inspo.name,
-                inspoField
-            }
-        });
-
+        const inspoData = await fileToDataURL(inspo);
+        addItemToCart({ cartId:makeCartId(), type:"custom_nails", productId:"custom_nails", name:"Custom Nails", image:"bilder/custom.jpg", color:"", length:customNailData.length||"", sizes, quantity:getModalQuantity("customNailQuantity"), customer:null, options:{form:customNailData.form,length:customNailData.length,sizes,changes,inspoFile:inspo.name,inspoData} });
         closeModal("customNailsModal");
         openCart();
     }
@@ -4888,34 +4847,8 @@
         const size = customToeData.size || document.getElementById("customToeSize").value;
         if (!inspo) return alert("Ladda upp en inspo-bild först ♡");
         if (!size) return alert("Välj en storlek först ♡");
-
-        const cartId = makeCartId();
-        // Skicka bilden som riktig multipart-fil, inte som base64 i payloaden.
-        // Detta förhindrar Multer-felet "Field value too long".
-        // Unikt multipart-fältnamn per varukorgsrad.
-        const inspoField = "file_" + cartId;
-        cartUploadFiles.set(cartId, inspo);
-
-        addItemToCart({
-            cartId,
-            type:"custom_toes",
-            productId:"custom_toes",
-            name:"Custom Toes",
-            image:"bilder/custom.jpg",
-            color:"",
-            length:"",
-            sizes:{toe:size},
-            quantity:getModalQuantity("customToeQuantity"),
-            customer:null,
-            options:{
-                size,
-                sizeMeasurement:toeSizes[size] || "",
-                changes,
-                inspoFile:inspo.name,
-                inspoField
-            }
-        });
-
+        const inspoData = await fileToDataURL(inspo);
+        addItemToCart({ cartId:makeCartId(), type:"custom_toes", productId:"custom_toes", name:"Custom Toes", image:"bilder/custom.jpg", color:"", length:"", sizes:{toe:size}, quantity:getModalQuantity("customToeQuantity"), customer:null, options:{size,sizeMeasurement:toeSizes[size]||"",changes,inspoFile:inspo.name,inspoData} });
         closeModal("customToesModal");
         openCart();
     }
@@ -4967,8 +4900,7 @@
             "orderModal",
             "toeOrderModal",
             "customNailsModal",
-            "customToesModal",
-            "accountModal"
+            "customToesModal"
         ];
 
 
@@ -5106,10 +5038,6 @@
     function changeModalQuantity(id, amount) { const el=document.getElementById(id); if(!el) return; el.textContent=Math.max(1,Math.min(99,Number(el.textContent||1)+amount)); }
     function getModalQuantity(id) { return Math.max(1,Math.min(99,Number(document.getElementById(id)?.textContent||1))); }
     function fileToDataURL(file) { return new Promise((resolve,reject)=>{ const r=new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(file); }); }
-
-    // Faktiska uppladdade filer hålls i minnet tills checkout skickas.
-    // localStorage kan inte lagra File-objekt, därför används cartId som koppling.
-    const cartUploadFiles = new Map();
 
     let cart = JSON.parse(localStorage.getItem("pressnpopCart") || "[]");
     let currentProduct = null;
@@ -5354,374 +5282,6 @@
         openCart();
     }
 
-
-    /* =====================================================
-       KONTO / AUTH
-       ===================================================== */
-
-    // Samma nyckel används av login, signup, checkout och orderhistorik.
-    const AUTH_TOKEN_KEY = "pressnpopAccessToken";
-    const REFRESH_TOKEN_KEY = "pressnpopRefreshToken";
-
-    function getAccessToken() {
-        return localStorage.getItem(AUTH_TOKEN_KEY) || "";
-    }
-
-    function saveSession(data) {
-        const accessToken = data?.access_token || data?.session?.access_token || "";
-        const refreshToken = data?.refresh_token || data?.session?.refresh_token || "";
-        if (!accessToken) return false;
-
-        localStorage.setItem(AUTH_TOKEN_KEY, accessToken);
-        if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-        return true;
-    }
-
-    function clearSession() {
-        localStorage.removeItem(AUTH_TOKEN_KEY);
-        localStorage.removeItem(REFRESH_TOKEN_KEY);
-    }
-
-    async function apiJson(path, options = {}) {
-        const headers = { ...(options.headers || {}) };
-
-        if (options.body && !headers["Content-Type"]) {
-            headers["Content-Type"] = "application/json";
-        }
-
-        const token = getAccessToken();
-        if (token) {
-            headers.Authorization = `Bearer ${token}`;
-        }
-
-        let response;
-        try {
-            response = await fetch(`${BACKEND_URL}${path}`, {
-                ...options,
-                headers
-            });
-        } catch (error) {
-            throw new Error(
-                "Kunde inte ansluta till PressN'Pop-servern. Kontrollera att backend är igång."
-            );
-        }
-
-        let data = {};
-        try {
-            data = await response.json();
-        } catch (_) {}
-
-        if (!response.ok) {
-            throw new Error(
-                data.error ||
-                data.message ||
-                `Serverfel (${response.status}).`
-            );
-        }
-
-        return data;
-    }
-
-    function showAccountView(view) {
-        const views = {
-            login: "accountLoginView",
-            signup: "accountSignupView",
-            orders: "accountOrdersView"
-        };
-
-        Object.values(views).forEach(id => {
-            document.getElementById(id)?.classList.remove("active");
-        });
-
-        const target = document.getElementById(views[view]);
-        if (target) target.classList.add("active");
-
-        document.querySelectorAll("#accountTabs .account-tab").forEach((button, index) => {
-            button.classList.toggle(
-                "active",
-                ["login", "signup", "orders"][index] === view
-            );
-        });
-
-        if (view === "orders") {
-            loadOrderHistory();
-        }
-    }
-
-    function updateAccountUI(user) {
-        const button = document.getElementById("accountButton");
-        const status = document.getElementById("accountStatus");
-        const name = user?.user_metadata?.name || user?.email || "Kund";
-
-        if (button) {
-            button.textContent = user ? `♡ ${name}` : "♡ Konto";
-        }
-
-        if (status) {
-            status.innerHTML = user
-                ? `<strong>Inloggad som:</strong> ${user.email || ""}`
-                : "Du är inte inloggad.";
-        }
-    }
-
-    async function openAccount() {
-        const modal = document.getElementById("accountModal");
-        if (modal) modal.classList.add("active");
-
-        const token = getAccessToken();
-
-        if (!token) {
-            updateAccountUI(null);
-            showAccountView("login");
-            return;
-        }
-
-        try {
-            const data = await apiJson("/auth/me");
-            updateAccountUI(data.user);
-            fillCheckoutFromUser(data.user);
-            showAccountView("orders");
-        } catch (error) {
-            clearSession();
-            updateAccountUI(null);
-            showAccountView("login");
-        }
-    }
-
-    async function loginAccount() {
-        const emailEl = document.getElementById("loginEmail");
-        const passwordEl = document.getElementById("loginPassword");
-        const message = document.getElementById("loginMessage");
-
-        const email = emailEl?.value.trim().toLowerCase() || "";
-        const password = passwordEl?.value || "";
-
-        if (!email || !password) {
-            if (message) message.textContent = "Fyll i e-post och lösenord.";
-            return;
-        }
-
-        if (message) message.textContent = "Loggar in...";
-
-        try {
-            const data = await apiJson("/auth/login", {
-                method: "POST",
-                body: JSON.stringify({ email, password })
-            });
-
-            if (!saveSession(data)) {
-                throw new Error("Servern skickade ingen inloggningssession.");
-            }
-
-            const user = data.user || (await apiJson("/auth/me")).user;
-
-            updateAccountUI(user);
-            fillCheckoutFromUser(user);
-
-            if (message) message.textContent = "Du är nu inloggad ♡";
-            showAccountView("orders");
-
-        } catch (error) {
-            clearSession();
-            if (message) message.textContent = error.message || "Kunde inte logga in.";
-            console.error("Login error:", error);
-        }
-    }
-
-    async function signupAccount() {
-        const nameEl = document.getElementById("signupName");
-        const emailEl = document.getElementById("signupEmail");
-        const passwordEl = document.getElementById("signupPassword");
-        const message = document.getElementById("signupMessage");
-
-        const name = nameEl?.value.trim() || "";
-        const email = emailEl?.value.trim().toLowerCase() || "";
-        const password = passwordEl?.value || "";
-
-        if (!name) {
-            if (message) message.textContent = "Fyll i ditt namn.";
-            return;
-        }
-
-        if (!email || !password) {
-            if (message) message.textContent = "Fyll i e-post och lösenord.";
-            return;
-        }
-
-        if (password.length < 6) {
-            if (message) message.textContent = "Lösenordet måste vara minst 6 tecken.";
-            return;
-        }
-
-        if (message) message.textContent = "Skapar konto...";
-
-        try {
-            const signupData = await apiJson("/auth/signup", {
-                method: "POST",
-                body: JSON.stringify({ name, email, password })
-            });
-
-            // Om backend redan gav en session: logga in direkt.
-            let sessionData = signupData;
-
-            // Om signup inte gav token försöker vi logga in direkt med samma uppgifter.
-            if (!saveSession(sessionData)) {
-                if (message) message.textContent = "Kontot skapades – loggar in...";
-
-                const loginData = await apiJson("/auth/login", {
-                    method: "POST",
-                    body: JSON.stringify({ email, password })
-                });
-
-                sessionData = loginData;
-
-                if (!saveSession(sessionData)) {
-                    throw new Error(
-                        "Kontot skapades, men automatisk inloggning kunde inte slutföras. Om e-postbekräftelse krävs behöver du bekräfta e-posten först."
-                    );
-                }
-            }
-
-            let user = sessionData.user || sessionData.session?.user || null;
-
-            // Hämta användaren från backend efter att token sparats.
-            try {
-                const me = await apiJson("/auth/me");
-                user = me.user || user;
-            } catch (_) {}
-
-            if (!user) {
-                throw new Error("Kontot skapades men användaren kunde inte hämtas.");
-            }
-
-            updateAccountUI(user);
-            fillCheckoutFromUser(user);
-
-            if (message) message.textContent = "Kontot skapades – du är nu inloggad ♡";
-
-            // Viktigt: användaren hamnar direkt på Mina beställningar.
-            showAccountView("orders");
-
-            // Rensa signup-formuläret efter lyckad registrering.
-            if (passwordEl) passwordEl.value = "";
-
-        } catch (error) {
-            console.error("Signup error:", error);
-            if (message) message.textContent = error.message || "Kunde inte skapa kontot.";
-        }
-    }
-
-    // Alias om någon äldre del av sidan använder createAccount().
-    window.createAccount = function(email, password, name = "") {
-        const emailEl = document.getElementById("signupEmail");
-        const passwordEl = document.getElementById("signupPassword");
-        const nameEl = document.getElementById("signupName");
-        if (emailEl) emailEl.value = email || "";
-        if (passwordEl) passwordEl.value = password || "";
-        if (nameEl) nameEl.value = name || "";
-        return signupAccount();
-    };
-
-    function fillCheckoutFromUser(user) {
-        if (!user) return;
-
-        const name = user.user_metadata?.name || "";
-        const email = user.email || "";
-        const nameInput = document.getElementById("cartCheckoutName");
-        const emailInput = document.getElementById("cartCheckoutEmail");
-
-        if (nameInput && name) nameInput.value = name;
-        if (emailInput && email) emailInput.value = email;
-    }
-
-    async function loadOrderHistory() {
-        const list = document.getElementById("orderHistoryList");
-        const status = document.getElementById("accountStatus");
-
-        if (!getAccessToken()) {
-            if (status) status.textContent = "Logga in för att se dina beställningar.";
-            if (list) list.innerHTML = '<div class="history-empty">Du har inte loggat in ännu.</div>';
-            return;
-        }
-
-        if (list) list.innerHTML = '<div class="history-empty">Laddar beställningar...</div>';
-
-        try {
-            const me = await apiJson("/auth/me");
-            updateAccountUI(me.user);
-            fillCheckoutFromUser(me.user);
-
-            const data = await apiJson("/orders");
-            const orders = Array.isArray(data.orders) ? data.orders : [];
-
-            if (!orders.length) {
-                if (list) list.innerHTML = '<div class="history-empty">Du har inga beställningar ännu ♡</div>';
-                return;
-            }
-
-            if (list) {
-                list.innerHTML = orders.map(order => {
-                    const date = order.created_at
-                        ? new Date(order.created_at).toLocaleString("sv-SE")
-                        : "";
-                    const statusText = order.payment_status === "paid" ? "Betald" : "Pågående";
-                    const orderNumber = order.order_number || order.order_id || "-";
-                    const productName = order.product_name || "Beställning";
-                    const price = Number(order.price_sek || 0).toLocaleString("sv-SE", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    });
-
-                    return `<div class="history-order">
-                        <div class="history-order-top">
-                            <span class="history-order-number">${orderNumber}</span>
-                            <span class="history-order-status">${statusText}</span>
-                        </div>
-                        <p><strong>${productName}</strong></p>
-                        <p>Summa: ${price} kr</p>
-                        <p>Datum: ${date}</p>
-                    </div>`;
-                }).join("");
-            }
-        } catch (error) {
-            if (list) list.innerHTML = `<div class="history-empty">${error.message}</div>`;
-        }
-    }
-
-    function logoutAccount() {
-        clearSession();
-        updateAccountUI(null);
-        showAccountView("login");
-
-        const message = document.getElementById("loginMessage");
-        if (message) message.textContent = "Du är utloggad.";
-    }
-
-    async function restoreAccountSession() {
-        if (!getAccessToken()) {
-            updateAccountUI(null);
-            return;
-        }
-
-        try {
-            const data = await apiJson("/auth/me");
-            updateAccountUI(data.user);
-            fillCheckoutFromUser(data.user);
-        } catch (error) {
-            clearSession();
-            updateAccountUI(null);
-        }
-    }
-
-    // Gör funktionerna säkert åtkomliga från inline onclick-attribut.
-    window.openAccount = openAccount;
-    window.showAccountView = showAccountView;
-    window.loginAccount = loginAccount;
-    window.signupAccount = signupAccount;
-    window.logoutAccount = logoutAccount;
-    window.loadOrderHistory = loadOrderHistory;
-    window.getAccessToken = getAccessToken;
-
     function updateCartUI() {
         const count = cart.reduce((total, item) => total + Number(item.quantity || 0), 0);
         const countEl = document.getElementById("cartCount");
@@ -5778,7 +5338,6 @@
 
         if (item.quantity === 0) {
             cart = cart.filter(product => product.cartId !== cartId);
-            cartUploadFiles.delete(cartId);
         }
 
         saveCart();
@@ -5786,7 +5345,6 @@
 
     function removeCartItem(cartId) {
         cart = cart.filter(item => item.cartId !== cartId);
-        cartUploadFiles.delete(cartId);
         saveCart();
     }
 
@@ -5799,18 +5357,10 @@
             return;
         }
 
-        // Är kunden inloggad fyller vi automatiskt i namn och e-post.
-        const token = getAccessToken();
+        // Namn och e-post fylls bara i en gång, när hela varukorgen ska betalas.
+        document.getElementById("cartCheckoutName").value = "";
+        document.getElementById("cartCheckoutEmail").value = "";
         document.getElementById("cartCheckoutMessage").value = "";
-        if (!token) {
-            document.getElementById("cartCheckoutName").value = "";
-            document.getElementById("cartCheckoutEmail").value = "";
-        } else {
-            try {
-                const me = await apiJson("/auth/me");
-                fillCheckoutFromUser(me.user);
-            } catch (_) {}
-        }
         document.getElementById("cartCheckoutModal").classList.add("active");
     }
 
@@ -5845,29 +5395,13 @@
         }));
 
         closeModal("cartCheckoutModal");
-
-        // Skicka varje uppladdad custom-bild som en egen multipart-fil.
-        // Payloaden innehåller inspoField så backend kan koppla filen
-        // till exakt rätt cartId även när flera custom-produkter finns.
-        const files = {};
-        for (const item of cart) {
-            const field = item?.options?.inspoField;
-            const file = cartUploadFiles.get(item.cartId);
-            if (field && file) {
-                files[field] = file;
-            }
-        }
-
         await startStripeCheckout("cart", {
             cart: checkoutItems,
             customer: { name, email, message },
             source: "pressnpop-web"
-        }, files);
+        });
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        updateCartUI();
-        restoreAccountSession();
-    });
+    updateCartUI();
 
 </script>
