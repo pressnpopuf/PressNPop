@@ -1377,8 +1377,6 @@
 
     #productModal .product-detail-content {
         min-width: 0;
-        max-height: calc(90vh - 120px);
-        overflow-y: auto;
         padding-right: 8px;
     }
 
@@ -1487,7 +1485,8 @@
     }
 
     .color-options,
-    .length-options {
+    .length-options,
+    #productFormOptions {
         display: flex;
         flex-wrap: wrap;
         gap: 9px;
@@ -1856,6 +1855,61 @@
         }
     }
 
+
+    .product-price {
+        color: var(--morkrosa);
+        font-weight: 600;
+        font-size: 18px;
+        margin: 8px 0 18px;
+    }
+
+    .cart-item-price {
+        color: var(--morkrosa);
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 1.7;
+        margin-top: 8px;
+        padding-top: 7px;
+        border-top: 1px solid #f0dce1;
+    }
+
+    .cart-item-price strong {
+        font-size: 15px;
+    }
+
+    .cart-total-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        align-items: center;
+        padding: 12px 0 4px;
+        font-size: 15px;
+    }
+
+    .cart-total-row strong {
+        color: var(--morkrosa);
+        font-size: 18px;
+    }
+
+    .shipping-note {
+        color: #777;
+        font-size: 12px;
+        line-height: 1.5;
+        margin-top: 4px;
+    }
+
+    /* En scrollbar i produkt-/beställningsmodalen, ingen extra inre scrollbar. */
+    .modal-box {
+        overflow-x: hidden;
+        overflow-y: visible;
+        scrollbar-width: thin;
+    }
+
+    .modal-box > * {
+        max-width: 100%;
+    }
+
+.account-button,#accountButton{display:none !important;}
 </style>
 
 <!-- =====================================================
@@ -2330,7 +2384,7 @@
 
     <div class="size-card">
 
-        <h3>Almond / Oval</h3>
+        <h3>Almond</h3>
 
         <p>
             Ungefärlig bredd på våra Almond-tippar.
@@ -2690,8 +2744,9 @@
                     <div class="length-options">
                         <button type="button" class="choice-button" data-length="Short" onclick="selectProductLength(this)">Short</button>
                         <button type="button" class="choice-button" data-length="Medium" onclick="selectProductLength(this)">Medium</button>
-                        <button type="button" class="choice-button" data-length="Long" onclick="selectProductLength(this)">Long</button>
+                        
                     </div>
+                <div class="form-group"><label>Form</label><div id="productFormOptions" class="option-grid"></div></div>
                 </div>
 
                 <div class="product-choice">
@@ -2751,7 +2806,12 @@
             </div>
 
             <div class="cart-actions">
-                <button class="knapp knapp-outline" type="button" onclick="closeModal('cartModal')">
+                
+            <div class="cart-total-row"><span>Varor</span><strong id="cartSubtotal">0 kr</strong></div>
+            <div class="cart-total-row"><span>Frakt</span><strong id="cartShipping">0 kr</strong></div>
+            <div class="shipping-note">Frakt kostar 49 kr och läggs till när du väljer Frakt i kassan.</div>
+            <div class="cart-total-row"><span>Totalt</span><strong id="cartGrandTotal">0 kr</strong></div>
+            <button class="knapp knapp-outline" type="button" onclick="closeModal('cartModal')">
                     Fortsätt shoppa
                 </button>
                 <button class="knapp" type="button" onclick="checkoutCart()">
@@ -3267,10 +3327,6 @@
                 Coffin
             </div>
 
-            <div class="option" onclick="selectCustomNail(this, 'form', 'Oval')">
-                Oval
-            </div>
-
         </div>
 
         <button class="knapp" onclick="nextCustomNailStep(2)">
@@ -3296,10 +3352,6 @@
 
             <div class="option" onclick="selectCustomNail(this, 'length', 'Medium')">
                 Medium
-            </div>
-
-            <div class="option" onclick="selectCustomNail(this, 'length', 'Long')">
-                Long
             </div>
 
         </div>
@@ -3915,21 +3967,7 @@
             7: "ca 8,8 mm",
             8: "ca 8,3 mm",
             9: "ca 7,8 mm"
-        },
-
-        Oval: {
-            0: "ca 13,0 mm",
-            1: "ca 12,0 mm",
-            2: "ca 11,2 mm",
-            3: "ca 10,5 mm",
-            4: "ca 10,0 mm",
-            5: "ca 9,6 mm",
-            6: "ca 9,2 mm",
-            7: "ca 8,8 mm",
-            8: "ca 8,4 mm",
-            9: "ca 8,0 mm"
         }
-
     };
 
 
@@ -3976,7 +4014,7 @@
 
     function setupNailSizeSelectors(prefix, form) {
 
-        const formKey = form === "Oval" ? "Almond" : form === "Coffin" ? "Square" : form;
+        const formKey = form === "Coffin" ? "Square" : form;
         const sizes = nailSizes[formKey] || nailSizes.Almond;
 
         const ids = [
@@ -4034,7 +4072,7 @@
     function formatNailSizes(prefix, form) {
 
         const sizes = getNailSizeValues(prefix);
-        const formKey = form === "Oval" ? "Almond" : form === "Coffin" ? "Square" : form;
+        const formKey = form === "Coffin" ? "Square" : form;
         const measurements = nailSizes[formKey] || nailSizes.Almond;
 
         return `
@@ -4677,7 +4715,8 @@
         if (!inspo) return alert("Ladda upp en inspo-bild först ♡");
         if (!allNailSizesSelected("custom")) return alert("Välj storlek för alla fem fingrar ♡");
         const inspoData = await fileToDataURL(inspo);
-        addItemToCart({ cartId:makeCartId(), type:"custom_nails", productId:"custom_nails", name:"Custom Nails", image:"bilder/custom.jpg", color:"", length:customNailData.length||"", sizes, quantity:getModalQuantity("customNailQuantity"), customer:null, options:{form:customNailData.form,length:customNailData.length,sizes,changes,inspoFile:inspo.name,inspoData} });
+        addItemToCart({ cartId:makeCartId(), type:"custom_nails",
+            unitPrice:299, productId:"custom_nails", name:"Custom Nails", image:"bilder/custom.jpg", color:"", length:customNailData.length||"", sizes, quantity:getModalQuantity("customNailQuantity"), customer:null, options:{form:customNailData.form,length:customNailData.length,sizes,changes,inspoFile:inspo.name,inspoData} });
         closeModal("customNailsModal");
         openCart();
     }
@@ -4848,7 +4887,8 @@
         if (!inspo) return alert("Ladda upp en inspo-bild först ♡");
         if (!size) return alert("Välj en storlek först ♡");
         const inspoData = await fileToDataURL(inspo);
-        addItemToCart({ cartId:makeCartId(), type:"custom_toes", productId:"custom_toes", name:"Custom Toes", image:"bilder/custom.jpg", color:"", length:"", sizes:{toe:size}, quantity:getModalQuantity("customToeQuantity"), customer:null, options:{size,sizeMeasurement:toeSizes[size]||"",changes,inspoFile:inspo.name,inspoData} });
+        addItemToCart({ cartId:makeCartId(), type:"custom_toes",
+            unitPrice:299, productId:"custom_toes", name:"Custom Toes", image:"bilder/customtoes.jpg", color:"", length:"", sizes:{toe:size}, quantity:getModalQuantity("customToeQuantity"), customer:null, options:{size,sizeMeasurement:toeSizes[size]||"",changes,inspoFile:inspo.name,inspoData} });
         closeModal("customToesModal");
         openCart();
     }
@@ -4935,12 +4975,12 @@
     ===================================================== */
 
     const readyToes = [
-        { name: "Pink Glam Toes", description: "Den rosa och glammiga favoriten.", image: "bilder/tå1.jpg", images: ["bilder/tå1.jpg","bilder/tå1-2.jpg","bilder/tå1-3.jpg"] },
-        { name: "Classic Toes", description: "Stilrena tår som passar till allt.", image: "bilder/tå2.jpg", images: ["bilder/tå2.jpg","bilder/tå2-2.jpg","bilder/tå2-3.jpg"] },
-        { name: "Dreamy Toes", description: "Söt, mjuk och lite extra.", image: "bilder/tå3.jpg", images: ["bilder/tå3.jpg","bilder/tå3-2.jpg","bilder/tå3-3.jpg"] },
-        { name: "Cherry Kiss Toes", description: "En lekfull tådesign med röd touch.", image: "bilder/tå4.jpg", images: ["bilder/tå4.jpg","bilder/tå4-2.jpg","bilder/tå4-3.jpg"] },
-        { name: "Soft Blossom Toes", description: "Blommig och feminin med vår egen look.", image: "bilder/tå5.jpg", images: ["bilder/tå5.jpg","bilder/tå5-2.jpg","bilder/tå5-3.jpg"] },
-        { name: "Golden Hour Toes", description: "Rosa toner med eleganta gulddetaljer.", image: "bilder/tå6.jpg", images: ["bilder/tå6.jpg","bilder/tå6-2.jpg","bilder/tå6-3.jpg"] }
+        { name: "Pink Glam Toes", price: 169, description: "Den rosa och glammiga favoriten.", image: "bilder/tå1.jpg", images: ["bilder/tå1.jpg","bilder/tå1-2.jpg","bilder/tå1-3.jpg"] },
+        { name: "Classic Toes", price: 169, description: "Stilrena tår som passar till allt.", image: "bilder/tå2.jpg", images: ["bilder/tå2.jpg","bilder/tå2-2.jpg","bilder/tå2-3.jpg"] },
+        { name: "Dreamy Toes", price: 199, description: "Söt, mjuk och lite extra.", image: "bilder/tå3.jpg", images: ["bilder/tå3.jpg","bilder/tå3-2.jpg","bilder/tå3-3.jpg"] },
+        { name: "Cherry Kiss Toes", price: 199, description: "En lekfull tådesign med röd touch.", image: "bilder/tå4.jpg", images: ["bilder/tå4.jpg","bilder/tå4-2.jpg","bilder/tå4-3.jpg"] },
+        { name: "Soft Blossom Toes", price: 239, description: "Blommig och feminin med vår egen look.", image: "bilder/tå5.jpg", images: ["bilder/tå5.jpg","bilder/tå5-2.jpg","bilder/tå5-3.jpg"] },
+        { name: "Golden Hour Toes", price: 239, description: "Rosa toner med eleganta gulddetaljer.", image: "bilder/tå6.jpg", images: ["bilder/tå6.jpg","bilder/tå6-2.jpg","bilder/tå6-3.jpg"] }
     ];
 
     const toeColors = [
@@ -4955,7 +4995,7 @@
     const readyProducts = [
         {
             id: 1,
-            name: "Pink Glam",
+            name: "Pink Glam", price: 169,
             description: "Rosa, feminin och lite extra glam.",
             image: "bilder/nagel1.jpg",
             images: ["bilder/nagel1.jpg", "bilder/nagel1-2.jpg", "bilder/nagel1-3.jpg"],
@@ -4968,7 +5008,7 @@
         },
         {
             id: 2,
-            name: "Classic",
+            name: "Classic", price: 169,
             description: "Enkel, stilren och passar till allt.",
             image: "bilder/nagel2.jpg",
             images: ["bilder/nagel2.jpg", "bilder/nagel2-2.jpg", "bilder/nagel2-3.jpg"],
@@ -4981,7 +5021,7 @@
         },
         {
             id: 3,
-            name: "Dreamy",
+            name: "Dreamy", price: 199,
             description: "Mjuk, söt och perfekt för dig som vill ha något extra.",
             image: "bilder/nagel3.jpg",
             images: ["bilder/nagel3.jpg", "bilder/nagel3-2.jpg", "bilder/nagel3-3.jpg"],
@@ -4994,7 +5034,7 @@
         },
         {
             id: 4,
-            name: "Cherry Kiss",
+            name: "Cherry Kiss", price: 199,
             description: "En lekfull design med en touch av rött.",
             image: "bilder/nagel4.jpg",
             images: ["bilder/nagel4.jpg", "bilder/nagel4-2.jpg", "bilder/nagel4-3.jpg"],
@@ -5007,7 +5047,7 @@
         },
         {
             id: 5,
-            name: "Soft Blossom",
+            name: "Soft Blossom", price: 239,
             description: "Inspirerad av blommor och vår hibiskus-look.",
             image: "bilder/nagel5.jpg",
             images: ["bilder/nagel5.jpg", "bilder/nagel5-2.jpg", "bilder/nagel5-3.jpg"],
@@ -5020,7 +5060,7 @@
         },
         {
             id: 6,
-            name: "Golden Hour",
+            name: "Golden Hour", price: 239,
             description: "Rosa toner med eleganta gulddetaljer.",
             image: "bilder/nagel6.jpg",
             images: ["bilder/nagel6.jpg", "bilder/nagel6-2.jpg", "bilder/nagel6-3.jpg"],
@@ -5045,8 +5085,41 @@
     let currentProductState = {
         color: "",
         length: "Medium",
+        form: "Almond",
         quantity: 1
     };
+
+    function addItemToCart(item) {
+        if (!item || !item.name) return;
+
+        const readyPriceByName = {
+            "Pink Glam": 169,
+            "Classic": 169,
+            "Dreamy": 199,
+            "Cherry Kiss": 199,
+            "Soft Blossom": 239,
+            "Golden Hour": 239,
+            "Pink Glam Toes": 169,
+            "Classic Toes": 169,
+            "Dreamy Toes": 199,
+            "Cherry Kiss Toes": 199,
+            "Soft Blossom Toes": 239,
+            "Golden Hour Toes": 239
+        };
+
+        const normalized = {
+            ...item,
+            cartId: item.cartId || makeCartId(),
+            quantity: Math.max(1, Math.min(99, Number(item.quantity) || 1)),
+            unitPrice:
+                item.type === "custom_nails" || item.type === "custom_toes"
+                    ? 299
+                    : Number(item.unitPrice ?? readyPriceByName[item.name] ?? item.price ?? 0)
+        };
+
+        cart.push(normalized);
+        saveCart();
+    }
 
     function saveCart() {
         localStorage.setItem("pressnpopCart", JSON.stringify(cart));
@@ -5082,6 +5155,8 @@
     function setupUnifiedProductModal(product, isToe) {
         document.getElementById("productTitle").textContent = product.name;
         document.getElementById("productDescription").textContent = product.description;
+        const priceEl = document.getElementById("productPrice");
+        if (priceEl) priceEl.textContent = `${Number(product.price || 0).toLocaleString("sv-SE")} kr`;
         document.getElementById("productQuantity").textContent = "1";
         renderProductColors(product);
         renderProductGallery(product);
@@ -5108,9 +5183,23 @@
             sizeHeading.textContent = "Välj storlek för varje finger";
             sizeHint.textContent = "0 = störst · 9 = minst";
             setupProductSizeSelectors();
-            document.querySelectorAll(".length-options .choice-button").forEach(button => {
-                button.classList.toggle("selected", button.dataset.length === "Medium");
-            });
+            const lengthContainer = document.querySelector(".length-options");
+            if (lengthContainer) {
+                lengthContainer.innerHTML = `
+                    <button type="button" class="choice-button" data-length="Short" onclick="selectProductLength(this)">Short</button>
+                    <button type="button" class="choice-button selected" data-length="Medium" onclick="selectProductLength(this)">Medium</button>
+                `;
+            }
+            const formContainer = document.getElementById("productFormOptions");
+            if (formContainer) {
+                formContainer.innerHTML = `
+                    <button type="button" class="choice-button selected" data-form="Almond" onclick="selectProductForm(this)">Almond</button>
+                    <button type="button" class="choice-button" data-form="Coffin" onclick="selectProductForm(this)">Coffin</button>
+                    <button type="button" class="choice-button" data-form="Square" onclick="selectProductForm(this)">Square</button>
+                `;
+            }
+            currentProductState.length = "Medium";
+            currentProductState.form = "Almond";
         }
 
         document.getElementById("productModal").classList.add("active");
@@ -5212,6 +5301,14 @@
         });
     }
 
+    function selectProductForm(button) {
+        currentProductState.form = button.dataset.form || "Almond";
+        document.querySelectorAll("#productFormOptions .choice-button").forEach(item => {
+            item.classList.remove("selected");
+        });
+        button.classList.add("selected");
+    }
+
     function selectProductLength(button) {
         currentProductState.length = button.dataset.length;
         document.querySelectorAll(".length-options .choice-button").forEach(item => {
@@ -5273,13 +5370,44 @@
             sizes,
             quantity: currentProductState.quantity,
             customer: null,
-            options: currentProductType === "toes" ? { design: currentProduct.name, color: currentProductState.color, sizes, sizeMeasurements: Object.fromEntries(Object.entries(sizes).map(([k,v]) => [k, toeSizes[v] || ""])) } : { design: currentProduct.name, color: currentProductState.color, length: currentProductState.length, sizes }
+            options: currentProductType === "toes" ? { design: currentProduct.name, color: currentProductState.color, sizes, sizeMeasurements: Object.fromEntries(Object.entries(sizes).map(([k,v]) => [k, toeSizes[v] || ""])) } : { design: currentProduct.name, color: currentProductState.color, length: currentProductState.length, form: currentProductState.form, sizes },
+            unitPrice: Number(currentProduct.price || 0)
         };
 
         cart.push(item);
         saveCart();
         closeModal("productModal");
         openCart();
+    }
+
+    function getCartItemUnitPrice(item) {
+        if (item.type === "custom_nails" || item.type === "custom_toes") return 299;
+        return Number(item.unitPrice || item.price || 0);
+    }
+
+    function getCartSubtotal() {
+        return cart.reduce((sum, item) => {
+            return sum + getCartItemUnitPrice(item) * Math.max(1, Number(item.quantity) || 1);
+        }, 0);
+    }
+
+    function getShippingFee() {
+        const delivery = document.getElementById("cartCheckoutDelivery")?.value || "";
+        return delivery === "Frakt" ? 49 : 0;
+    }
+
+    function updateCartTotals() {
+        const subtotal = getCartSubtotal();
+        const shipping = getShippingFee();
+        const total = subtotal + shipping;
+
+        const subtotalEl = document.getElementById("cartSubtotal");
+        const shippingEl = document.getElementById("cartShipping");
+        const totalEl = document.getElementById("cartGrandTotal");
+
+        if (subtotalEl) subtotalEl.textContent = `${subtotal.toLocaleString("sv-SE")} kr`;
+        if (shippingEl) shippingEl.textContent = `${shipping.toLocaleString("sv-SE")} kr`;
+        if (totalEl) totalEl.textContent = `${total.toLocaleString("sv-SE")} kr`;
     }
 
     function updateCartUI() {
@@ -5306,14 +5434,26 @@
         empty.style.display = "none";
         footer.style.display = "block";
 
-        container.innerHTML = cart.map(item => `
+        container.innerHTML = cart.map(item => {
+            const unitPrice = getCartItemUnitPrice(item);
+            const itemTotal = unitPrice * Math.max(1, Number(item.quantity) || 1);
+            const optionText = [
+                item.color ? `Färg: ${item.color}` : "",
+                item.length ? `Längd: ${item.length}` : "",
+                item.options?.form ? `Form: ${item.options.form}` : ""
+            ].filter(Boolean).join("<br>");
+
+            return `
             <div class="cart-item">
                 <img class="cart-item-image" src="${item.image}" alt="${item.name}">
                 <div class="cart-item-info">
                     <h3>${item.name}</h3>
-                    <p>Färg: ${item.color}</p>
-                    <p>Längd: ${item.length}</p>
-                    <p>Storlek: ${item.sizes.thumb || item.sizes.toe || "-"}/${item.sizes.index || "-"}/${item.sizes.middle || "-"}/${item.sizes.ring || "-"}/${item.sizes.pinky || "-"}</p>
+                    <p>${optionText}</p>
+                    <p>Storlek: ${item.sizes?.thumb || item.sizes?.toe || "-"}/${item.sizes?.index || "-"}/${item.sizes?.middle || "-"}/${item.sizes?.ring || "-"}/${item.sizes?.pinky || "-"}</p>
+                    <div class="cart-item-price">
+                        <div>Pris: ${unitPrice.toLocaleString("sv-SE")} kr/st</div>
+                        <div>Summa: <strong>${itemTotal.toLocaleString("sv-SE")} kr</strong></div>
+                    </div>
                 </div>
                 <div class="cart-item-actions">
                     <button type="button" onclick="changeCartQuantity('${item.cartId}', -1)">−</button>
@@ -5321,8 +5461,10 @@
                     <button type="button" onclick="changeCartQuantity('${item.cartId}', 1)">+</button>
                     <button type="button" class="cart-remove" onclick="removeCartItem('${item.cartId}')">Ta bort</button>
                 </div>
-            </div>
-        `).join("");
+            </div>`;
+        }).join("");
+
+        updateCartTotals();
     }
 
     function openCart() {
