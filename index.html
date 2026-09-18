@@ -5348,60 +5348,6 @@
         saveCart();
     }
 
-    async function checkoutCart() {
-        cart = cart.filter(item => item && item.name && Number(item.quantity) > 0);
-        saveCart();
-
-        if (!cart.length) {
-            alert("Din varukorg är tom ♡");
-            return;
-        }
-
-        // Namn och e-post fylls bara i en gång, när hela varukorgen ska betalas.
-        document.getElementById("cartCheckoutName").value = "";
-        document.getElementById("cartCheckoutEmail").value = "";
-        document.getElementById("cartCheckoutMessage").value = "";
-        document.getElementById("cartCheckoutModal").classList.add("active");
-    }
-
-    async function finalizeCartCheckout() {
-        cart = cart.filter(item => item && item.name && Number(item.quantity) > 0);
-        if (!cart.length) {
-            alert("Din varukorg är tom ♡");
-            closeModal("cartCheckoutModal");
-            return;
-        }
-
-        const name = document.getElementById("cartCheckoutName").value.trim();
-        const email = document.getElementById("cartCheckoutEmail").value.trim();
-        const message = document.getElementById("cartCheckoutMessage").value.trim();
-
-        if (!name || !email) {
-            alert("Fyll i ditt namn och din e-post ♡");
-            return;
-        }
-
-        const checkoutItems = cart.map(item => ({
-            productId: item.productId ?? null,
-            name: String(item.name),
-            image: item.image || "",
-            color: item.color || "",
-            length: item.length || "",
-            sizes: item.sizes || {},
-            quantity: Math.max(1, Math.min(99, Number(item.quantity) || 1)),
-            customer: { name, email, message },
-            type: item.type || "ready_nails",
-            options: item.options || {}
-        }));
-
-        closeModal("cartCheckoutModal");
-        await startStripeCheckout("cart", {
-            cart: checkoutItems,
-            customer: { name, email, message },
-            source: "pressnpop-web"
-        });
-    }
-
     updateCartUI();
 
 </script>
