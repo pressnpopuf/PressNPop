@@ -974,6 +974,26 @@
         border-color: var(--rosa);
     }
 
+    .custom-toe-size-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .custom-toe-size-grid .form-group:last-child {
+        grid-column: 1 / -1;
+    }
+
+    @media (max-width: 600px) {
+        .custom-toe-size-grid {
+            grid-template-columns: 1fr;
+        }
+        .custom-toe-size-grid .form-group:last-child {
+            grid-column: auto;
+        }
+    }
+
     .file-help {
         color: #888;
         font-size: 12px;
@@ -1606,14 +1626,18 @@
         flex: 1;
     }
 
+
+    /* =====================================================
+       NY VARUKORG – RENARE OCH TYDLIGARE LAYOUT
+    ===================================================== */
     .cart-box {
         background: #fffaf8;
         width: 100%;
-        max-width: 700px;
+        max-width: 760px;
         max-height: 90vh;
         overflow-y: auto;
         border-radius: 30px;
-        padding: 35px;
+        padding: 38px;
         position: relative;
         box-shadow: 0 25px 70px rgba(0,0,0,0.2);
     }
@@ -1624,30 +1648,39 @@
         margin-bottom: 5px;
     }
 
+    .cart-box .modal-subtitle {
+        margin-bottom: 24px;
+    }
+
     .cart-item {
         display: grid;
-        grid-template-columns: 82px 1fr auto;
-        gap: 14px;
-        align-items: center;
-        background: white;
+        grid-template-columns: 86px minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: start;
+        background: #fff;
         border: 1px solid #efdce2;
-        border-radius: 18px;
-        padding: 12px;
-        margin-bottom: 12px;
+        border-radius: 20px;
+        padding: 14px;
+        margin-bottom: 13px;
+        box-shadow: 0 5px 18px rgba(70, 35, 45, 0.035);
     }
 
     .cart-item-image {
-        width: 82px;
-        height: 82px;
-        border-radius: 13px;
+        width: 86px;
+        height: 86px;
+        border-radius: 15px;
         object-fit: cover;
+    }
+
+    .cart-item-info {
+        min-width: 0;
     }
 
     .cart-item-info h3 {
         color: var(--morkrosa);
         font-family: "Poppins", sans-serif;
-        font-size: 15px;
-        margin-bottom: 4px;
+        font-size: 16px;
+        margin: 2px 0 5px;
     }
 
     .cart-item-info p {
@@ -1657,10 +1690,35 @@
         margin: 2px 0;
     }
 
+    .cart-item-price {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 18px;
+        margin-top: 11px;
+        padding-top: 9px;
+        border-top: 1px solid #f0dce1;
+        color: #777;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .cart-item-price strong {
+        color: var(--morkrosa);
+        font-size: 15px;
+    }
+
+    .cart-price-label {
+        color: #777;
+    }
+
     .cart-item-actions {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
         gap: 6px;
+        min-width: 118px;
+        padding-top: 3px;
     }
 
     .cart-item-actions button {
@@ -1671,12 +1729,26 @@
         background: white;
         color: var(--morkrosa);
         cursor: pointer;
+        transition: .2s;
+    }
+
+    .cart-item-actions button:hover {
+        border-color: var(--rosa);
+        transform: translateY(-1px);
+    }
+
+    .cart-item-actions > strong {
+        min-width: 20px;
+        text-align: center;
+        color: #555;
+        font-size: 13px;
     }
 
     .cart-remove {
         font-size: 11px !important;
         width: auto !important;
         padding: 0 8px;
+        margin-left: 2px;
     }
 
     .cart-empty {
@@ -1698,20 +1770,76 @@
 
     .cart-footer {
         border-top: 1px solid #efdce2;
-        padding-top: 20px;
-        margin-top: 18px;
+        padding-top: 22px;
+        margin-top: 22px;
     }
 
-    .cart-total {
+    .cart-quantity-summary {
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        color: #666;
-        font-size: 14px;
+        padding: 13px 16px;
+        margin-bottom: 17px;
+        background: #fff;
+        border: 1px solid #efdce2;
+        border-radius: 16px;
+        color: #777;
+        font-size: 13px;
+    }
+
+    .cart-quantity-summary strong {
+        color: var(--morkrosa);
+        font-size: 17px;
+    }
+
+    .cart-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
         margin-bottom: 15px;
     }
 
-    .cart-total strong {
+    .cart-summary-card {
+        min-height: 92px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: #fff;
+        border: 1px solid #efdce2;
+        border-radius: 18px;
+        padding: 13px 10px;
+    }
+
+    .cart-summary-card .summary-label {
+        color: #777;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .cart-summary-card .summary-value {
         color: var(--morkrosa);
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.15;
+    }
+
+    .cart-summary-card.total-card {
+        background: #fff5f7;
+        border-color: #e9cbd4;
+    }
+
+    .cart-summary-card.total-card .summary-value {
+        font-size: 25px;
+    }
+
+    .shipping-note {
+        color: #777;
+        font-size: 11px;
+        line-height: 1.5;
+        text-align: center;
+        margin: 2px 8px 17px;
     }
 
     .cart-actions {
@@ -1727,62 +1855,54 @@
         text-align: center;
         color: #999;
         font-size: 11px;
-        margin-top: 12px;
+        line-height: 1.5;
+        margin-top: 13px;
     }
 
-    .payment-methods {
-        margin: 28px auto 8px;
-        max-width: 760px;
-        position: relative;
-        z-index: 2;
+    @media (max-width: 650px) {
+        .cart-box {
+            padding: 28px 18px;
+        }
+
+        .cart-summary-grid {
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .cart-summary-card {
+            min-height: 72px;
+        }
+
+        .cart-item {
+            grid-template-columns: 68px minmax(0, 1fr);
+            gap: 12px;
+        }
+
+        .cart-item-image {
+            width: 68px;
+            height: 68px;
+        }
+
+        .cart-item-actions {
+            grid-column: 2;
+            justify-content: flex-start;
+            padding-top: 0;
+        }
+
+        .cart-actions {
+            flex-direction: column;
+        }
     }
 
-    .payment-title {
-        font-size: 12px;
-        opacity: 0.9;
-        margin-bottom: 13px;
-    }
+    @media (max-width: 500px) {
+        .cart-box h2 {
+            font-size: 38px;
+        }
 
-    .payment-logos {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 9px;
-    }
-
-    .payment-logo {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 35px;
-        padding: 7px 12px;
-        border-radius: 9px;
-        background: white;
-        color: #333;
-        font-family: Arial, sans-serif;
-        font-weight: 700;
-        font-size: 11px;
-        letter-spacing: 0.3px;
-    }
-
-    .payment-logo.mastercard {
-        font-size: 10px;
-    }
-
-    .payment-logo.amex {
-        font-size: 8px;
-    }
-
-    .payment-logo.klarna {
-        font-family: Arial, sans-serif;
-        font-size: 15px;
-    }
-
-    .payment-note {
-        opacity: 0.7;
-        font-size: 10px !important;
-        margin-top: 10px !important;
+        .cart-item-price {
+            flex-direction: column;
+            gap: 3px;
+        }
     }
 
     @media (max-width: 850px) {
@@ -2686,20 +2806,7 @@
 <p>
     Handgjorda press-on nails från Eskilstuna ♡
 </p>
-
-<div class="payment-methods" aria-label="Betalningsmetoder">
-    <p class="payment-title">Betala tryggt med</p>
-    <div class="payment-logos">
-        <span class="payment-logo visa">VISA</span>
-        <span class="payment-logo mastercard">Mastercard</span>
-        <span class="payment-logo amex">AMERICAN EXPRESS</span>
-        <span class="payment-logo klarna">Klarna.</span>
-        <span class="payment-logo apple">Apple Pay</span>
-        <span class="payment-logo google">Google Pay</span>
-    </div>
-    <p class="payment-note">Betalning sker via Swish efter att beställningen har skickats.</p>
-</div>
-
+<p class="payment-note" style="text-align:center; opacity:.7; font-size:11px; margin-top:12px;">Betalning sker via Swish efter att beställningen har skickats.</p>
 <p class="footer-small">
     © 2026 PressN'Pop UF
 </p>
@@ -2800,26 +2907,45 @@
         </div>
 
         <div class="cart-footer" id="cartFooter">
-            <div class="cart-total">
+            <div class="cart-quantity-summary">
                 <span>Antal produkter</span>
                 <strong id="cartTotalQuantity">0</strong>
             </div>
 
+            <div class="cart-summary-grid">
+                <div class="cart-summary-card">
+                    <span class="summary-label">Varor</span>
+                    <strong class="summary-value" id="cartSubtotal">0 kr</strong>
+                </div>
+
+                <div class="cart-summary-card">
+                    <span class="summary-label">Frakt</span>
+                    <strong class="summary-value" id="cartShipping">0 kr</strong>
+                </div>
+
+                <div class="cart-summary-card total-card">
+                    <span class="summary-label">Totalt</span>
+                    <strong class="summary-value" id="cartGrandTotal">0 kr</strong>
+                </div>
+            </div>
+
+            <p class="shipping-note">
+                Frakt kostar 49 kr och läggs till när du väljer <strong>Frakt</strong> i kassan.
+            </p>
+
             <div class="cart-actions">
-                
-            <div class="cart-total-row"><span>Varor</span><strong id="cartSubtotal">0 kr</strong></div>
-            <div class="cart-total-row"><span>Frakt</span><strong id="cartShipping">0 kr</strong></div>
-            <div class="shipping-note">Frakt kostar 49 kr och läggs till när du väljer Frakt i kassan.</div>
-            <div class="cart-total-row"><span>Totalt</span><strong id="cartGrandTotal">0 kr</strong></div>
-            <button class="knapp knapp-outline" type="button" onclick="closeModal('cartModal')">
+                <button class="knapp knapp-outline" type="button" onclick="closeModal('cartModal')">
                     Fortsätt shoppa
                 </button>
                 <button class="knapp" type="button" onclick="checkoutCart()">
                     Gå till betalning
                 </button>
             </div>
-            <p class="cart-checkout-note">När du skickar beställningen öppnas ditt e-postprogram med hela varukorgen färdig att skicka till oss.</p>
-        </div>
+
+            <p class="cart-checkout-note">
+                När du skickar beställningen öppnas ditt e-postprogram med hela varukorgen färdig att skicka till oss.
+            </p>
+        </div></div>
     </div>
 </div>
 
@@ -3607,20 +3733,49 @@
     <div class="step active" id="customToeStep1">
 
         <div class="step-title">
-            1. Välj storlek
+            1. Välj storlek för varje tå
         </div>
 
         <p class="file-help" style="margin-bottom:18px;">
-            Storlek 0 är störst och 9 är minst. Måtten är preliminära och uppdateras när vi har de exakta måtten.
+            Välj en storlek för alla 5 tår. Storlek 0 är störst och 9 är minst.
         </p>
 
-        <div class="form-group">
+        <div class="custom-toe-size-grid">
 
-            <label>Storlek</label>
+            <div class="form-group">
+                <label>Stortå</label>
+                <select id="customToeThumbSize">
+                    <option value="">Välj storlek</option>
+                </select>
+            </div>
 
-            <select id="customToeSize">
-                <option value="">Välj storlek</option>
-            </select>
+            <div class="form-group">
+                <label>Tå 2</label>
+                <select id="customToeIndexSize">
+                    <option value="">Välj storlek</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Tå 3</label>
+                <select id="customToeMiddleSize">
+                    <option value="">Välj storlek</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Tå 4</label>
+                <select id="customToeRingSize">
+                    <option value="">Välj storlek</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Lilltå</label>
+                <select id="customToePinkySize">
+                    <option value="">Välj storlek</option>
+                </select>
+            </div>
 
         </div>
 
@@ -3803,7 +3958,7 @@
         if (item.length) lines.push(`   Längd: ${escapeEmailText(item.length)}`);
 
         const sizes = item.sizes || {};
-        const labels = { thumb:"Tumme", index:"Pekfinger", middle:"Långfinger", ring:"Ringfinger", pinky:"Lillfinger", toe:"Tå" };
+        const labels = { thumb:"Tumme/Stortå", index:"Pekfinger/Tå 2", middle:"Långfinger/Tå 3", ring:"Ringfinger/Tå 4", pinky:"Lillfinger/Lilltå", toe:"Tå" };
         const sizeLines = Object.entries(sizes)
             .filter(([, value]) => value !== undefined && value !== null && String(value) !== "")
             .map(([key, value]) => `      ${labels[key] || key}: ${escapeEmailText(value)}`);
@@ -3842,7 +3997,7 @@
         document.getElementById("cartCheckoutModal").classList.add("active");
     }
 
-    function finalizeCartCheckout() {
+    async function finalizeCartCheckout() {
         cart = cart.filter(item => item && item.name && Number(item.quantity) > 0);
         saveCart();
 
@@ -3913,14 +4068,48 @@
             "PressN'Pop UF"
         ].join("\n");
 
-        const mailto = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const inspoFiles = [];
+        for (const item of cart) {
+            const data = item?.options?.inspoData;
+            const filename = item?.options?.inspoFile || "inspo-bild.jpg";
+            if (!data) continue;
+            try {
+                const response = await fetch(data);
+                const blob = await response.blob();
+                inspoFiles.push(new File([blob], filename, { type: blob.type || "image/jpeg" }));
+            } catch (e) {
+                console.warn("Kunde inte förbereda inspo-bilden:", e);
+            }
+        }
 
         try {
             closeModal("cartCheckoutModal");
+
+            if (inspoFiles.length && navigator.share && navigator.canShare) {
+                const shareData = {
+                    title: subject,
+                    text: body,
+                    files: inspoFiles
+                };
+
+                if (navigator.canShare({ files: inspoFiles })) {
+                    await navigator.share(shareData);
+                    return;
+                }
+            }
+
+            const mailto = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             window.location.href = mailto;
+
+            if (inspoFiles.length) {
+                setTimeout(() => {
+                    alert("Din inspo-bild kan inte bifogas automatiskt i detta e-postprogram. Om din enhet stödjer delning kan du välja Mail och bilden följer då med som bilaga.");
+                }, 900);
+            }
         } catch (error) {
-            console.error("Kunde inte öppna e-postprogrammet:", error);
-            alert("Kunde inte öppna ditt e-postprogram. Kopiera beställningen eller försök från en enhet med e-postprogram installerat.");
+            console.error("Kunde inte öppna e-post/delning:", error);
+            const mailto = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailto;
         }
     }
 
@@ -4085,16 +4274,34 @@
     }
 
 
+    function setupCustomToeSizeSelectors() {
+        [
+            ["customToeThumbSize", "Stortå"],
+            ["customToeIndexSize", "Tå 2"],
+            ["customToeMiddleSize", "Tå 3"],
+            ["customToeRingSize", "Tå 4"],
+            ["customToePinkySize", "Lilltå"]
+        ].forEach(([id]) => createSizeOptions(id, toeSizes, "Välj storlek"));
+    }
+
+    function getCustomToeSizeValues() {
+        return {
+            thumb: document.getElementById("customToeThumbSize")?.value || "",
+            index: document.getElementById("customToeIndexSize")?.value || "",
+            middle: document.getElementById("customToeMiddleSize")?.value || "",
+            ring: document.getElementById("customToeRingSize")?.value || "",
+            pinky: document.getElementById("customToePinkySize")?.value || ""
+        };
+    }
+
+    function allCustomToeSizesSelected(sizes) {
+        return Object.values(sizes).every(value => value !== "");
+    }
+
     function setupToeSizes() {
 
         createSizeOptions(
             "toeOrderSize",
-            toeSizes,
-            "Välj storlek"
-        );
-
-        createSizeOptions(
-            "customToeSize",
             toeSizes,
             "Välj storlek"
         );
@@ -4727,22 +4934,30 @@
     ===================================================== */
 
     let customToeData = {
-
-        size: "",
+        sizes: {
+            thumb: "",
+            index: "",
+            middle: "",
+            ring: "",
+            pinky: ""
+        },
         inspo: "",
         changes: ""
-
     };
 
 
     function openCustomToes() {
 
         customToeData = {
-
-            size: "",
+            sizes: {
+                thumb: "",
+                index: "",
+                middle: "",
+                ring: "",
+                pinky: ""
+            },
             inspo: "",
             changes: ""
-
         };
 
 
@@ -4786,13 +5001,7 @@
 
 
         if (number === 1) {
-
-            createSizeOptions(
-                "customToeSize",
-                toeSizes,
-                "Välj storlek"
-            );
-
+            setupCustomToeSizeSelectors();
         }
 
 
@@ -4811,15 +5020,12 @@
 
                 <strong>Din custom-tådesign</strong>
 
-                <p>
-                    Storlek:
-                    ${customToeData.size || "Inte vald"}
-                    ${
-                        customToeData.size
-                        ? "(" + toeSizes[customToeData.size] + ")"
-                        : ""
-                    }
-                </p>
+                <p><strong>Storlekar:</strong></p>
+                <p>Stortå: ${customToeData.sizes.thumb || "Inte vald"} ${customToeData.sizes.thumb ? "(" + toeSizes[customToeData.sizes.thumb] + ")" : ""}</p>
+                <p>Tå 2: ${customToeData.sizes.index || "Inte vald"} ${customToeData.sizes.index ? "(" + toeSizes[customToeData.sizes.index] + ")" : ""}</p>
+                <p>Tå 3: ${customToeData.sizes.middle || "Inte vald"} ${customToeData.sizes.middle ? "(" + toeSizes[customToeData.sizes.middle] + ")" : ""}</p>
+                <p>Tå 4: ${customToeData.sizes.ring || "Inte vald"} ${customToeData.sizes.ring ? "(" + toeSizes[customToeData.sizes.ring] + ")" : ""}</p>
+                <p>Lilltå: ${customToeData.sizes.pinky || "Inte vald"} ${customToeData.sizes.pinky ? "(" + toeSizes[customToeData.sizes.pinky] + ")" : ""}</p>
 
                 <p>
                     Inspo-bild:
@@ -4841,21 +5047,14 @@
     function nextCustomToeStep(number) {
 
         if (number === 2) {
+            const sizes = getCustomToeSizeValues();
 
-            const size =
-                document.getElementById("customToeSize").value;
-
-
-            if (!size) {
-
-                alert("Välj en storlek först ♡");
+            if (!allCustomToeSizesSelected(sizes)) {
+                alert("Välj storlek för alla 5 tår ♡");
                 return;
-
             }
 
-
-            customToeData.size = size;
-
+            customToeData.sizes = sizes;
         }
 
 
@@ -4883,12 +5082,40 @@
     async function submitCustomToes() {
         const changes = document.getElementById("customToeChanges").value.trim();
         const inspo = document.getElementById("customToeInspo").files[0];
-        const size = customToeData.size || document.getElementById("customToeSize").value;
+        const sizes = getCustomToeSizeValues();
+
         if (!inspo) return alert("Ladda upp en inspo-bild först ♡");
-        if (!size) return alert("Välj en storlek först ♡");
+        if (!allCustomToeSizesSelected(sizes)) return alert("Välj storlek för alla 5 tår ♡");
+
         const inspoData = await fileToDataURL(inspo);
-        addItemToCart({ cartId:makeCartId(), type:"custom_toes",
-            unitPrice:299, productId:"custom_toes", name:"Custom Toes", image:"bilder/customtoes.jpg", color:"", length:"", sizes:{toe:size}, quantity:getModalQuantity("customToeQuantity"), customer:null, options:{size,sizeMeasurement:toeSizes[size]||"",changes,inspoFile:inspo.name,inspoData} });
+
+        addItemToCart({
+            cartId: makeCartId(),
+            type: "custom_toes",
+            unitPrice: 299,
+            productId: "custom_toes",
+            name: "Custom Toes",
+            image: "bilder/customtoes.jpg",
+            color: "",
+            length: "",
+            sizes,
+            quantity: getModalQuantity("customToeQuantity"),
+            customer: null,
+            options: {
+                sizes,
+                sizeMeasurements: {
+                    thumb: toeSizes[sizes.thumb] || "",
+                    index: toeSizes[sizes.index] || "",
+                    middle: toeSizes[sizes.middle] || "",
+                    ring: toeSizes[sizes.ring] || "",
+                    pinky: toeSizes[sizes.pinky] || ""
+                },
+                changes,
+                inspoFile: inspo.name,
+                inspoData
+            }
+        });
+
         closeModal("customToesModal");
         openCart();
     }
@@ -5451,8 +5678,8 @@
                     <p>${optionText}</p>
                     <p>Storlek: ${item.sizes?.thumb || item.sizes?.toe || "-"}/${item.sizes?.index || "-"}/${item.sizes?.middle || "-"}/${item.sizes?.ring || "-"}/${item.sizes?.pinky || "-"}</p>
                     <div class="cart-item-price">
-                        <div>Pris: ${unitPrice.toLocaleString("sv-SE")} kr/st</div>
-                        <div>Summa: <strong>${itemTotal.toLocaleString("sv-SE")} kr</strong></div>
+                        <div><span class="cart-price-label">Pris/st:</span> ${unitPrice.toLocaleString("sv-SE")} kr</div>
+                        <div><span class="cart-price-label">Summa:</span> <strong>${itemTotal.toLocaleString("sv-SE")} kr</strong></div>
                     </div>
                 </div>
                 <div class="cart-item-actions">
