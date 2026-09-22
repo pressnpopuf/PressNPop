@@ -3009,12 +3009,12 @@
 
         <div style="background:#fbecef;border:1px solid #f0d6df;border-radius:15px;padding:15px;margin-bottom:18px;color:#666;font-size:13px;line-height:1.7;">
             <strong style="color:var(--morkrosa);">Så fungerar beställningen</strong><br>
-            När du trycker på knappen öppnas ditt e-postprogram med beställningen färdigskriven. Kontrollera uppgifterna och skicka mailet till oss. Därefter gör du Swish-betalningen enligt våra betalningsinstruktioner.
+            När du trycker på knappen skickas beställningen automatiskt till PressN'Pop. Därefter betalar du via Swish. Se till att namn och telefonnummer stämmer med Swish-betalningen så att vi kan matcha din betalning med din beställning.
         </div>
 
         <div class="step-buttons">
             <button class="knapp knapp-outline" type="button" onclick="closeModal('cartCheckoutModal')">← Tillbaka</button>
-            <button class="knapp" type="button" onclick="finalizeCartCheckout()">Skicka beställning via mail →</button>
+            <button class="knapp" type="button" onclick="finalizeCartCheckout()">Lägg beställning →</button>
         </div>
     </div>
 </div>
@@ -3997,7 +3997,7 @@
         document.getElementById("cartCheckoutModal").classList.add("active");
     }
 
-    async function finalizeCartCheckout() {
+     async function finalizeCartCheckout() {
         cart = cart.filter(item => item && item.name && Number(item.quantity) > 0);
         saveCart();
 
@@ -4007,15 +4007,15 @@
             return;
         }
 
-        const firstName = escapeEmailText(document.getElementById("cartCheckoutFirstName").value);
-        const lastName = escapeEmailText(document.getElementById("cartCheckoutLastName").value);
-        const phone = escapeEmailText(document.getElementById("cartCheckoutPhone").value);
-        const email = escapeEmailText(document.getElementById("cartCheckoutEmail").value);
+        const firstName = document.getElementById("cartCheckoutFirstName").value.trim();
+        const lastName = document.getElementById("cartCheckoutLastName").value.trim();
+        const phone = document.getElementById("cartCheckoutPhone").value.trim();
+        const email = document.getElementById("cartCheckoutEmail").value.trim();
         const delivery = document.getElementById("cartCheckoutDelivery").value;
-        const address = escapeEmailText(document.getElementById("cartCheckoutAddress").value);
-        const postal = escapeEmailText(document.getElementById("cartCheckoutPostal").value);
-        const city = escapeEmailText(document.getElementById("cartCheckoutCity").value);
-        const message = escapeEmailText(document.getElementById("cartCheckoutMessage").value);
+        const address = document.getElementById("cartCheckoutAddress").value.trim();
+        const postal = document.getElementById("cartCheckoutPostal").value.trim();
+        const city = document.getElementById("cartCheckoutCity").value.trim();
+        const message = document.getElementById("cartCheckoutMessage").value.trim();
 
         if (!firstName || !lastName || !phone || !email) {
             alert("Fyll i förnamn, efternamn, telefonnummer och e-post ♡");
@@ -4032,84 +4032,122 @@
             return;
         }
 
-        const fullName = `${firstName} ${lastName}`;
-        const deliveryText = delivery === "shipping"
-            ? `Frakt\n${address}\n${postal} ${city}`
-            : "Hämta upp";
-
-        const itemText = cart.map((item, index) => formatCartItemForEmail(item, index + 1)).join("\n\n");
-        const totalQuantity = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
-
-        const subject = `Beställning PressN'Pop – ${fullName}`;
-        const body = [
-            "NY BESTÄLLNING – PRESSN'POP",
-            "",
-            "KUNDUPPGIFTER",
-            `Förnamn: ${firstName}`,
-            `Efternamn: ${lastName}`,
-            `Telefonnummer (samma som används vid Swish): ${phone}`,
-            `E-post: ${email}`,
-            "",
-            "LEVERANS",
-            deliveryText,
-            "",
-            "BESTÄLLNING",
-            itemText,
-            "",
-            `Totalt antal produkter: ${totalQuantity}`,
-            "",
-            "ÖVRIGT",
-            message || "Inget meddelande",
-            "",
-            "VIKTIGT OM SWISH",
-            `Swish-betalningen ska göras med telefonnumret: ${phone}`,
-            "Kontrollera att namn och telefonnummer ovan stämmer med Swish-betalningen så att vi kan matcha betalningen med beställningen.",
-            "",
-            "PressN'Pop UF"
-        ].join("\n");
-
-        const inspoFiles = [];
-        for (const item of cart) {
-            const data = item?.options?.inspoData;
-            const filename = item?.options?.inspoFile || "inspo-bild.jpg";
-            if (!data) continue;
-            try {
-                const response = await fetch(data);
-                const blob = await response.blob();
-                inspoFiles.push(new File([blob], filename, { type: blob.type || "image/jpeg" }));
-            } catch (e) {
-                console.warn("Kunde inte förbereda inspo-bilden:", e);
-            }
-        }
+        const button = document.querySelector('#cartCheckoutModal button[onclick="finalizeCartCheckout()"]');
+        const originalButtonText = button ? button.textContent : "Lägg beställning →";
 
         try {
-            closeModal("cartCheckoutModal");
+            if (button) {
+                button.disabled = true;
+                button.textContent = "Skickar beställning...";
+                button.style.opacity = "0.7";
+                button.style.cursor = "wait";
+            }
 
-            if (inspoFiles.length && navigator.share && navigator.canShare) {
-                const shareData = {
-                    title: subject,
-                    text: body,
-                    files: inspoFiles
-                };
+            const formData = new FormData();
 
-                if (navigator.canShare({ files: inspoFiles })) {
-                    await navigator.share(shareData);
-                    return;
+            formData.append("firstName", firstName);
+            formData.append("lastName", lastName);
+            formData.append("phone", phone);
+            formData.append("email", email);
+            formData.append("delivery", delivery === "shipping" ? "Frakt" : "Hämta upp");
+            formData.append(
+                "address",
+                delivery === "shipping" ? `${address}, ${postal} ${city}` : ""
+            );
+            formData.append("message", message);
+
+            // Skicka varukorgen till backend.
+            // Inspo-bilder tas bort från JSON-delen eftersom de skickas som riktiga bilagor.
+            const cartForBackend = cart.map((item, index) => {
+                const cleanItem = JSON.parse(JSON.stringify(item));
+                if (cleanItem.options) {
+                    delete cleanItem.options.inspoData;
+                    delete cleanItem.options.inspoFile;
+                    delete cleanItem.options.inspoField;
+                }
+                return cleanItem;
+            });
+
+            formData.append("cart", JSON.stringify(cartForBackend));
+
+            // Lägg med alla inspo-bilder som bilagor.
+            let inspoIndex = 0;
+            for (const item of cart) {
+                const data = item?.options?.inspoData;
+                const filename = item?.options?.inspoFile || `inspo-${inspoIndex + 1}.jpg`;
+
+                if (!data) continue;
+
+                try {
+                    const response = await fetch(data);
+                    const blob = await response.blob();
+
+                    formData.append(
+                        `inspo_${inspoIndex}`,
+                        blob,
+                        filename
+                    );
+
+                    inspoIndex++;
+                } catch (error) {
+                    console.warn("Kunde inte förbereda inspo-bilden:", error);
                 }
             }
 
-            const mailto = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailto;
+            const response = await fetch("https://pnp-backend.onrender.com/api/orders", {
+                method: "POST",
+                body: formData
+            });
 
-            if (inspoFiles.length) {
-                setTimeout(() => {
-                    alert("Din inspo-bild kan inte bifogas automatiskt i detta e-postprogram. Om din enhet stödjer delning kan du välja Mail och bilden följer då med som bilaga.");
-                }, 900);
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+                throw new Error(result.error || "Beställningen kunde inte skickas.");
             }
+
+            closeModal("cartCheckoutModal");
+
+            const orderNumber = result.orderNumber
+                ? `\nBeställningsnummer: ${result.orderNumber}`
+                : "";
+
+            const totalText = result.total != null
+                ? `\nTotalt: ${result.total} kr`
+                : "";
+
+            alert(
+                `Tack för din beställning! ♡\n\n` +
+                `Din beställning har skickats automatiskt till PressN'Pop.${orderNumber}${totalText}\n\n` +
+                `Nu gör du din Swish-betalning. Se till att namn och telefonnummer stämmer med Swish-betalningen så att vi kan matcha betalningen med beställningen.`
+            );
+
+            cart = [];
+            saveCart();
+
+            if (typeof updateCartUI === "function") {
+                updateCartUI();
+            }
+
+            if (typeof renderCart === "function") {
+                renderCart();
+            }
+
         } catch (error) {
-            console.error("Kunde inte öppna e-post/delning:", error);
-            const mailto = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailto;
+            console.error("Kunde inte skicka beställningen:", error);
+
+            alert(
+                "Beställningen kunde inte skickas just nu. ♡\n\n" +
+                "Kontrollera att internet fungerar och försök igen. " +
+                "Om problemet fortsätter behöver backend-servern kontrolleras."
+            );
+
+        } finally {
+            if (button) {
+                button.disabled = false;
+                button.textContent = originalButtonText;
+                button.style.opacity = "";
+                button.style.cursor = "";
+            }
         }
     }
 
