@@ -4446,23 +4446,6 @@
          return lines.filter(Boolean).join("\n");
      }
 
-     function openEmailFallback(firstName, lastName, phone, email, delivery, address, message) {
-         const subject = `Ny beställning från ${firstName} ${lastName}`;
-         const body = buildOrderEmailBody(firstName, lastName, phone, email, delivery, address, message);
-         const mailto = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-         // mailto är en reservväg om backend/servern inte svarar.
-         window.location.href = mailto;
-
-         setTimeout(() => {
-             alert(
-                 "Beställningsservern svarade inte. ♡\n\n" +
-                 "Jag har öppnat ett färdigt mejl med hela beställningen. " +
-                 "Tryck på Skicka i din e-postapp för att slutföra beställningen."
-             );
-         }, 500);
-     }
-
      async function finalizeCartCheckout() {
          cart = cart.filter(item => item && item.name && Number(item.quantity) > 0);
          saveCart();
@@ -4555,7 +4538,7 @@
              // Render kan ibland ta en stund att vakna. Ge servern en tydlig tidsgräns
              // så att kunden aldrig fastnar på "Skickar beställning...".
              const controller = new AbortController();
-             const timeoutId = setTimeout(() => controller.abort(), 30000);
+             const timeoutId = setTimeout(() => controller.abort(), 120000);
 
              let response;
              try {
@@ -4596,13 +4579,15 @@
          } catch (error) {
              console.error("Kunde inte skicka beställningen:", error);
 
-             // Viktigt: kunden får alltid en fungerande väg vidare även om
-             // Render-backenden är nere, sover eller blockeras av nätverket.
-             closeModal("cartCheckoutModal");
-             openEmailFallback(firstName, lastName, phone, email, delivery, delivery === "shipping" ? `${address}, ${postal} ${city}` : "", message);
+             const errorMessage = error?.name === "AbortError"
+                 ? "Beställningsservern tog för lång tid på sig. Kontrollera din internetanslutning och försök igen."
+                 : (error?.message || "Beställningen kunde inte skickas.");
 
-             cart = [];
-             saveCart();
+             alert(
+                 "Beställningen skickades inte. ♡\n\n" +
+                 errorMessage +
+                 "\n\nFörsök igen. Ingen beställning har bekräftats."
+             );
          } finally {
              if (button) {
                  button.disabled = false;
