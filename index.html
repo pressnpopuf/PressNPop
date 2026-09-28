@@ -1450,11 +1450,39 @@
 
         #productModal .product-modal-box {
             padding: 20px 14px;
+            max-height: calc(100vh - 20px);
+            overflow-y: auto;
+            border-radius: 24px;
         }
 
+        /* På mobil ska produktbilderna alltid komma först.
+           Alternativen visas under bilderna och nås genom att skrolla ned. */
         #productModal .product-detail-grid {
-            grid-template-columns: minmax(0, 0.9fr) minmax(220px, 1.1fr);
-            gap: 12px;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        #productModal .product-gallery {
+            position: static;
+            width: 100%;
+        }
+
+        #productModal .gallery-main {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            max-height: none;
+        }
+
+        #productModal .gallery-thumbs {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #productModal .product-detail-content {
+            width: 100%;
+            max-height: none;
+            overflow: visible;
+            padding-right: 0;
         }
 
         #productModal .product-detail-content h2 {
