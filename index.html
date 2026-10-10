@@ -4582,7 +4582,7 @@
         const options = item.options || {};
         if (options.form) lines.push(`   Form: ${escapeEmailText(options.form)}`);
         if (options.changes) lines.push(`   Ändringar: ${escapeEmailText(options.changes)}`);
-        if (options.inspoFile) lines.push(`   Inspo-bild: ${escapeEmailText(options.inspoFile)} (bifoga bilden i mailet om den inte följer med automatiskt)`);
+        if (options.inspoFile) lines.push(`   Inspo-bild: ${escapeEmailText(options.inspoFile)} (bifogad i mejlet)`);
         return lines.join("\n");
     }
 
@@ -4632,10 +4632,12 @@
          lines.push(`Frakt: ${getShippingFee()} kr`);
          lines.push(`Totalt: ${getCartSubtotal() + getShippingFee()} kr`);
          lines.push("");
-         lines.push("Betalning via Swish: 123 705 2459.");
-         lines.push("Kontrollera totalsumman och invänta bekräftelse från PressN’Pop innan betalning om du är osäker.");
-         lines.push("");
-         lines.push("Inspo-bilder finns bifogade i detta mejl.");
+         lines.push(`Betalning: kunden ska swisha ${getCartSubtotal() + getShippingFee()} kr till 123 705 24 59.`);
+         lines.push(`Matcha betalningen mot namn (${firstName} ${lastName}) och telefonnummer (${phone}).`);
+         if (cart.some(item => item?.options?.inspoData)) {
+             lines.push("");
+             lines.push("Kundens inspo-bilder är bifogade i detta mejl.");
+         }
 
          return lines.filter(Boolean).join("\r\n");
      }
@@ -4704,31 +4706,115 @@
          setTimeout(() => URL.revokeObjectURL(url), 60000);
      }
 
+     function postOrderViaHiddenForm(fields, files) {
+         return new Promise(resolve => {
+             const frameName = "orderSendFrame" + Date.now();
+             const iframe = document.createElement("iframe");
+             iframe.name = frameName;
+             iframe.style.display = "none";
+
+             const form = document.createElement("form");
+             form.method = "POST";
+             form.action = "https://formsubmit.co/pressnpop.uf@gmail.com";
+             form.enctype = "multipart/form-data";
+             form.target = frameName;
+             form.style.display = "none";
+
+             fields.forEach(([name, value]) => {
+                 const field = document.createElement("textarea");
+                 field.name = name;
+                 field.value = String(value);
+                 form.appendChild(field);
+             });
+
+             try {
+                 files.forEach(file => {
+                     const binary = atob(file.base64);
+                     const bytes = new Uint8Array(binary.length);
+                     for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+                     const input = document.createElement("input");
+                     input.type = "file";
+                     input.name = "attachment";
+                     const transfer = new DataTransfer();
+                     transfer.items.add(new File([bytes], file.name, { type: file.mimeType || "application/octet-stream" }));
+                     input.files = transfer.files;
+                     form.appendChild(input);
+                 });
+             } catch (error) {
+                 console.warn("Kunde inte lägga till bilagor i formuläret:", error);
+                 resolve({ ok: false, message: "Bilagor kunde inte läggas till" });
+                 return;
+             }
+
+             let finished = false;
+             const finish = (ok, message) => {
+                 if (finished) return;
+                 finished = true;
+                 clearTimeout(timer);
+                 setTimeout(() => { iframe.remove(); form.remove(); }, 2000);
+                 resolve({ ok, message });
+             };
+             const timer = setTimeout(() => finish(false, "Tidsgränsen överskreds"), 30000);
+
+             document.body.appendChild(iframe);
+             document.body.appendChild(form);
+
+             // Vänta så att ramens egen första (tomma) laddning hinner passera innan vi skickar.
+             setTimeout(() => {
+                 iframe.addEventListener("load", () => finish(true, ""));
+                 form.submit();
+             }, 100);
+         });
+     }
+
      // Skickar beställningen som mejl via FormSubmit (ingen egen server behövs).
-     async function sendOrderAutomatically(subject, body, customerName, customerEmail, files) {
+     async function postOrderToFormSubmit(subject, body, customerName, customerEmail, files) {
          const formData = new FormData();
          formData.append("_subject", subject);
          formData.append("_template", "table");
          formData.append("_captcha", "false");
          formData.append("name", customerName);
          formData.append("email", customerEmail);
-         formData.append("Beställning", body);
+         formData.append("Bestallning", body);
 
-         files.forEach(file => {
-             const binary = atob(file.base64);
-             const bytes = new Uint8Array(binary.length);
-             for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-             formData.append("attachment", new Blob([bytes], { type: file.mimeType || "application/octet-stream" }), file.name);
-         });
+         // Automatisk bekräftelse till kunden (skickas till e-postadressen kunden angav).
+         const orderTotal = getCartSubtotal() + getShippingFee();
+         formData.append("_autoresponse",
+             "Hej " + customerName + "!\n\n" +
+             "Tack för din beställning hos PressN’Pop UF! ♡\n\n" +
+             "Nästa steg är att swisha " + orderTotal.toLocaleString("sv-SE") + " kr till 123 705 24 59.\n" +
+             "Swisha exakt den summan, och använd samma telefonnummer som du angav i beställningen så att vi kan matcha din betalning.\n\n" +
+             "När vi har fått din betalning börjar vi göra dina naglar. Vi återkommer med information om leverans eller upphämtning.\n\n" +
+             "Har du frågor? Svara på det här mejlet eller kontakta oss på pressnpop.uf@gmail.com.\n\n" +
+             "Kram,\nPressN’Pop UF"
+         );
+
+         // Bilagor stöds inte av FormSubmits AJAX-läge. Med bilder skickas därför ett vanligt
+         // formulär (multipart) via en dold ram, vilket är det sätt FormSubmit stöder bilagor på.
+         if (files.length) {
+             return postOrderViaHiddenForm(Array.from(formData.entries()), files);
+         }
 
          const response = await fetch("https://formsubmit.co/ajax/pressnpop.uf@gmail.com", {
              method: "POST",
              headers: { "Accept": "application/json" },
              body: formData
          });
-         if (!response.ok) return false;
          const result = await response.json().catch(() => ({}));
-         return result.success === true || result.success === "true";
+         const ok = response.ok && (result.success === true || result.success === "true");
+         if (!ok) console.warn("FormSubmit svarade:", response.status, result);
+         return { ok, message: result.message || ("HTTP " + response.status) };
+     }
+
+     async function sendOrderAutomatically(subject, body, customerName, customerEmail, files) {
+         // Försök först med bilagor, och om det inte går igenom utan bilagor så att beställningen ändå når fram.
+         let result = await postOrderToFormSubmit(subject, body, customerName, customerEmail, files);
+         if (!result.ok && files.length) {
+             const noFilesBody = body + "\r\n\r\n(OBS: Kundens inspo-bild kunde inte bifogas automatiskt. Be kunden skicka den separat.)";
+             result = await postOrderToFormSubmit(subject, noFilesBody, customerName, customerEmail, []);
+         }
+         window.lastOrderSendError = result.ok ? "" : result.message;
+         return result.ok;
      }
 
      async function finalizeCartCheckout() {
@@ -4791,8 +4877,10 @@
                  const match = data.match(/^data:([^;,]+)?;base64,(.+)$/);
                  if (!match) continue;
 
+                 const rawName = safeAttachmentName(item.options?.inspoFile || "inspo-bild.jpg");
+                 const isJpeg = (match[1] || "") === "image/jpeg";
                  attachments.push({
-                     name: safeAttachmentName(item.options?.inspoFile || "inspo-bild.jpg"),
+                     name: (item.name ? safeAttachmentName(item.name) + "-" : "") + (isJpeg ? rawName.replace(/\.[^.]+$/, "") + ".jpg" : rawName),
                      mimeType: match[1] || "application/octet-stream",
                      base64: match[2]
                  });
@@ -4851,7 +4939,7 @@
                  await createOrderEmailFile("pressnpop.uf@gmail.com", subject, body, attachments);
                  closeModal("cartCheckoutModal");
                  alert(
-                     "Vi kunde inte skicka beställningen automatiskt. ♡\n\n" +
+                     "Vi kunde inte skicka beställningen automatiskt" + (window.lastOrderSendError ? " (" + window.lastOrderSendError + ")" : "") + ". ♡\n\n" +
                      "Ett färdigt beställningsmejl har laddats ner i stället:\n" +
                      "1. Öppna filen PressNPop-bestallning.eml i ditt e-postprogram.\n" +
                      "2. Tryck på Skicka för att mejla beställningen till pressnpop.uf@gmail.com.\n\n" +
@@ -5704,7 +5792,7 @@
         const sizes = getNailSizeValues("custom");
         if (!inspo) return alert("Ladda upp en inspo-bild först ♡");
         if (!allNailSizesSelected("custom")) return alert("Välj storlek för alla fem fingrar ♡");
-        const inspoData = await fileToDataURL(inspo);
+        const inspoData = await fileToInspoData(inspo);
         addItemToCart({ cartId:makeCartId(), type:"custom_nails",
             unitPrice:299, productId:"custom_nails", name:"Custom Nails", image:"bilder/custom.jpg", color:"", length:customNailData.length||"", sizes, quantity:getModalQuantity("customNailQuantity"), customer:null, options:{form:customNailData.form,length:customNailData.length,sizes,changes,inspoFile:inspo.name,inspoData} });
         closeModal("customNailsModal");
@@ -5869,7 +5957,7 @@
         if (!inspo) return alert("Ladda upp en inspo-bild först ♡");
         if (!allCustomToeSizesSelected(sizes)) return alert("Välj storlek för alla 5 tår ♡");
 
-        const inspoData = await fileToDataURL(inspo);
+        const inspoData = await fileToInspoData(inspo);
 
         addItemToCart({
             cartId: makeCartId(),
@@ -6086,6 +6174,26 @@
     function slugify(value) { return String(value || "").toLowerCase().replace(/[^a-z0-9åäö]+/gi, "-").replace(/^-|-$/g, ""); }
     function changeModalQuantity(id, amount) { const el=document.getElementById(id); if(!el) return; el.textContent=Math.max(1,Math.min(99,Number(el.textContent||1)+amount)); }
     function getModalQuantity(id) { return Math.max(1,Math.min(99,Number(document.getElementById(id)?.textContent||1))); }
+    // Förminskar inspo-bilder (max 1400 px, JPEG) så att de är små nog att mejla och spara i varukorgen.
+    async function fileToInspoData(file) {
+        try {
+            const bitmap = await createImageBitmap(file);
+            const scale = Math.min(1, 1400 / Math.max(bitmap.width, bitmap.height));
+            const canvas = document.createElement("canvas");
+            canvas.width = Math.round(bitmap.width * scale);
+            canvas.height = Math.round(bitmap.height * scale);
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+            const dataUrl = canvas.toDataURL("image/jpeg", 0.82);
+            return dataUrl.startsWith("data:image/jpeg") ? dataUrl : await fileToDataURL(file);
+        } catch (error) {
+            console.warn("Kunde inte förminska inspo-bilden, använder originalet:", error);
+            return fileToDataURL(file);
+        }
+    }
+
     function fileToDataURL(file) { return new Promise((resolve,reject)=>{ const r=new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(file); }); }
 
     let cart = JSON.parse(localStorage.getItem("pressnpopCart") || "[]");
