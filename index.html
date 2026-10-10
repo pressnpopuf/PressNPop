@@ -3631,12 +3631,12 @@
 
         <div style="background:#fbecef;border:1px solid #f0d6df;border-radius:15px;padding:15px;margin-bottom:18px;color:#666;font-size:13px;line-height:1.7;">
             <strong style="color:var(--morkrosa);">Så fungerar beställningen</strong><br>
-            När du trycker på knappen skapas ett färdigt beställningsmejl med dina uppgifter och valda inspo-bilder som bilagor. Öppna mejlfilen i ditt e-postprogram och tryck på Skicka. Beställningen är inte skickad förrän du själv har skickat mejlet. Sedan swishar du priset i varukorgen till 123 705 24 59.
+            När du trycker på knappen skickas din beställning direkt till PressN’Pop, tillsammans med eventuella inspo-bilder. Därefter swishar du totalbeloppet i varukorgen till 123 705 24 59.
         </div>
 
         <div class="step-buttons">
             <button class="knapp knapp-outline" type="button" onclick="closeModal('cartCheckoutModal')">← Tillbaka</button>
-            <button class="knapp" type="button" onclick="finalizeCartCheckout()">Skapa beställningsmail →</button>
+            <button class="knapp" type="button" onclick="finalizeCartCheckout()">Skicka beställning →</button>
         </div>
     </div>
 </div>
@@ -4704,6 +4704,33 @@
          setTimeout(() => URL.revokeObjectURL(url), 60000);
      }
 
+     // Skickar beställningen som mejl via FormSubmit (ingen egen server behövs).
+     async function sendOrderAutomatically(subject, body, customerName, customerEmail, files) {
+         const formData = new FormData();
+         formData.append("_subject", subject);
+         formData.append("_template", "table");
+         formData.append("_captcha", "false");
+         formData.append("name", customerName);
+         formData.append("email", customerEmail);
+         formData.append("Beställning", body);
+
+         files.forEach(file => {
+             const binary = atob(file.base64);
+             const bytes = new Uint8Array(binary.length);
+             for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+             formData.append("attachment", new Blob([bytes], { type: file.mimeType || "application/octet-stream" }), file.name);
+         });
+
+         const response = await fetch("https://formsubmit.co/ajax/pressnpop.uf@gmail.com", {
+             method: "POST",
+             headers: { "Accept": "application/json" },
+             body: formData
+         });
+         if (!response.ok) return false;
+         const result = await response.json().catch(() => ({}));
+         return result.success === true || result.success === "true";
+     }
+
      async function finalizeCartCheckout() {
          cart = cart.filter(item => item && item.name && Number(item.quantity) > 0);
          saveCart();
@@ -4740,7 +4767,7 @@
          }
 
          const button = document.querySelector('#cartCheckoutModal button[onclick="finalizeCartCheckout()"]');
-         const originalButtonText = button ? button.textContent : "Skapa beställningsmail →";
+         const originalButtonText = button ? button.textContent : "Skicka beställning →";
 
          try {
              if (button) {
@@ -4771,7 +4798,9 @@
                  });
              }
 
-             // Bifoga även produktbilden för varje vald vara, så att mottagaren ser vilka produkter kunden beställt.
+             const inspoCount = attachments.length;
+
+             // Produktbilder bifogas bara i reservfilen (.eml) om automatiskt utskick misslyckas.
              const attachedProductImages = new Set();
              for (const item of cart) {
                  const imagePath = item?.image;
@@ -4796,16 +4825,39 @@
              }
 
              const subject = `Beställning från ${firstName} ${lastName} – PressN’Pop`;
-             await createOrderEmailFile("pressnpop.uf@gmail.com", subject, body, attachments);
+             if (button) button.textContent = "Skickar beställning...";
 
-             closeModal("cartCheckoutModal");
-             alert(
-                 "Beställningsmejlet har skapats och laddats ner. ♡\n\n" +
-                 "1. Öppna filen PressNPop-bestallning.eml i ditt e-postprogram.\n" +
-                 "2. Kontrollera att texten och inspo-bilderna finns med som bilagor.\n" +
-                 "3. Tryck på Skicka för att mejla beställningen till pressnpop.uf@gmail.com.\n\n" +
-                 "Beställningen skickas inte förrän du själv trycker på Skicka. Varukorgen är kvar tills dess."
-             );
+             // Försök skicka beställningen automatiskt till PressN'Pop.
+             let sentAutomatically = false;
+             try {
+                 sentAutomatically = await sendOrderAutomatically(
+                     subject, body, `${firstName} ${lastName}`, email, attachments.slice(0, inspoCount)
+                 );
+             } catch (sendError) {
+                 console.warn("Automatiskt utskick misslyckades:", sendError);
+             }
+
+             if (sentAutomatically) {
+                 cart = [];
+                 saveCart();
+                 closeModal("cartCheckoutModal");
+                 closeModal("cartModal");
+                 alert(
+                     "Tack för din beställning! ♡\n\n" +
+                     "Din beställning har skickats till PressN’Pop. Vi återkommer med information om betalning via Swish och leverans."
+                 );
+             } else {
+                 // Reservlösning: ladda ner färdigt mejl som kunden skickar själv.
+                 await createOrderEmailFile("pressnpop.uf@gmail.com", subject, body, attachments);
+                 closeModal("cartCheckoutModal");
+                 alert(
+                     "Vi kunde inte skicka beställningen automatiskt. ♡\n\n" +
+                     "Ett färdigt beställningsmejl har laddats ner i stället:\n" +
+                     "1. Öppna filen PressNPop-bestallning.eml i ditt e-postprogram.\n" +
+                     "2. Tryck på Skicka för att mejla beställningen till pressnpop.uf@gmail.com.\n\n" +
+                     "Beställningen är inte skickad förrän du själv trycker på Skicka. Varukorgen är kvar tills dess."
+                 );
+             }
          } catch (error) {
              console.error("Kunde inte skapa beställningsmejlet:", error);
              alert("Beställningsmejlet kunde inte skapas. Försök igen eller kontakta pressnpop.uf@gmail.com.");
