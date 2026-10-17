@@ -2928,9 +2928,9 @@ footer a:hover { color:#f2cbd7 !important; }
         <div class="site-menu-sublist">
             <a href="#naglar" onclick="closeSiteDetailMenu()">Se alla naglar</a>
             <a href="#naglar" onclick="openMenuProduct('Vanilla Vibe')">Vanilla Vibe</a>
-            <a href="#naglar" onclick="openMenuProduct('Coco Cloud')">Coco Cloud</a>
             <a href="#naglar" onclick="openMenuProduct('Peach Pop')">Peach Pop</a>
             <a href="#naglar" onclick="openMenuProduct('Pearl Press')">Pearl Press</a>
+            <a href="#naglar" onclick="openMenuProduct('Coco Cloud')">Coco Cloud</a>
             <a href="#naglar" onclick="openMenuProduct('Bubble Bliss')">Bubble Bliss</a>
             <a href="#naglar" onclick="openMenuProduct('Sugar Swirl')">Sugar Swirl</a>
         </div>
@@ -3085,20 +3085,20 @@ footer a:hover { color:#f2cbd7 !important; }
             </div>
         </div>
 
-        <div class="nagel-kort product-card" onclick="openProductDetail(2)">
+        <div class="nagel-kort product-card" onclick="openProductDetail(3)">
             <div class="nagel-bild">
-                <img src="bilder/cococloud1.jpg" alt="Coco Cloud naglar"
+                <img src="bilder/peachpop1.jpg" alt="Peach Pop naglar"
                      onerror="this.style.display='none'">
-                <img src="bilder/cococloud2.jpg" alt="Coco Cloud naglar – bild 2"
+                <img src="bilder/peachpop2.jpg" alt="Peach Pop naglar – bild 2"
                      onerror="this.remove()">
 </div>
 
             <div class="nagel-info">
-                <h3>Coco Cloud</h3>
-                <div class="product-card-price">199 kr</div>
-                <p>Enfärgad nude nyans </p>
+                <h3>Peach Pop</h3>
+                <div class="product-card-price">279 kr</div>
+                <p>Lite mer design och detaljer </p>
 
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Coco Cloud')">
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Peach Pop')">
                     Visa produkt
                 </button>
             </div>
@@ -3123,20 +3123,20 @@ footer a:hover { color:#f2cbd7 !important; }
             </div>
         </div>
 
-        <div class="nagel-kort product-card" onclick="openProductDetail(3)">
+        <div class="nagel-kort product-card" onclick="openProductDetail(2)">
             <div class="nagel-bild">
-                <img src="bilder/peachpop1.jpg" alt="Peach Pop naglar"
+                <img src="bilder/cococloud1.jpg" alt="Coco Cloud naglar"
                      onerror="this.style.display='none'">
-                <img src="bilder/peachpop2.jpg" alt="Peach Pop naglar – bild 2"
+                <img src="bilder/cococloud2.jpg" alt="Coco Cloud naglar – bild 2"
                      onerror="this.remove()">
 </div>
 
             <div class="nagel-info">
-                <h3>Peach Pop</h3>
-                <div class="product-card-price">279 kr</div>
-                <p>Lite mer design och detaljer </p>
+                <h3>Coco Cloud</h3>
+                <div class="product-card-price">199 kr</div>
+                <p>Enfärgad nude nyans </p>
 
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Peach Pop')">
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Coco Cloud')">
                     Visa produkt
                 </button>
             </div>
@@ -7295,7 +7295,7 @@ footer a:hover { color:#f2cbd7 !important; }
         ).join("");
 
         if (info.mode === "single") {
-            document.getElementById("extraDesignOptions").innerHTML = readyProducts.map(product =>
+            document.getElementById("extraDesignOptions").innerHTML = ["Vanilla Vibe","Peach Pop","Pearl Press","Coco Cloud","Bubble Bliss","Sugar Swirl"].map(n => getProductByName(n)).filter(Boolean).map(product =>
                 `<button type="button" class="choice-button" data-design="${product.name}" onclick="selectExtraDesign(this)">${product.name}</button>`
             ).join("");
             renderSingleNailSelections();
