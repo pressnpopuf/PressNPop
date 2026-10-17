@@ -2854,10 +2854,9 @@ footer a:hover { color:#f2cbd7 !important; }
 #extraModal .product-material-note strong { display:block; margin-top:4px; }
 #extraModal .product-material-note strong:first-child { margin-top:0; }
 
-/* Skyddspopup */
-#protectionModal { z-index:3500; }
-#protectionModal .modal-box { width:min(560px,100%); max-width:560px; padding:30px 28px; max-height:calc(100vh - 24px); overflow-y:auto; }
-#protectionModal h2 { margin:0 0 6px; }
+/* Skydd i varukorgen */
+.cart-protections { margin:18px 0 6px; }
+.cart-protections h3 { margin:0 0 4px; font-size:18px; }
 .protection-sub { color:#76686c; font-size:14px; line-height:1.6; margin:0 0 18px; }
 .protection-option { display:block; width:100%; text-align:left; background:#fffdfc; border:1.5px solid #e7d6dc; border-radius:16px; padding:16px 18px; margin-bottom:12px; cursor:pointer; font-family:inherit; transition:border-color .2s, background .2s; }
 .protection-option:hover { border-color:#d9aebd; }
@@ -2866,7 +2865,6 @@ footer a:hover { color:#f2cbd7 !important; }
 .protection-option p { margin:8px 0 10px; color:#6b5a60; font-size:13.5px; line-height:1.6; }
 .protection-option-check { font-size:13px; font-weight:600; color:#8a6574; }
 .protection-option.selected .protection-option-check { color:var(--morkrosa); }
-#protectionModal .knapp { width:100%; margin-top:6px; }
 
 /* Tydlig fraktbubbla för produkter med fri frakt */
 .extra-card { position:relative; overflow:visible; }
@@ -4012,31 +4010,6 @@ footer a:hover { color:#f2cbd7 !important; }
 </div>
 
 <!-- =====================================================
-     SKYDD – ERBJUDS INNAN KUNDEN SER TOTALEN
-===================================================== -->
-
-<div class="modal" id="protectionModal">
-    <div class="modal-box">
-        <h2>Vill du skydda din beställning?</h2>
-        <p class="protection-sub">Valfritt – välj ett, båda eller inget. Du ser totalbeloppet i nästa steg.</p>
-
-        <button type="button" class="protection-option" id="protectionSizeOption" onclick="toggleProtection('size')">
-            <div class="protection-option-top"><span>Storleksskydd</span><span data-protection-price="size"></span></div>
-            <p>Passar max 2 av dina storlekar inte? Då skapar vi 2 nya storlekar åt dig – alltså 4 nya naglar – för ett fast pris.</p>
-            <span class="protection-option-check" id="protectionSizeCheck">Lägg till</span>
-        </button>
-
-        <button type="button" class="protection-option" id="protectionItemOption" onclick="toggleProtection('item')">
-            <div class="protection-option-top"><span>Nagelskydd</span><span data-protection-price="item"></span></div>
-            <p>Nagelskyddet gäller för <strong>ett (1) nagelset</strong> och ersätter upp till 2 naglar om en nagel bryts, tappas bort eller förstörs enligt skyddets villkor. Skyddet täcker inte flera set. Vill du skydda fler set behöver du köpa ett separat nagelskydd för varje set.</p>
-            <span class="protection-option-check" id="protectionItemCheck">Lägg till</span>
-        </button>
-
-        <button class="knapp" type="button" id="protectionContinue" onclick="confirmProtections()">Fortsätt</button>
-    </div>
-</div>
-
-<!-- =====================================================
      VARUKORG
 ===================================================== -->
 
@@ -4065,6 +4038,8 @@ footer a:hover { color:#f2cbd7 !important; }
         </div>
 
         <div id="cartItems"></div>
+
+        <div id="cartProtections"></div>
 
         <div class="cart-empty" id="cartEmpty">
             <div class="cart-empty-icon">🛒</div>
@@ -5155,8 +5130,6 @@ footer a:hover { color:#f2cbd7 !important; }
             alert("Din varukorg är tom ");
             return;
         }
-
-        if (shouldOfferProtections()) { openProtectionOffer(); return; }
 
         [
             "cartCheckoutFirstName", "cartCheckoutLastName", "cartCheckoutPhone",
@@ -6903,7 +6876,6 @@ footer a:hover { color:#f2cbd7 !important; }
 
     function saveCart() {
         if (!cart.some(isSetItem)) cart = cart.filter(item => !isProtectionItem(item));
-        if (!cart.length) localStorage.removeItem("pnpProtectionAsked");
         localStorage.setItem("pressnpopCart", JSON.stringify(cart));
         updateCartUI();
     }
@@ -7569,8 +7541,6 @@ footer a:hover { color:#f2cbd7 !important; }
         size: { type: "protection_size", name: "Storleksskydd", note: "Om max 2 storlekar inte passar skapar vi 2 nya storlekar – alltså 4 nya naglar." },
         item: { type: "protection_item", name: "Nagelskydd", note: "Gäller endast ett (1) nagelset. Ersätter upp till 2 naglar om en nagel bryts, tappas bort eller förstörs enligt skyddets villkor. Ett separat skydd krävs för varje set." }
     };
-    let protectionChoice = { size: false, item: false };
-
     function isSetItem(item) {
         return ["ready_nails", "ready_toes", "custom_nails", "custom_toes"].includes(item && item.type);
     }
@@ -7579,40 +7549,12 @@ footer a:hover { color:#f2cbd7 !important; }
         return !!item && typeof item.type === "string" && item.type.startsWith("protection_");
     }
 
-    function shouldOfferProtections() {
-        return cart.some(isSetItem) && localStorage.getItem("pnpProtectionAsked") !== "1";
-    }
-
-    function renderProtectionOptions() {
-        [["size", "protectionSizeOption", "protectionSizeCheck"], ["item", "protectionItemOption", "protectionItemCheck"]].forEach(([key, boxId, checkId]) => {
-            const box = document.getElementById(boxId);
-            const check = document.getElementById(checkId);
-            if (box) box.classList.toggle("selected", protectionChoice[key]);
-            if (check) check.textContent = protectionChoice[key] ? "✓ Tillagt" : "Lägg till";
-        });
-        const btn = document.getElementById("protectionContinue");
-        if (btn) btn.textContent = (protectionChoice.size || protectionChoice.item) ? "Fortsätt med valt skydd" : "Fortsätt utan skydd";
-    }
-
-    function openProtectionOffer() {
-        protectionChoice = {
-            size: cart.some(item => item.type === "protection_size"),
-            item: cart.some(item => item.type === "protection_item")
-        };
-        renderProtectionOptions();
-        document.getElementById("protectionModal").classList.add("active");
-    }
-
-    function toggleProtection(key) {
-        protectionChoice[key] = !protectionChoice[key];
-        renderProtectionOptions();
-    }
-
-    function confirmProtections() {
-        cart = cart.filter(item => !isProtectionItem(item));
-        ["size", "item"].forEach(key => {
-            if (!protectionChoice[key]) return;
-            const info = PROTECTION_INFO[key];
+    function toggleCartProtection(key) {
+        const info = PROTECTION_INFO[key];
+        if (!info) return;
+        if (cart.some(item => item.type === info.type)) {
+            cart = cart.filter(item => item.type !== info.type);
+        } else {
             cart.push({
                 cartId: makeCartId(),
                 type: info.type,
@@ -7623,11 +7565,30 @@ footer a:hover { color:#f2cbd7 !important; }
                 options: { note: info.note },
                 unitPrice: PROTECTION_PRICES[key]
             });
-        });
-        localStorage.setItem("pnpProtectionAsked", "1");
+        }
         saveCart();
-        closeModal("protectionModal");
-        openCart(true);
+    }
+
+    function renderCartProtections() {
+        const box = document.getElementById("cartProtections");
+        if (!box) return;
+        if (!cart.some(isSetItem)) { box.innerHTML = ""; return; }
+        const options = [
+            ["size", "Storleksskydd", `Passar max 2 av dina storlekar inte? Då skapar vi 2 nya storlekar åt dig – alltså 4 nya naglar – för ett fast pris.`],
+            ["item", "Nagelskydd", `Nagelskyddet gäller för <strong>ett (1) nagelset</strong> och ersätter upp till 2 naglar om en nagel bryts, tappas bort eller förstörs enligt skyddets villkor. Skyddet täcker inte flera set. Vill du skydda fler set behöver du köpa ett separat nagelskydd för varje set.`]
+        ];
+        box.innerHTML = `<div class="cart-protections">
+            <h3>Skydd – valfritt</h3>
+            <p class="protection-sub">Lägg till ett, båda eller inget. Du kan lägga till eller ta bort dem när du vill.</p>
+            ${options.map(([key, title, desc]) => {
+                const added = cart.some(item => item.type === PROTECTION_INFO[key].type);
+                return `<button type="button" class="protection-option${added ? " selected" : ""}" onclick="toggleCartProtection('${key}')">
+                    <div class="protection-option-top"><span>${title}</span><span>${PROTECTION_PRICES[key].toLocaleString("sv-SE")} kr</span></div>
+                    <p>${desc}</p>
+                    <span class="protection-option-check">${added ? "✓ Tillagt – tryck för att ta bort" : "Lägg till"}</span>
+                </button>`;
+            }).join("")}
+        </div>`;
     }
 
     function getCartItemUnitPrice(item) {
@@ -7724,6 +7685,8 @@ footer a:hover { color:#f2cbd7 !important; }
 
         if (!cart.length) {
             container.innerHTML = "";
+            const protEmpty = document.getElementById("cartProtections");
+            if (protEmpty) protEmpty.innerHTML = "";
             empty.style.display = "block";
             footer.style.display = "none";
             return;
@@ -7783,11 +7746,11 @@ footer a:hover { color:#f2cbd7 !important; }
             </div>`;
         }).join("");
 
+        renderCartProtections();
         updateCartTotals();
     }
 
     function openCart(skipOffer) {
-        if (skipOffer !== true && shouldOfferProtections()) { openProtectionOffer(); return; }
         updateCartUI();
         document.getElementById("cartModal").classList.add("active");
     }
