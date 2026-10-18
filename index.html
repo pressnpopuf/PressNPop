@@ -2669,7 +2669,8 @@ section { padding:clamp(62px,7vw,96px) clamp(18px,7vw,100px); }
 .custom-text h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(42px,4vw,55px); font-weight:600; line-height:1.05; }
 .custom-text p { color:#76686c; line-height:1.85; font-size:14px; }
 .custom-bild { min-height:300px; border:1px solid #ecd7df; border-radius:28px; background:radial-gradient(circle at 28% 24%,#f8e3e9,transparent 38%),radial-gradient(circle at 75% 80%,#f0e1d0,transparent 42%),linear-gradient(135deg,#fff,#fbf0f2); box-shadow:var(--shadow-soft); overflow:hidden; }
-.custom-bild img { width:100%; height:100%; min-height:300px; object-fit:cover; }
+.custom-bild { width:min(390px,100%); height:auto; aspect-ratio:1/1; padding:0; border-radius:28px; }
+.custom-bild img { display:block; width:100%; height:100%; min-height:0; object-fit:cover; border-radius:0; }
 .about-section { background:#fffdfb; }
 .about-content { gap:clamp(28px,5vw,72px); align-items:center; }
 .about-text h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(44px,5vw,58px); font-weight:600; }
@@ -2761,8 +2762,8 @@ footer a:hover { color:#f2cbd7 !important; }
     .hero-logo { align-self:center; width:min(68vw,330px); height:min(68vw,330px); min-width:0; min-height:0; margin-top:16px; }
     .hero-text h1 { font-size:clamp(56px,11vw,78px); }
     .custom { display:flex; flex-direction:column; align-items:stretch; }
-    .custom-bild { width:100%; min-height:210px; }
-    .custom-bild img { min-height:210px; }
+    .custom-bild { width:100%; max-width:360px; margin:0 auto; min-height:0; aspect-ratio:1/1; height:auto; }
+    .custom-bild img { min-height:0; }
     .about-content { display:grid; grid-template-columns:1fr; }
     .about-card { max-width:620px; width:100%; margin:auto; }
 }
@@ -2856,15 +2857,23 @@ footer a:hover { color:#f2cbd7 !important; }
 
 /* Skydd i varukorgen */
 .cart-protections { margin:18px 0 6px; }
-.cart-protections h3 { margin:0 0 4px; font-size:18px; }
-.protection-sub { color:#76686c; font-size:14px; line-height:1.6; margin:0 0 18px; }
-.protection-option { display:block; width:100%; text-align:left; background:#fffdfc; border:1.5px solid #e7d6dc; border-radius:16px; padding:16px 18px; margin-bottom:12px; cursor:pointer; font-family:inherit; transition:border-color .2s, background .2s; }
-.protection-option:hover { border-color:#d9aebd; }
+.cart-protections h3 { margin:0 0 4px; font-size:16px; }
+.protection-sub { color:#76686c; font-size:12.5px; line-height:1.5; margin:0 0 12px; }
+.protection-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; align-items:start; }
+.protection-option { background:#fffdfc; border:1.5px solid #e7d6dc; border-radius:14px; padding:12px 13px; transition:border-color .2s, background .2s; }
 .protection-option.selected { border-color:var(--rosa); background:#fff0f4; }
-.protection-option-top { display:flex; justify-content:space-between; align-items:center; gap:12px; font-weight:600; color:var(--morkrosa); font-size:16px; }
-.protection-option p { margin:8px 0 10px; color:#6b5a60; font-size:13.5px; line-height:1.6; }
-.protection-option-check { font-size:13px; font-weight:600; color:#8a6574; }
-.protection-option.selected .protection-option-check { color:var(--morkrosa); }
+.protection-option-top { display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-weight:600; color:var(--morkrosa); font-size:14px; }
+.protection-option-top span:last-child { font-size:13px; white-space:nowrap; }
+.protection-option .protection-short { margin:5px 0 9px; color:#6b5a60; font-size:12px; line-height:1.45; }
+.protection-actions { display:flex; gap:6px; flex-wrap:wrap; }
+.protection-actions button { font-family:inherit; font-size:12px; border-radius:999px; padding:6px 11px; cursor:pointer; border:1px solid #e1c9d1; background:#fff; color:var(--morkrosa); }
+.protection-actions button.protection-add { background:var(--rosa); border-color:var(--rosa); color:#fff; }
+.protection-option.selected .protection-actions button.protection-add { background:#fff; color:var(--morkrosa); border-color:var(--rosa); }
+.protection-actions button:hover { border-color:var(--morkrosa); }
+.protection-more { margin-top:9px; padding-top:8px; border-top:1px solid #f0dce1; }
+.protection-more ul { margin:0; padding-left:16px; color:#6b5a60; font-size:12px; line-height:1.55; }
+.protection-more li { margin-bottom:3px; }
+@media (max-width:420px) { .protection-grid { grid-template-columns:1fr; } }
 
 /* Tydlig fraktbubbla för produkter med fri frakt */
 .extra-card { position:relative; overflow:visible; }
@@ -3093,7 +3102,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
             <div class="nagel-info">
                 <h3>Peach Pop</h3>
-                <div class="product-card-price">279 kr</div>
+                <div class="product-card-price">199 kr</div>
                 <p>Lite mer design och detaljer </p>
 
                 <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Peach Pop')">
@@ -3131,7 +3140,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
             <div class="nagel-info">
                 <h3>Coco Cloud</h3>
-                <div class="product-card-price">199 kr</div>
+                <div class="product-card-price">279 kr</div>
                 <p>Enfärgad nude nyans </p>
 
                 <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Coco Cloud')">
@@ -3879,13 +3888,11 @@ footer a:hover { color:#f2cbd7 !important; }
             <div class="product-detail-content">
                 <span class="product-label">PressN’Pop</span>
                 <h2 id="productTitle">Produkt</h2>
-                <p id="productDescription" class="product-description"></p>
-
                 <div class="product-material-note" id="productMaterialNote">
-                    <strong>Material och finish</strong>
-                    Naglarna är handgjorda press-on naglar med geléprodukter för en slät och glansig finish. Varje set görs för hand med omsorg och kan användas igen om naglarna tas av varsamt och sköts enligt instruktionerna.
+                    <strong>Produktbeskrivning</strong>
+                    <span id="productDescription"></span>
                     <br><br><strong>Om gelén</strong>
-                    Naglarna är byggda med geleprodukter som är starka, hållbara och köpta från Sverige och EU. Gelén är fri från skadliga kemikalier.
+                    <span id="productGelInfo"></span>
                 </div>
 
                 <div class="included-product-note">
@@ -4071,7 +4078,7 @@ footer a:hover { color:#f2cbd7 !important; }
             </div>
 
             <p class="shipping-note">
-                Frakten räknas endast på vanliga nagelset och tåset. Skydd, Size Kit, enstaka naglar, Refresh och Refresh Redesign ökar inte fraktpriset. Size Kit och enstaka naglar har fri frakt. För Refresh och Refresh Redesign betalar du själv frakten när du skickar in naglarna till oss. 1 set 22 kr · 2–3 set 44 kr · 4–7 set 66 kr · 8 set eller fler 88 kr.
+                Frakt räknas bara på nagelset och tåset: 1 set 22 kr · 2–3 set 44 kr · 4–7 set 66 kr · 8 set eller fler 88 kr. Size Kit och enstaka naglar har fri frakt. Vid Refresh betalar du själv frakten när du skickar in naglarna till oss.
             </p>
 
             <div class="swish-cart-note" style="background:#fff0f4;border:1px solid #edc3d0;border-radius:14px;padding:16px;margin:14px 0;color:#743047;line-height:1.6;">
@@ -6686,12 +6693,12 @@ footer a:hover { color:#f2cbd7 !important; }
     ===================================================== */
 
     const readyToes = [
-        { name: "White Toes", price: 299, description: "White Toes är ett klassiskt helvitt tåset för en ren, fräsch och minimalistisk look.", image: "bilder/whitetoes1.jpg", images: ["bilder/whitetoes1.jpg","bilder/whitetoes2.jpg"] },
-        { name: "Light Pink Toes", price: 299, description: "Light Pink Toes har en ljusrosa, diskret nyans som ger tårna ett mjukt och elegant uttryck.", image: "bilder/lightpinktoes1.jpg", images: ["bilder/lightpinktoes1.jpg","bilder/lightpinktoes2.jpg"] },
-        { name: "Pink Toes", price: 299, description: "Pink Toes ger en tydligare rosa färg och en mjuk, feminin känsla – fint när du vill ha lite mer färg.", image: "bilder/pinktoes1.jpg", images: ["bilder/pinktoes1.jpg","bilder/pinktoes2.jpg"] },
-        { name: "Nude Toes", price: 299, description: "Nude Toes har en naturlig nude-ton som är enkel att matcha med olika outfits och tillfällen.", image: "bilder/nudetoes1.jpg", images: ["bilder/nudetoes1.jpg","bilder/nudetoes2.jpg"] },
-        { name: "Peach Toes", price: 299, description: "Peach Toes har en varm persikoton som ger en fräsch och mjuk färg på tårna.", image: "bilder/peachtoes1.jpg", images: ["bilder/peachtoes1.jpg","bilder/peachtoes2.jpg"] },
-        { name: "French Toes", price: 349, description: "French Toes har en klassisk french-design. Välj basfärg mellan Light Pink, Pink, Nude eller Peach för att anpassa uttrycket.", image: "bilder/frenchtoes1.jpg", images: ["bilder/frenchtoes1.jpg","bilder/frenchtoes2.jpg"] }
+        { name: "White Toes", price: 299, description: "White Toes är ett klassiskt helvitt tåset för en ren, fräsch och minimalistisk look.", gelInfo: "Naglarna är byggda med gelén SOFT WHITE från Depend som är en vit nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/whitetoes1.jpg", images: ["bilder/whitetoes1.jpg","bilder/whitetoes2.jpg"] },
+        { name: "Light Pink Toes", price: 299, description: "Light Pink Toes har en ljusrosa, diskret nyans som ger tårna ett mjukt och elegant uttryck.", gelInfo: "Naglarna är byggda med gelén PINK RIBBON från Chewali som är en ljusrosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/lightpinktoes1.jpg", images: ["bilder/lightpinktoes1.jpg","bilder/lightpinktoes2.jpg"] },
+        { name: "Pink Toes", price: 299, description: "Pink Toes ger en tydligare rosa färg och en mjuk, feminin känsla – fint när du vill ha lite mer färg.", gelInfo: "Naglarna är byggda med gelén FANCY PINK från Missfancy som är en rosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/pinktoes1.jpg", images: ["bilder/pinktoes1.jpg","bilder/pinktoes2.jpg"] },
+        { name: "Nude Toes", price: 299, description: "Nude Toes har en naturlig nude-ton som är enkel att matcha med olika outfits och tillfällen.", gelInfo: "Naglarna är byggda med gelén DUNE från Chewali som är en nude nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/nudetoes1.jpg", images: ["bilder/nudetoes1.jpg","bilder/nudetoes2.jpg"] },
+        { name: "Peach Toes", price: 299, description: "Peach Toes har en varm persikoton som ger en fräsch och mjuk färg på tårna.", gelInfo: "Naglarna är byggda med gelén SOFT PEACH från Missfancy som är en peach nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/peachtoes1.jpg", images: ["bilder/peachtoes1.jpg","bilder/peachtoes2.jpg"] },
+        { name: "French Toes", price: 349, description: "French Toes har en klassisk french-design. Välj basfärg mellan Light Pink, Pink, Nude eller Peach för att anpassa uttrycket.", gelInfo: "Basfärgen är byggd med gelén PINK RIBBON från Chewali (ljusrosa), FANCY PINK från Missfancy (rosa), DUNE från Chewali (nude) eller SOFT PEACH från Missfancy (peach), beroende på vilken färg du väljer. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/frenchtoes1.jpg", images: ["bilder/frenchtoes1.jpg","bilder/frenchtoes2.jpg"] }
     ];
 
     const toeColors = [
@@ -6707,7 +6714,7 @@ footer a:hover { color:#f2cbd7 !important; }
         {
             id: 1,
             name: "Vanilla Vibe", price: 199,
-            description: "Vanilla Vibe är ett stilrent, enfärgat set för dig som gillar en ren och minimalistisk look. Välj önskad färg i produktvyn.",
+            description: "Vanilla Vibe är ett klassiskt enfärgat set i en mjuk nude nyans för en ren, naturlig och minimalistisk look. Välj önskad färg i produktvyn.", gelInfo: "Naglarna är byggda med gelén DUNE från Chewali som är en nude nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
             image: "bilder/vanillavibe1.jpg",
             images: ["bilder/vanillavibe1.jpg", "bilder/vanillavibe2.jpg"],
             colors: [
@@ -6719,8 +6726,8 @@ footer a:hover { color:#f2cbd7 !important; }
         },
         {
             id: 2,
-            name: "Coco Cloud", price: 199,
-            description: "Coco Cloud har en mjuk, elegant känsla med en diskret detalj som gör designen lite mer speciell utan att bli för mycket.",
+            name: "Coco Cloud", price: 279,
+            description: "Coco Cloud är en klassisk fransk manikyr med 3D-charms i form av blommor. Ett mjukt och elegant set med en liten detalj som gör det extra speciellt.", gelInfo: "Naglarna är byggda med gelén PINK RIBBON från Chewali som är en ljusrosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
             image: "bilder/cococloud1.jpg",
             images: ["bilder/cococloud1.jpg", "bilder/cococloud2.jpg"],
             colors: [
@@ -6732,8 +6739,8 @@ footer a:hover { color:#f2cbd7 !important; }
         },
         {
             id: 3,
-            name: "Peach Pop", price: 279,
-            description: "Peach Pop har en fräsch och elegant french-inspirerad stil. Den passar dig som vill ha en klassisk design med en mjuk känsla.",
+            name: "Peach Pop", price: 199,
+            description: "Peach Pop är ett enfärgat set i en fräsch, mjuk peach nyans. Enkelt, snyggt och lätt att matcha med allt.", gelInfo: "Naglarna är byggda med gelén SOFT PEACH från Missfancy som är en peach nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
             image: "bilder/peachpop1.jpg",
             images: ["bilder/peachpop1.jpg", "bilder/peachpop2.jpg"],
             colors: [
@@ -6746,7 +6753,7 @@ footer a:hover { color:#f2cbd7 !important; }
         {
             id: 4,
             name: "Pearl Press", price: 279,
-            description: "Pearl Press har extra designdetaljer som ger setet ett mer arbetat och personligt uttryck. Ett fint val när du vill att naglarna ska sticka ut lite mer.",
+            description: "Pearl Press är en klassisk vit fransk manikyr för en ren, fräsch och tidlös look som passar till alla tillfällen.", gelInfo: "Naglarna är byggda med gelén FANCY PINK från Missfancy som är en rosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
             image: "bilder/pearlpress1.jpg",
             images: ["bilder/pearlpress1.jpg", "bilder/pearlpress2.jpg"],
             colors: [
@@ -6759,7 +6766,7 @@ footer a:hover { color:#f2cbd7 !important; }
         {
             id: 5,
             name: "Bubble Bliss", price: 349,
-            description: "Bubble Bliss kombinerar fler mönster och detaljer för en lekfull, iögonfallande look som känns mer uttrycksfull än ett enfärgat set.",
+            description: "Bubble Bliss har 3D-blommor, guldpärlor och 3D-swirls för en lekfull och detaljrik look som verkligen märks.", gelInfo: "Naglarna är byggda med gelén FANCY PINK från Missfancy som är en rosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
             image: "bilder/bubblebliss1.jpg",
             images: ["bilder/bubblebliss1.jpg", "bilder/bubblebliss2.jpg"],
             colors: [
@@ -6772,7 +6779,7 @@ footer a:hover { color:#f2cbd7 !important; }
         {
             id: 6,
             name: "Sugar Swirl", price: 349,
-            description: "Sugar Swirl har en lekfull design med flera detaljer som ger naglarna ett unikt uttryck. Passar dig som vill ha ett set som märks.",
+            description: "Sugar Swirl har leopardmönster, lite 3D-swirl och guldpärlor för en piffig och uttrycksfull look med mycket personlighet.", gelInfo: "Naglarna är byggda med gelén DUNE från Chewali som är en nude nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
             image: "bilder/sugerswirl1.jpg",
             images: ["bilder/sugerswirl1.jpg", "bilder/sugerswirl2.jpg"],
             colors: [
@@ -6914,6 +6921,7 @@ footer a:hover { color:#f2cbd7 !important; }
     function setupUnifiedProductModal(product, isToe) {
         document.getElementById("productTitle").textContent = product.name;
         document.getElementById("productDescription").textContent = product.description;
+        document.getElementById("productGelInfo").textContent = product.gelInfo || "Naglarna är byggda med geleprodukter som är starka, hållbara och köpta från Sverige och EU. Gelén är fri från skadliga kemikalier.";
         const priceEl = document.getElementById("productPrice");
         if (priceEl) priceEl.textContent = `${Number(product.price || 0).toLocaleString("sv-SE")} kr`;
         document.getElementById("productQuantity").textContent = "1";
@@ -7194,7 +7202,7 @@ footer a:hover { color:#f2cbd7 !important; }
     // ÄNDRA PRISERNA HÄR (kr per st):
     const EXTRA_PRICES = { sizekit: 59, refresh: 149, redesign: 179, single: 59 };
     // Skydd som erbjuds innan totalen visas (kr, ett fast pris per beställning):
-    const PROTECTION_PRICES = { size: 149, item: 79 };
+    const PROTECTION_PRICES = { size: 189, item: 99 };
 
     function extraPlaceholder(label) {
         return "data:image/svg+xml;utf8," + encodeURIComponent(
@@ -7538,9 +7546,35 @@ footer a:hover { color:#f2cbd7 !important; }
 
     // ---- Skydd (storleksskydd / nagelskydd) ----
     const PROTECTION_INFO = {
-        size: { type: "protection_size", name: "Storleksskydd", note: "Om max 2 storlekar inte passar skapar vi 2 nya storlekar – alltså 4 nya naglar." },
-        item: { type: "protection_item", name: "Nagelskydd", note: "Gäller endast ett (1) nagelset. Ersätter upp till 2 naglar om en nagel bryts, tappas bort eller förstörs enligt skyddets villkor. Ett separat skydd krävs för varje set." }
+        size: { type: "protection_size", name: "Storleksskydd", note: "Gäller ett set, används en gång. Max 2 storlekar byts = max 4 nya naglar, skickas gratis. Gäller i 4 månader efter köpet." },
+        item: { type: "protection_item", name: "Nagelskydd", note: "Gäller ett set, används en gång. Ersätter max 2 naglar, skickas gratis. Gäller i 4 månader efter köpet." }
     };
+    const PROTECTION_DETAILS = {
+        size: {
+            short: "Passar inte storleken? Vi gör nya.",
+            points: [
+                "Gäller ett (1) nagelset.",
+                "Kan användas en gång.",
+                "Passar max 2 av dina storlekar inte gör vi 2 nya storlekar – alltså max 4 nya naglar.",
+                "Vi skickar de nya naglarna gratis.",
+                "Gäller i 4 månader efter köpet.",
+                "Flera set? Köp ett skydd per set."
+            ]
+        },
+        item: {
+            short: "Nagel bruten eller borta? Vi gör nya.",
+            points: [
+                "Gäller ett (1) nagelset.",
+                "Kan användas en gång.",
+                "Ersätter max 2 naglar som bryts, tappas bort eller förstörs.",
+                "Vi gör nya naglar och skickar dem gratis.",
+                "Gäller i 4 månader efter köpet.",
+                "Flera set? Köp ett skydd per set."
+            ]
+        }
+    };
+    const protectionOpen = {};
+    function toggleProtectionInfo(key) { protectionOpen[key] = !protectionOpen[key]; renderCartProtections(); }
     function isSetItem(item) {
         return ["ready_nails", "ready_toes", "custom_nails", "custom_toes"].includes(item && item.type);
     }
@@ -7573,21 +7607,26 @@ footer a:hover { color:#f2cbd7 !important; }
         const box = document.getElementById("cartProtections");
         if (!box) return;
         if (!cart.some(isSetItem)) { box.innerHTML = ""; return; }
-        const options = [
-            ["size", "Storleksskydd", `Passar max 2 av dina storlekar inte? Då skapar vi 2 nya storlekar åt dig – alltså 4 nya naglar – för ett fast pris.`],
-            ["item", "Nagelskydd", `Nagelskyddet gäller för <strong>ett (1) nagelset</strong> och ersätter upp till 2 naglar om en nagel bryts, tappas bort eller förstörs enligt skyddets villkor. Skyddet täcker inte flera set. Vill du skydda fler set behöver du köpa ett separat nagelskydd för varje set.`]
-        ];
+        const options = [["size", "Storleksskydd"], ["item", "Nagelskydd"]];
         box.innerHTML = `<div class="cart-protections">
             <h3>Skydd – valfritt</h3>
-            <p class="protection-sub">Lägg till ett, båda eller inget. Du kan lägga till eller ta bort dem när du vill.</p>
-            ${options.map(([key, title, desc]) => {
+            <p class="protection-sub">Gäller ett nagelset. Lägg till, ta bort eller hoppa över.</p>
+            <div class="protection-grid">
+            ${options.map(([key, title]) => {
                 const added = cart.some(item => item.type === PROTECTION_INFO[key].type);
-                return `<button type="button" class="protection-option${added ? " selected" : ""}" onclick="toggleCartProtection('${key}')">
+                const d = PROTECTION_DETAILS[key];
+                const open = !!protectionOpen[key];
+                return `<div class="protection-option${added ? " selected" : ""}">
                     <div class="protection-option-top"><span>${title}</span><span>${PROTECTION_PRICES[key].toLocaleString("sv-SE")} kr</span></div>
-                    <p>${desc}</p>
-                    <span class="protection-option-check">${added ? "✓ Tillagt – tryck för att ta bort" : "Lägg till"}</span>
-                </button>`;
+                    <p class="protection-short">${d.short}</p>
+                    <div class="protection-actions">
+                        <button type="button" class="protection-add" onclick="toggleCartProtection('${key}')">${added ? "✓ Tillagt" : "Lägg till"}</button>
+                        <button type="button" onclick="toggleProtectionInfo('${key}')" aria-expanded="${open}">${open ? "Visa mindre" : "Läs mer"}</button>
+                    </div>
+                    ${open ? `<div class="protection-more"><ul>${d.points.map(p => `<li>${p}</li>`).join("")}</ul></div>` : ""}
+                </div>`;
             }).join("")}
+            </div>
         </div>`;
     }
 
