@@ -740,8 +740,17 @@
     }
 
     .founder span {
+        display: block;
         font-size: 12px;
+        line-height: 1.55;
         color: #888;
+    }
+
+    .product-changes-note {
+        margin: 7px 0 0;
+        color: #98868d;
+        font-size: 11px;
+        line-height: 1.45;
     }
 
     .about-card {
@@ -815,6 +824,12 @@
 
     .kontakt {
         text-align: center;
+    }
+
+    /* Flytta den lilla rubriktexten åt höger i kontaktsektionen */
+    .kontakt .rubrik span {
+        display: inline-block;
+        transform: translateX(65px);
     }
 
     .socials {
@@ -2641,7 +2656,7 @@ nav {
     box-shadow:0 5px 24px rgba(64,38,46,.035); gap:18px;
 }
 .logo-text { font-size:clamp(29px,3vw,38px); letter-spacing:-.6px; }
-.meny { gap:clamp(10px,1.45vw,23px); }
+.meny { gap:clamp(10px,1.45vw,23px); margin-left:auto; margin-right:clamp(8px,2vw,28px); }
 .meny a { font-size:13px; font-weight:500; white-space:nowrap; }
 .bestall-knapp { padding:10px 19px; }
 .site-menu-toggle { border-radius:50%; width:46px; height:46px; box-shadow:0 5px 15px rgba(77,42,54,.07); transition:transform .2s,box-shadow .2s; }
@@ -2777,7 +2792,7 @@ footer a:hover { color:#f2cbd7 !important; }
 }
 @media (max-width:850px) {
     nav { flex-wrap:wrap; min-height:70px; padding:10px 16px; }
-    .meny { order:3; width:100%; justify-content:flex-start; overflow-x:auto; padding:2px 0 5px; scrollbar-width:none; }
+    .meny { order:3; width:100%; margin-left:0; margin-right:0; justify-content:flex-start; overflow-x:auto; padding:2px 0 5px; scrollbar-width:none; }
     .meny::-webkit-scrollbar { display:none; }
     .meny a { flex:0 0 auto; }
     .site-menu-toggle { margin-left:auto; }
@@ -2821,6 +2836,7 @@ footer a:hover { color:#f2cbd7 !important; }
     .founder span { font-size:10px; }
     .bestallning .knapp { margin:0 5px 10px; }
     .socials { grid-template-columns:1fr; }
+    .kontakt .rubrik span { transform:translateX(28px); }
     .faq-item { padding:0 14px; }
     .faq-item summary { font-size:13px; }
     .site-detail-menu { right:10px; width:calc(100vw - 20px); max-height:72vh; }
@@ -3013,14 +3029,9 @@ footer a:hover { color:#f2cbd7 !important; }
 <div class="meny">
 
     <a href="#hem">Hem</a>
-    <a href="#naglar">Naglar</a>
-    <a href="#tar">Tår</a>
+    <a href="#naglar">Kollektion</a>
     <a href="#custom">Custom</a>
-    <a href="#extra-tjanster">Size Kit &amp; Refresh</a>
-    <a href="#storlek">Storlek</a>
-    <a href="#omoss">About us</a>
-    <a href="#faq">FAQ</a>
-    <a href="#kontakt">Kontakt</a>
+    <a href="#omoss">Om oss</a>
 
     <a href="#bestall" class="bestall-knapp">
         Beställ
@@ -3044,7 +3055,7 @@ footer a:hover { color:#f2cbd7 !important; }
     <a href="#sa-funkar-det" onclick="closeSiteDetailMenu()"> Så funkar det</a>
     <a href="#detta-ingar" onclick="closeSiteDetailMenu()"> Det här ingår i nagelset</a>
     <details class="site-menu-group" open>
-        <summary>Alla naglar · Nail designs</summary>
+        <summary>Alla naglar</summary>
         <div class="site-menu-sublist">
             <a href="#naglar" onclick="closeSiteDetailMenu()">Se alla naglar</a>
             <a href="#naglar" onclick="openMenuProduct('Nude')">Nude</a>
@@ -3054,26 +3065,26 @@ footer a:hover { color:#f2cbd7 !important; }
         </div>
     </details>
     <details class="site-menu-group">
-        <summary>Tår · Toe designs</summary>
+        <summary>Tådesigner</summary>
         <div class="site-menu-sublist">
             <a href="#tar" onclick="closeSiteDetailMenu()">Se alla tådesigner</a>
-            <a href="#tar" onclick="openMenuToe('French Toes')">French Toes</a>
+            <a href="#tar" onclick="openMenuToe('French Toes')">Franska tår</a>
         </div>
     </details>
     <details class="site-menu-group">
         <summary>Mer från PressN’Pop</summary>
         <div class="site-menu-sublist">
-            <a href="#extra-tjanster" onclick="openExtraFromMenu('sizekit')">Size Kit – hitta rätt storlek</a>
+            <a href="#extra-tjanster" onclick="openExtraFromMenu('sizekit')">Storlekskit – hitta rätt storlek</a>
             <a href="#extra-tjanster" onclick="openExtraFromMenu('single')">Enstaka nagel</a>
-            <a href="#extra-tjanster" onclick="openExtraFromMenu('refresh')">Refresh</a>
-            <a href="#extra-tjanster" onclick="openExtraFromMenu('redesign')">Refresh Redesign</a>
+            <a href="#extra-tjanster" onclick="openExtraFromMenu('refresh')">Uppfräschning</a>
+            <a href="#extra-tjanster" onclick="openExtraFromMenu('redesign')">Ny design</a>
         </div>
     </details>
     <details class="site-menu-group">
-        <summary>Custom · Skapa själv</summary>
+        <summary>Custom</summary>
         <div class="site-menu-sublist">
-            <a href="#custom" onclick="closeSiteDetailMenu()">Custom Nails – skapa egna naglar</a>
-            <a href="#custom" onclick="closeSiteDetailMenu()">Custom Toes – skapa egna tår</a>
+            <a href="#custom" onclick="closeSiteDetailMenu()">Custom – skapa egna naglar</a>
+            <a href="#custom" onclick="closeSiteDetailMenu()">Custom – skapa egna tår</a>
         </div>
     </details>
     <details class="site-menu-group">
@@ -3081,11 +3092,11 @@ footer a:hover { color:#f2cbd7 !important; }
         <div class="site-menu-sublist">
             <a href="#storlek" onclick="closeSiteDetailMenu()">Storleksguide för naglar</a>
             <a href="#storlek" onclick="closeSiteDetailMenu()">Storleksguide för tår</a>
-            <a href="#faq" onclick="closeSiteDetailMenu()">Vanliga frågor · FAQ</a>
+            <a href="#faq" onclick="closeSiteDetailMenu()">Vanliga frågor</a>
             <a href="#bestall" onclick="closeSiteDetailMenu()">Så beställer du</a>
         </div>
     </details>
-    <a href="#omoss" onclick="closeSiteDetailMenu()"> Om oss · About us</a>
+    <a href="#omoss" onclick="closeSiteDetailMenu()"> Om oss</a>
     <a href="#kontakt" onclick="closeSiteDetailMenu()">✉ Kontakt</a>
     <button class="site-menu-cart" type="button" onclick="openCart(); closeSiteDetailMenu()">🛒 Öppna varukorgen</button>
 </div>
@@ -3102,7 +3113,7 @@ footer a:hover { color:#f2cbd7 !important; }
 <div class="hero-text">
 
     <div class="liten-text">
-        Handgjorda press-on gel nails · Eskilstuna
+        Handmade press-on gel nails · Eskilstuna
     </div>
 
     <h1>PressN’Pop</h1>
@@ -3117,11 +3128,11 @@ footer a:hover { color:#f2cbd7 !important; }
     </p>
 
     <a href="#naglar" class="knapp">
-        Shoppa designs
+        Köp kollektion
     </a>
 
     <a href="#custom" class="knapp knapp-outline">
-        Custom your own
+        Designa eget
     </a>
 
 </div>
@@ -3146,15 +3157,15 @@ footer a:hover { color:#f2cbd7 !important; }
     <div class="rubrik">
         <span>Enkelt att hitta rätt</span>
         <h2>Din nagelresa</h2>
-        <p>Från första inspirationen till din personliga PressN’Pop-look.</p>
+        
     </div>
     <div class="how-grid">
         <article class="how-card"><span class="how-number">01</span>
-<h3>Hitta din design</h3><p>Utforska våra färdiga naglar och tådesigner, eller välj custom om du vill skapa något eget.</p><a href="#naglar">Utforska designs <span aria-hidden="true">↗</span></a></article>
+<h3>Hitta din design</h3><p>Utforska vår färdiga kollektion, eller välj custom om du vill skapa något eget.</p><a href="#naglar">Se kollektion <span aria-hidden="true">↗</span></a></article>
         <article class="how-card"><span class="how-number">02</span>
 <h3>Hitta rätt passform</h3><p>Använd storleksguiden och läs informationen på produktsidan för att välja alternativ som passar dig.</p><a href="#storlek">Se storleksguiden <span aria-hidden="true">↗</span></a></article>
         <article class="how-card"><span class="how-number">03</span>
-<h3>Gör den personlig</h3><p>Vill du ändra detaljer eller skicka en egen idé? Välj custom och berätta vad du önskar.</p><a href="#custom">Skapa custom <span aria-hidden="true">↗</span></a></article>
+<h3>Gör den personlig</h3><p>Vill du ändra detaljer eller skicka en egen idé? Välj custom och berätta vad du önskar.</p><a href="#custom">Se custom <span aria-hidden="true">↗</span></a></article>
     </div>
 </section>
 
@@ -3165,13 +3176,11 @@ footer a:hover { color:#f2cbd7 !important; }
 <section id="naglar" class="design-section">
 <div class="rubrik">
 
-    <span>Find your style</span>
+    <span>Vår kollektion</span>
 
-    <h2>Våra Naglar &amp; Tår</h2>
+    <h2>Naglar &amp; Tår</h2>
 
-    <p>
-        Välj bland våra nagel- och tådesigner för varje mood, outfit och tillfälle.
-    </p>
+    
 
 </div>
 
@@ -3378,7 +3387,7 @@ footer a:hover { color:#f2cbd7 !important; }
 ===================================================== -->
 <section id="extra-tjanster" style="background:#fffaf8;">
     <div class="rubrik">
-        <span>Care &amp; extras</span>
+        <span></span>
         <h2>Mer från PressN’Pop</h2>
         <p>Ta hand om dina set, hitta rätt storlek eller ersätt en nagel som saknas.</p>
     </div>
@@ -3388,7 +3397,7 @@ footer a:hover { color:#f2cbd7 !important; }
                 <div class="nagel-info">
                     <h3>Size Kit</h3>
                     <div class="product-card-price" data-extra-price="sizekit"></div>
-                    <p>Testa naglar i storlek 0–11 och hitta rätt storlek innan du beställer ett set. Fri frakt ingår.</p>
+                    <p>Testa tippar i storlek 0–11 och hitta rätt storlek innan du beställer ett set. Fri frakt.</p>
                     <button class="knapp" type="button" onclick="event.stopPropagation(); openExtraDetail('sizekit')">Visa produkt</button>
                 </div>
             </div>
@@ -3423,14 +3432,14 @@ footer a:hover { color:#f2cbd7 !important; }
 
 <section class="size-section" id="storlek">
 <div class="rubrik">
-    <span>Find your fit</span>
+    <span></span>
     <h2>Storleksguide</h2>
-    <p>Mät din naturliga nagel från sida till sida på den bredaste punkten för att hitta rätt storlek. Bredd anges i mm. Längden väljer du separat nedan.</p>
+    <p>Mät din naturliga nagel från sida till sida på den bredaste punkten för att hitta rätt storlek. Måtten anges i mm och är ungefärliga. Längden väljer du separat nedan.</p>
 </div>
 
 <div class="length-guide-card">
     <div class="length-guide-heading">
-        <div class="length-guide-heading-copy"><h3>Välj din perfekta längd</h3><p>Nagellängden mäts på tummen från nagelbandet till tippen. Övriga naglar anpassas proportionerligt. Måtten är ungefärliga.</p></div>
+        <div class="length-guide-heading-copy"><h3>Välj din perfekta längd</h3><p>Nagellängden mäts på tummen från nagelbandet till tippen. Övriga naglar anpassas proportionerligt. </p></div>
     </div>
     <div class="length-guide-options">
         <div class="length-guide-option"><span>Medium</span><strong>25 mm</strong></div>
@@ -3444,7 +3453,7 @@ footer a:hover { color:#f2cbd7 !important; }
 <div class="size-content">
     <div class="size-card">
         <h3>Square</h3>
-        <p>Ungefärlig bredd på Square-tippar. Samma mått gäller för medium, short och extra short.</p>
+        <p>Samma mått gäller för alla längder.</p>
         <table class="size-table">
             <tr><th>Storlek</th><th>Bredd</th></tr>
             <tr><td>00</td><td>17,0 mm</td></tr><tr><td>01</td><td>16,0 mm</td></tr><tr><td>02</td><td>15,0 mm</td></tr><tr><td>03</td><td>14,0 mm</td></tr><tr><td>04</td><td>13,0 mm</td></tr><tr><td>05</td><td>12,0 mm</td></tr><tr><td>06</td><td>12,0 mm</td></tr><tr><td>07</td><td>11,0 mm</td></tr><tr><td>08</td><td>11,0 mm</td></tr><tr><td>09</td><td>10,0 mm</td></tr><tr><td>10</td><td>9,0 mm</td></tr><tr><td>11</td><td>8,0 mm</td></tr>
@@ -3453,7 +3462,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
     <div class="size-card">
         <h3>Coffin</h3>
-        <p>Ungefärlig bredd på Coffin-tippar. Samma mått gäller för medium, short och extra short.</p>
+        <p>Samma mått gäller för alla längder.</p>
         <table class="size-table">
             <tr><th>Storlek</th><th>Bredd</th></tr>
             <tr><td>00</td><td>16,5 mm</td></tr><tr><td>01</td><td>16,0 mm</td></tr><tr><td>02</td><td>15,0 mm</td></tr><tr><td>03</td><td>14,5 mm</td></tr><tr><td>04</td><td>14,0 mm</td></tr><tr><td>05</td><td>12,5 mm</td></tr><tr><td>06</td><td>12,0 mm</td></tr><tr><td>07</td><td>11,5 mm</td></tr><tr><td>08</td><td>11,0 mm</td></tr><tr><td>09</td><td>10,5 mm</td></tr><tr><td>10</td><td>9,5 mm</td></tr><tr><td>11</td><td>8,5 mm</td></tr>
@@ -3462,7 +3471,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
     <div class="size-card">
         <h3>Almond Medium</h3>
-        <p>Ungefärlig bredd på Almond Medium-tippar.</p>
+        <p>Bredd på Almond Medium-tippar.</p>
         <table class="size-table">
             <tr><th>Storlek</th><th>Bredd</th></tr>
             <tr><td>00</td><td>17,0 mm</td></tr><tr><td>01</td><td>16,0 mm</td></tr><tr><td>02</td><td>15,0 mm</td></tr><tr><td>03</td><td>14,0 mm</td></tr><tr><td>04</td><td>13,0 mm</td></tr><tr><td>05</td><td>12,5 mm</td></tr><tr><td>06</td><td>12,0 mm</td></tr><tr><td>07</td><td>11,5 mm</td></tr><tr><td>08</td><td>11,0 mm</td></tr><tr><td>09</td><td>10,5 mm</td></tr><tr><td>10</td><td>9,5 mm</td></tr><tr><td>11</td><td>8,5 mm</td></tr>
@@ -3471,7 +3480,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
     <div class="size-card">
         <h3>Almond Short</h3>
-        <p>Ungefärlig bredd på Almond Short-tippar.</p>
+        <p>Bredd på Almond Short-tippar.</p>
         <table class="size-table">
             <tr><th>Storlek</th><th>Bredd</th></tr>
             <tr><td>00</td><td>19,0 mm</td></tr><tr><td>01</td><td>17,5 mm</td></tr><tr><td>02</td><td>16,0 mm</td></tr><tr><td>03</td><td>15,0 mm</td></tr><tr><td>04</td><td>14,5 mm</td></tr><tr><td>05</td><td>14,0 mm</td></tr><tr><td>06</td><td>13,5 mm</td></tr><tr><td>07</td><td>13,0 mm</td></tr><tr><td>08</td><td>12,0 mm</td></tr><tr><td>09</td><td>11,0 mm</td></tr><tr><td>10</td><td>10,0 mm</td></tr><tr><td>11</td><td>9,0 mm</td></tr>
@@ -3480,7 +3489,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
     <div class="size-card">
         <h3>Toes</h3>
-        <p>Ungefärlig bredd på tåtippar. Samma mått gäller för alla längder.</p>
+        <p>Bredd på tåtippar. Samma mått gäller för alla längder.</p>
         <div class="size-table-split">
         <table class="size-table">
             <tr><th>Storlek</th><th>Bredd</th></tr>
@@ -3506,13 +3515,13 @@ footer a:hover { color:#f2cbd7 !important; }
     <div class="rubrik">
         <span>Små detaljer, stor skillnad</span>
         <h2>Det här ingår</h2>
-        <p>Alla nagelset och tåset innehåller tillbehör som hjälper dig att förbereda, applicera och ta hand om dina press-on naglar.</p>
+        <p>Alla set innehåller tillbehör som hjälper dig att förbereda, applicera och ta hand om dina press-on naglar.</p>
     </div>
     <div class="included-grid">
         <div class="included-item"><span>01</span><div><strong>Nagelbandsputtare</strong><p>Putta försiktigt tillbaka nagelbanden innan du förbereder nageln.</p></div></div>
         <div class="included-item"><span>02</span><div><strong>Nagelfil</strong><p>Fila försiktigt över den naturliga nagelytan för att förbereda den.</p></div></div>
-        <div class="included-item"><span>03</span><div><strong>Alkoholwipe</strong><p>Rengör nagelytan och låt den torka innan du fäster lösnageln.</p></div></div>
-        <div class="included-item"><span>04</span><div><strong>Glue tabs eller nagellim</strong><p>Välj ett av fästalternativen och pressa på naglarna.</p></div></div>
+        <div class="included-item"><span>03</span><div><strong>Alkoholpad</strong><p>Rengör nagelytan och låt den torka innan du fäster lösnageln.</p></div></div>
+        <div class="included-item"><span>04</span><div><strong>Glue tabs &amp; Nagellim</strong><p>Välj ett av fästalternativen och pressa på naglarna.</p></div></div>
         <div class="included-item"><span>05</span><div><strong>Instruktioner</strong><p>Läs instruktionerna för applicering och skötsel innan du börjar.</p></div></div>
     </div>
     <p class="included-note">Informationen gäller både nagelset och tåset.</p>
@@ -3526,7 +3535,7 @@ footer a:hover { color:#f2cbd7 !important; }
 <div class="about-content">
 
     <div class="about-text">
-<h2>About us</h2>
+<h2>Om oss</h2>
 
         <p>
             Vi är tre tjejer från Eskilstuna – Iliana, Limar och Matilda – som lärde känna varandra under vår första tid på gymnasiet.
@@ -3548,17 +3557,17 @@ footer a:hover { color:#f2cbd7 !important; }
 
             <div class="founder">
                 <strong>Iliana</strong>
-                <span>Founder & Nail Artist</span>
+                <span>Founder<br>Nail Artist</span>
             </div>
 
             <div class="founder">
                 <strong>Limar</strong>
-                <span>Founder</span>
+                <span>Co-Founder<br>Marketing Manager</span>
             </div>
 
             <div class="founder">
                 <strong>Matilda</strong>
-                <span>Founder</span>
+                <span>Co-Founder<br>Financial Manager</span>
             </div>
 
         </div>
@@ -3616,13 +3625,11 @@ footer a:hover { color:#f2cbd7 !important; }
 
 <div class="rubrik">
 
-    <span>Stay connected</span>
+    <span>Håll dig uppdaterad</span>
 
     <h2>Följ Oss</h2>
 
-    <p>
-        Följ vår resa och se våra nya designs på sociala medier.
-    </p>
+    
 
 </div>
 
@@ -3682,21 +3689,21 @@ footer a:hover { color:#f2cbd7 !important; }
 
     <div class="rubrik">
         <span>Frågor & Svar</span>
-        <h2>FAQ</h2>
-        <p>Här hittar du svar på några av de vanligaste frågorna till PressN'Pop.</p>
+        <h2>F&amp;S</h2>
+        
     </div>
 
     <div class="info-grid">
         <details class="faq-item">
             <summary>Hur beställer jag, och hur fungerar Custom?</summary>
             <div class="faq-answer">
-                Öppna Naglar eller Tår och tryck på den design du vill köpa. Välj form, längd, färg och storlekar där alternativen finns och lägg produkten i varukorgen. När du har valt allt går du till kassan, fyller i dina kontaktuppgifter och skickar beställningen. Betalning sker via Swish enligt informationen i kassan. För Custom Nails eller Custom Toes laddar du upp en inspirationsbild och skriver vilka detaljer du vill ha. Om du vill ha flera olika custom-designer lägger du varje design som en separat produkt.
+                Öppna Naglar eller Tår och tryck på den design du vill köpa. Välj form, längd och storlekar där alternativen finns och lägg produkten i varukorgen. När du har valt allt går du till kassan, fyller i dina kontaktuppgifter och skickar beställningen. Betalning sker via Swish enligt informationen i kassan. För Custom Nails eller Custom Toes laddar du upp en inspirationsbild och skriver vilka detaljer du vill ha. Om du vill ha flera olika custom-designer lägger du varje design som en separat produkt.
             </div>
         </details>
         <details class="faq-item">
             <summary>Vad ingår i ett set och hur applicerar jag naglarna?</summary>
             <div class="faq-answer">
-                I ett set ingår nagelbandsputtare, alcohol wipe, glue tabs, nagellim, nagelfil och instruktioner för applicering och skötsel. Börja med rena och torra naglar, skjut försiktigt tillbaka nagelbanden och matta vid behov den naturliga nagelytan lätt. Välj glue tabs eller nagellim enligt instruktionerna som följer med. Undvik vatten direkt efter applicering och bänd eller ryck inte loss naglarna när du tar av dem.
+                I ett set ingår nagelbandsputtare, alkoholpad, glue tabs, nagellim, nagelfil och instruktioner för applicering och skötsel. Börja med rena och torra naglar, skjut försiktigt tillbaka nagelbanden och matta vid behov den naturliga nagelytan lätt. Välj glue tabs eller nagellim enligt instruktionerna som följer med. Undvik vatten direkt efter applicering och bänd eller ryck inte loss naglarna när du tar av dem.
             </div>
         </details>
         <details class="faq-item">
@@ -3736,7 +3743,7 @@ footer a:hover { color:#f2cbd7 !important; }
     <div class="rubrik">
         <span>Information</span>
         <h2>Integritet & Villkor</h2>
-        <p>Information om hur vi hanterar beställningar och personuppgifter.</p>
+        
     </div>
 
     <div class="policy-content">
@@ -3863,7 +3870,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
                 <div class="product-choice" id="productLengthChoice" style="display:none">
                     <h3>Välj längd</h3>
-                    <p class="step-hint">Välj den längd som passar din stil.</p>
+                    <p class="step-hint"></p>
                     <div id="productLengthOptions" class="length-options">
                         <button type="button" class="choice-button" data-length="Short" onclick="selectProductLength(this)">Short</button>
                         <button type="button" class="choice-button" data-length="Medium" onclick="selectProductLength(this)">Medium</button>
@@ -3888,6 +3895,7 @@ footer a:hover { color:#f2cbd7 !important; }
                 <div class="product-choice" id="productChangesChoice">
                     <h3>Små ändringar</h3>
                     <textarea id="productChanges" placeholder="T.ex. silver istället för guld, ta bort detalj..."></textarea>
+                    <p class="product-changes-note">Vi gör vårt bästa för att genomföra dina önskemål, men kan inte garantera att alla ändringar blir möjliga.</p>
                 </div>
 
                 <div class="product-bottom-row">
@@ -3940,7 +3948,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
                 <div class="product-choice" id="extraLengthChoice" style="display:none">
                     <h3>Välj längd</h3>
-                    <p class="step-hint">Välj den längd som passar din stil.</p>
+                    <p class="step-hint"></p>
                     <div id="extraLengthOptions" class="length-options"></div>
                 </div>
 
@@ -4034,7 +4042,7 @@ footer a:hover { color:#f2cbd7 !important; }
             </div>
 
             <p class="shipping-note">
-                Frakt räknas bara på nagelset och tåset: 1 set 22 kr · 2–3 set 44 kr · 4–7 set 66 kr · 8 set eller fler 88 kr. Vid Refresh betalar du själv frakten när du skickar in naglarna till oss.
+                Fler set ger högre frakt: 1 set 22 kr · 2–3 set 44 kr · 4–7 set 66 kr · 8 eller fler 88 kr. Refresh: du betalar frakten när du skickar naglarna till oss.
             </p>
 
             <div class="swish-cart-note" style="background:#fff0f4;border:1px solid #edc3d0;border-radius:14px;padding:16px;margin:14px 0;color:#743047;line-height:1.6;">
@@ -4085,7 +4093,7 @@ footer a:hover { color:#f2cbd7 !important; }
         </div>
         <div class="form-group">
             <label>Telefonnummer som du använder vid Swish-betalningen *</label>
-            <input type="tel" id="cartCheckoutPhone" placeholder="07x xxx xx xx" autocomplete="tel" maxlength="20" inputmode="tel">
+            <input type="tel" id="cartCheckoutPhone" placeholder="0701234567" autocomplete="tel-national" maxlength="10" minlength="10" inputmode="numeric" pattern="0[0-9]{9}" oninput="this.value = this.value.replace(/\D/g, '').slice(0, 10)">
             <p class="file-help">Skriv samma nummer som är kopplat till den Swish-betalning du kommer att göra.</p>
         </div>
         <div class="form-group">
@@ -5425,8 +5433,9 @@ footer a:hover { color:#f2cbd7 !important; }
          }
 
          const phoneDigits = phone.replace(/\D/g, "");
-         if (phoneDigits.length < 8 || phoneDigits.length > 15) {
-             alert("Ange ett giltigt telefonnummer med 8–15 siffror.");
+         if (!/^0\d{9}$/.test(phoneDigits) || phone !== phoneDigits) {
+             alert("Ange ett svenskt telefonnummer med exakt 10 siffror, utan mellanslag eller +46.");
+             document.getElementById("cartCheckoutPhone").focus();
              return;
          }
 
@@ -6700,7 +6709,7 @@ footer a:hover { color:#f2cbd7 !important; }
         {
             id: 1,
             name: "Nude", price: 199,
-            description: "Nude är ett klassiskt enfärgat set i en mjuk nude nyans för en ren, naturlig och minimalistisk look. Välj önskad färg i produktvyn.", gelInfo: "Naglarna är byggda med gelén DUNE från Chewali som är en nude nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
+            description: "Nude är ett klassiskt enfärgat set i en mjuk nude nyans för en ren, naturlig och minimalistisk look. ", gelInfo: "Naglarna är byggda med gelén DUNE från Chewali som är en nude nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
             image: "bilder/vanillavibe1.jpg",
             images: ["bilder/vanillavibe1.jpg", "bilder/vanillavibe2.jpg"],
             colors: [
@@ -6938,7 +6947,8 @@ footer a:hover { color:#f2cbd7 !important; }
         const changesEl = document.getElementById("productChanges");
         if (changesEl) changesEl.value = "";
         const changesChoice = document.getElementById("productChangesChoice");
-        if (changesChoice) changesChoice.style.display = isToe ? "none" : "block";
+        const noSmallChanges = !isToe && ["Nude", "Pink French"].includes(product.name);
+        if (changesChoice) changesChoice.style.display = (isToe || noSmallChanges) ? "none" : "block";
 
         const colorChoice = document.getElementById("productColorChoice");
         const colorContainer = document.getElementById("productColorOptions");
@@ -7205,7 +7215,7 @@ footer a:hover { color:#f2cbd7 !important; }
         },
         single: {
             name: "Enstaka nagel", type: "extra_single", mode: "single",
-            description: "Har du tappat bort eller förstört en nagel? Välj design, form, längd och storlek precis som för våra naglar.",
+            description: "Har du tappat bort eller förstört en nagel? Välj design, form, längd och storlek precis som kollektionen.",
             more: "<strong>Ersättningsnagel</strong>Välj samma design som ditt set, samt form, längd, finger och storlek, så gör vi en nagel som matchar."
         }
     };
@@ -7235,7 +7245,7 @@ footer a:hover { color:#f2cbd7 !important; }
         extraState = { kind, design: "", form: "", length: "", quantity: 1, redesignType: "nails", nailSelections: [{ finger: "", size: "" }] };
 
         document.getElementById("extraTitle").textContent = info.name;
-        document.getElementById("extraPrice").textContent = `${EXTRA_PRICES[kind].toLocaleString("sv-SE")} kr`;
+        document.getElementById("extraPrice").textContent = `${kind === "redesign" ? "Från " : ""}${EXTRA_PRICES[kind].toLocaleString("sv-SE")} kr`;
         document.getElementById("extraDescription").textContent = info.description;
         document.getElementById("extraMoreInfo").innerHTML = info.more;
         document.getElementById("extraQuantity").textContent = "1";
@@ -7262,7 +7272,7 @@ footer a:hover { color:#f2cbd7 !important; }
             renderSingleNailSelections();
         } else if (kind === "redesign") {
             document.getElementById("extraDesignOptions").innerHTML =
-                `<p class="step-hint">Välj vad redesignen gäller:</p>
+                `
                  <div class="length-options">
                    <button type="button" class="choice-button selected" onclick="selectRedesignType(this,'nails')">Naglar – välj design ur kollektionen</button>
                    <button type="button" class="choice-button" onclick="selectRedesignType(this,'toes')">Tår – Original basfärg eller French</button>
