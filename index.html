@@ -3247,9 +3247,9 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div class="nagel-kort product-card" id="tar" onclick="openToeProductDetail('French Toes')">
             <div class="nagel-bild">
-                <img src="bilder/fransktar1.jpg" alt="French Toes"
+                <img src="bilder/fransktar1.jpeg" alt="French Toes"
                      onerror="this.style.display='none'">
-                <img src="bilder/fransktar2.jpg" alt="French Toes – bild 2"
+                <img src="bilder/fransktar2.jpeg" alt="French Toes – bild 2"
                      onerror="this.remove()">
             </div>
 
@@ -3305,7 +3305,7 @@ footer a:hover { color:#f2cbd7 !important; }
 <div class="custom-bild">
 
     <img
-        src="bilder/custom.jpg"
+        src="bilder/custom.jpeg"
         alt="Custom nageldesign"
         onerror="this.style.display='none'"
     >
@@ -3344,7 +3344,7 @@ footer a:hover { color:#f2cbd7 !important; }
 <div class="custom-bild">
 
     <img
-        src="bilder/customtar1.jpg"
+        src="bilder/customtar1.png"
         alt="Custom tådesign"
         onerror="this.style.display='none'"
     >
@@ -3902,7 +3902,7 @@ footer a:hover { color:#f2cbd7 !important; }
         <div class="product-detail-grid">
             <div class="product-gallery" id="extraGallery" style="display:none">
                 <div class="gallery-main">
-                    <img id="extraMainImage" src="bilder/sizekit.jpg" alt="PressN’Pop Size Kit">
+                    <img id="extraMainImage" src="bilder/sizekit.jpeg" alt="PressN’Pop Size Kit">
                 </div>
             </div>
             <div class="product-detail-content">
@@ -5920,7 +5920,7 @@ footer a:hover { color:#f2cbd7 !important; }
         const main = document.getElementById("toeOrderMainImage");
         const thumbs = document.getElementById("toeOrderThumbs");
         if (!main || !thumbs) return;
-        const images = ["bilder/fransktar1.jpg", "bilder/fransktar2.jpg"];
+        const images = ["bilder/fransktar1.jpeg", "bilder/fransktar2.jpeg"];
         main.src = images[0];
         main.alt = "French Toes";
         main.onerror = () => { main.src = images[1]; };
@@ -6344,7 +6344,7 @@ footer a:hover { color:#f2cbd7 !important; }
             return;
         }
         addItemToCart({ cartId:makeCartId(), type:"custom_nails",
-            unitPrice:399, productId:"custom_nails", name:"Custom Nails", image:"bilder/custom.jpg", color:customNailData.color||"", length:customNailData.length||"", sizes, quantity:getModalQuantity("customNailQuantity"), customer:null, options:{color:customNailData.color,form:customNailData.form,length:customNailData.length,sizes,changes,inspoFile:inspo.name,inspoData} });
+            unitPrice:399, productId:"custom_nails", name:"Custom Nails", image:"bilder/custom.jpeg", color:customNailData.color||"", length:customNailData.length||"", sizes, quantity:getModalQuantity("customNailQuantity"), customer:null, options:{color:customNailData.color,form:customNailData.form,length:customNailData.length,sizes,changes,inspoFile:inspo.name,inspoData} });
         closeModal("customNailsModal");
         openCart();
     }
@@ -6560,7 +6560,7 @@ footer a:hover { color:#f2cbd7 !important; }
             unitPrice: 399,
             productId: "custom_toes",
             name: "Custom Toes",
-            image: "bilder/customtar1.jpg",
+            image: "bilder/customtar1.png",
             color: customToeData.color || "",
             length: "",
             sizes,
@@ -6668,7 +6668,7 @@ footer a:hover { color:#f2cbd7 !important; }
     ===================================================== */
 
     const readyToes = [
-        { name: "French Toes", price: 349, description: "French Toes har en klassisk french-design. Välj basfärg mellan Light Pink, Pink, Nude eller Peach för att anpassa uttrycket.", gelInfo: "Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/fransktar1.jpg", images: ["bilder/fransktar1.jpg", "bilder/fransktar2.jpg"] }
+        { name: "French Toes", price: 349, description: "French Toes har en klassisk french-design. Välj basfärg mellan Light Pink, Pink, Nude eller Peach för att anpassa uttrycket.", gelInfo: "Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/fransktar1.jpeg", images: ["bilder/fransktar1.jpeg", "bilder/fransktar2.jpeg"] }
     ];
 
     const toeColors = [
