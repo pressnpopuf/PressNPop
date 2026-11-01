@@ -478,16 +478,17 @@
     }
 
     .nagel-info h3 .toe-name {
-        display: block;
+        display: inline;
     }
 
     .nagel-info h3 .toe-label {
-        display: block;
-        font-family: "Poppins", sans-serif;
-        font-size: 12px;
-        font-weight: 400;
-        color: #888;
-        margin-top: 2px;
+        display: inline;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        color: inherit;
+        margin-left: 7px;
+        vertical-align: baseline;
     }
 
     .nagel-info p {
@@ -1420,6 +1421,12 @@
         max-width: 680px;
     }
 
+
+
+    .protection-quantity { gap: 7px; margin-top: 0; border: 1px solid #efdde3; border-radius: 20px; padding: 2px 5px; background: #fffafc; }
+    .protection-quantity button { width: 25px; height: 25px; font-size: 15px; line-height: 1; border: 0; background: transparent; }
+    .protection-quantity span { min-width: 16px; font-size: 13px; }
+    .protection-actions { gap: 9px; align-items: center; }
 
     .quantity-control { display:flex; align-items:center; justify-content:center; gap:18px; margin-top:8px; }
     .quantity-control button { width:36px; height:36px; border-radius:50%; border:1px solid #efd6de; background:#fff; color:var(--morkrosa); cursor:pointer; font-size:20px; }
@@ -2847,9 +2854,16 @@ footer a:hover { color:#f2cbd7 !important; }
 /* Mer från PressN'Pop – utan bilder */
 .extra-card .nagel-info { display:flex; flex-direction:column; height:100%; padding:30px 24px 26px; }
 .extra-card .nagel-info p { flex:1; }
-.extra-card .nagel-info .knapp { align-self:flex-start; }
-#extraModal .product-modal-box { width:min(720px,100%); max-width:720px; }
-#extraModal .product-detail-grid { grid-template-columns:minmax(0,1fr); gap:0; }
+.extra-card .nagel-info .knapp { align-self:center; }
+#extraModal .product-modal-box { width:min(1120px,100%); max-width:1120px; }
+#extraModal .product-detail-grid { grid-template-columns:minmax(0,1fr) minmax(360px,1fr); gap:38px; }
+#extraModal .product-gallery { min-width:0; position:sticky; top:0; align-self:start; }
+#extraModal .product-detail-content { min-width:0; }
+@media (max-width:760px) {
+    #extraModal .product-modal-box { width:100%; }
+    #extraModal .product-detail-grid { grid-template-columns:minmax(0,1fr); gap:18px; }
+    #extraModal .product-gallery { position:static; }
+}
 #extraChanges { width:100%; min-height:95px; resize:vertical; padding:12px 14px; border-radius:13px; border:1px solid #e6d3d9; background:white; font-family:"Poppins",sans-serif; color:#555; outline:none; line-height:1.5; box-sizing:border-box; display:block; }
 #extraChanges:focus { border-color:var(--rosa); }
 #extraModal .product-material-note strong { display:block; margin-top:4px; }
@@ -2878,11 +2892,94 @@ footer a:hover { color:#f2cbd7 !important; }
 /* Tydlig fraktbubbla för produkter med fri frakt */
 .extra-card { position:relative; overflow:visible; }
 .extra-card[data-free-shipping="true"]::before {
- content:"✦ Fri frakt"; position:absolute; z-index:5; top:-13px; left:18px;
+ content:"✦ Fri frakt"; position:absolute; z-index:5; top:10px; left:18px;
  padding:6px 13px; border-radius:999px; background:#a84368; color:#fff;
- font:500 12px/1.2 "Poppins",sans-serif; box-shadow:0 4px 12px rgba(168,67,104,.18);
+ font:500 12px/1.2 "Poppins",sans-serif; box-shadow:0 4px 12px rgba(168,67,104,.22);
+}
+.extra-card[data-free-shipping="true"] .nagel-info { padding-top:48px; }
+
+
+
+/* Enhetlig, horisontellt skrollbar produktlayout för både naglar och tår */
+.design-scroll-wrapper { overflow: hidden; }
+.design-scroll-wrapper .naglar {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch;
+    gap: 22px;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 10px 5px 24px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--rosa) #f8e8ed;
+}
+.design-scroll-wrapper .nagel-kort {
+    flex: 0 0 clamp(250px, 28vw, 310px) !important;
+    width: auto !important;
+    min-width: 0;
+    scroll-snap-align: start;
+}
+.design-scroll-wrapper .nagel-bild {
+    aspect-ratio: 1.08 / 1;
+    overflow: hidden;
+}
+.design-scroll-wrapper .nagel-bild img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.design-scroll-wrapper .naglar::-webkit-scrollbar { height: 7px; }
+.design-scroll-wrapper .naglar::-webkit-scrollbar-track { background: #f8e8ed; border-radius: 10px; }
+.design-scroll-wrapper .naglar::-webkit-scrollbar-thumb { background: var(--rosa); border-radius: 10px; }
+.design-section .scroll-hint { display: block; text-align: center; color: #8b6975; font-size: 12px; margin-top: 8px; }
+@media (max-width: 600px) {
+    .design-scroll-wrapper .naglar { gap: 14px; padding: 8px 2px 20px; }
+    .design-scroll-wrapper .nagel-kort { flex-basis: min(78vw, 300px) !important; }
+    .design-scroll-wrapper .nagel-bild { aspect-ratio: 1 / 1; }
 }
 
+
+    /* Basfärgsvalen använder samma kortstil och rutnätsbredd som övriga steg */
+    .custom-color-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        width: 100%;
+        margin: 0 0 25px;
+        justify-content: stretch;
+        justify-items: stretch;
+    }
+    .custom-color-option {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 12px;
+        min-height: 58px;
+        padding: 16px;
+        border: 1px solid #edd6de;
+        border-radius: 15px;
+        background: #fff;
+        color: #555;
+        font-size: 14px;
+        text-align: left;
+        box-sizing: border-box;
+    }
+    .custom-color-dot {
+        display: inline-block;
+        flex: 0 0 30px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid rgba(100,65,75,.16);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.28);
+    }
+    @media (max-width: 420px) {
+        .custom-color-grid { gap: 9px; }
+        .custom-color-option { padding: 13px 10px; gap: 9px; }
+        .custom-color-dot { flex-basis: 26px; width: 26px; height: 26px; }
+    }
 </style>
 </head>
 <body>
@@ -2934,23 +3031,16 @@ footer a:hover { color:#f2cbd7 !important; }
         <summary>Alla naglar · Nail designs</summary>
         <div class="site-menu-sublist">
             <a href="#naglar" onclick="closeSiteDetailMenu()">Se alla naglar</a>
-            <a href="#naglar" onclick="openMenuProduct('Vanilla Vibe')">Vanilla Vibe</a>
-            <a href="#naglar" onclick="openMenuProduct('Peach Pop')">Peach Pop</a>
-            <a href="#naglar" onclick="openMenuProduct('Pearl Press')">Pearl Press</a>
-            <a href="#naglar" onclick="openMenuProduct('Coco Cloud')">Coco Cloud</a>
-            <a href="#naglar" onclick="openMenuProduct('Bubble Bliss')">Bubble Bliss</a>
-            <a href="#naglar" onclick="openMenuProduct('Sugar Swirl')">Sugar Swirl</a>
+            <a href="#naglar" onclick="openMenuProduct('Nude')">Nude</a>
+            <a href="#naglar" onclick="openMenuProduct('Pink French')">Pink French</a>
+            <a href="#naglar" onclick="openMenuProduct('Pink Flower')">Pink Flower</a>
+            <a href="#naglar" onclick="openMenuProduct('Nude Leo')">Nude Leo</a>
         </div>
     </details>
     <details class="site-menu-group">
         <summary>Tår · Toe designs</summary>
         <div class="site-menu-sublist">
             <a href="#tar" onclick="closeSiteDetailMenu()">Se alla tådesigner</a>
-            <a href="#tar" onclick="openMenuToe('White Toes')">White Toes</a>
-            <a href="#tar" onclick="openMenuToe('Light Pink Toes')">Light Pink Toes</a>
-            <a href="#tar" onclick="openMenuToe('Pink Toes')">Pink Toes</a>
-            <a href="#tar" onclick="openMenuToe('Nude Toes')">Nude Toes</a>
-            <a href="#tar" onclick="openMenuToe('Peach Toes')">Peach Toes</a>
             <a href="#tar" onclick="openMenuToe('French Toes')">French Toes</a>
         </div>
     </details>
@@ -2958,9 +3048,9 @@ footer a:hover { color:#f2cbd7 !important; }
         <summary>Mer från PressN’Pop</summary>
         <div class="site-menu-sublist">
             <a href="#extra-tjanster" onclick="openExtraFromMenu('sizekit')">Size Kit – hitta rätt storlek</a>
+            <a href="#extra-tjanster" onclick="openExtraFromMenu('single')">Enstaka nagel</a>
             <a href="#extra-tjanster" onclick="openExtraFromMenu('refresh')">Refresh</a>
             <a href="#extra-tjanster" onclick="openExtraFromMenu('redesign')">Refresh Redesign</a>
-            <a href="#extra-tjanster" onclick="openExtraFromMenu('single')">Enstaka nagel</a>
         </div>
     </details>
     <details class="site-menu-group">
@@ -3004,10 +3094,10 @@ footer a:hover { color:#f2cbd7 !important; }
     <h2>Press them on N' Pop them off.</h2>
 
     <p>
-        Snygga, handgjorda press-on gele naglar som du kan
-        bära när du vill – och ta av när du vill.
-        Välj en av våra designs eller skapa något
-        helt eget.
+        Ge dina naglar det lilla extra med handgjorda press-on gelénaglar.
+        Varje set skapas med omsorg och låter dig bära din favoritdesign när du vill.
+        Välj bland våra kollektioner eller skapa ett set helt efter dina önskemål –
+        enkla att applicera, ta av och bära igen.
     </p>
 
     <a href="#naglar" class="knapp">
@@ -3061,10 +3151,10 @@ footer a:hover { color:#f2cbd7 !important; }
 
     <span>Find your style</span>
 
-    <h2>Våra Naglar</h2>
+    <h2>Våra Naglar &amp; Tår</h2>
 
     <p>
-        Något för varje mood, outfit och tillfälle 
+        Välj bland våra nagel- och tådesigner för varje mood, outfit och tillfälle.
     </p>
 
 </div>
@@ -3075,37 +3165,60 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div class="nagel-kort product-card" onclick="openProductDetail(1)">
             <div class="nagel-bild">
-                <img src="bilder/vanillavibe1.jpg" alt="Vanilla Vibe naglar"
+                <img src="bilder/vanillavibe1.jpg" alt="Nude naglar"
                      onerror="this.style.display='none'">
-                <img src="bilder/vanillavibe2.jpg" alt="Vanilla Vibe naglar – bild 2"
+                <img src="bilder/vanillavibe2.jpg" alt="Nude naglar – bild 2"
                      onerror="this.remove()">
 </div>
 
             <div class="nagel-info">
-                <h3>Vanilla Vibe</h3>
+                <h3>Nude</h3>
                 <div class="product-card-price">199 kr</div>
                 <p>Enfärgad nude nyans</p>
 
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Vanilla Vibe')">
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Nude')">
                     Visa produkt
                 </button>
             </div>
         </div>
 
-        <div class="nagel-kort product-card" onclick="openProductDetail(3)">
+        
+
+        <div class="nagel-kort product-card" onclick="openProductDetail(2)">
             <div class="nagel-bild">
-                <img src="bilder/peachpop1.jpg" alt="Peach Pop naglar"
+                <img src="bilder/pearlpress1.jpg" alt="Pink French naglar"
                      onerror="this.style.display='none'">
-                <img src="bilder/peachpop2.jpg" alt="Peach Pop naglar – bild 2"
+                <img src="bilder/pearlpress2.jpg" alt="Pink French naglar – bild 2"
                      onerror="this.remove()">
 </div>
 
             <div class="nagel-info">
-                <h3>Peach Pop</h3>
-                <div class="product-card-price">199 kr</div>
-                <p>Enfärgad peach nyans</p>
+                <h3>Pink French</h3>
+                <div class="product-card-price">299 kr</div>
+                <p>Klassisk vit french </p>
 
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Peach Pop')">
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Pink French')">
+                    Visa produkt
+                </button>
+            </div>
+        </div>
+
+        
+
+        <div class="nagel-kort product-card" onclick="openProductDetail(3)">
+            <div class="nagel-bild">
+                <img src="bilder/bubblebliss1.jpg" alt="Pink Flower naglar"
+                     onerror="this.style.display='none'">
+                <img src="bilder/bubblebliss2.jpg" alt="Pink Flower naglar – bild 2"
+                     onerror="this.remove()">
+</div>
+
+            <div class="nagel-info">
+                <h3>Pink Flower</h3>
+                <div class="product-card-price">349 kr</div>
+                <p>3D-blomma, guldpärlor och swirls</p>
+
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Pink Flower')">
                     Visa produkt
                 </button>
             </div>
@@ -3113,215 +3226,32 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div class="nagel-kort product-card" onclick="openProductDetail(4)">
             <div class="nagel-bild">
-                <img src="bilder/pearlpress1.jpg" alt="Pearl Press naglar"
+                <img src="bilder/sugerswirl1.jpg" alt="Nude Leo naglar"
                      onerror="this.style.display='none'">
-                <img src="bilder/pearlpress2.jpg" alt="Pearl Press naglar – bild 2"
+                <img src="bilder/sugerswirl2.jpg" alt="Nude Leo naglar – bild 2"
                      onerror="this.remove()">
 </div>
 
             <div class="nagel-info">
-                <h3>Pearl Press</h3>
-                <div class="product-card-price">279 kr</div>
-                <p>Klassisk vit french </p>
-
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Pearl Press')">
-                    Visa produkt
-                </button>
-            </div>
-        </div>
-
-        <div class="nagel-kort product-card" onclick="openProductDetail(2)">
-            <div class="nagel-bild">
-                <img src="bilder/cococloud1.jpg" alt="Coco Cloud naglar"
-                     onerror="this.style.display='none'">
-                <img src="bilder/cococloud2.jpg" alt="Coco Cloud naglar – bild 2"
-                     onerror="this.remove()">
-</div>
-
-            <div class="nagel-info">
-                <h3>Coco Cloud</h3>
-                <div class="product-card-price">279 kr</div>
-                <p>Klassisk french med 3D-blomma</p>
-
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Coco Cloud')">
-                    Visa produkt
-                </button>
-            </div>
-        </div>
-
-        <div class="nagel-kort product-card" onclick="openProductDetail(5)">
-            <div class="nagel-bild">
-                <img src="bilder/bubblebliss1.jpg" alt="Bubble Bliss naglar"
-                     onerror="this.style.display='none'">
-                <img src="bilder/bubblebliss2.jpg" alt="Bubble Bliss naglar – bild 2"
-                     onerror="this.remove()">
-</div>
-
-            <div class="nagel-info">
-                <h3>Bubble Bliss</h3>
-                <div class="product-card-price">349 kr</div>
-                <p>3D-blomma, guldpärlor och swirls</p>
-
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Bubble Bliss')">
-                    Visa produkt
-                </button>
-            </div>
-        </div>
-
-        <div class="nagel-kort product-card" onclick="openProductDetail(6)">
-            <div class="nagel-bild">
-                <img src="bilder/sugerswirl1.jpg" alt="Sugar Swirl naglar"
-                     onerror="this.style.display='none'">
-                <img src="bilder/sugerswirl2.jpg" alt="Sugar Swirl naglar – bild 2"
-                     onerror="this.remove()">
-</div>
-
-            <div class="nagel-info">
-                <h3>Sugar Swirl</h3>
+                <h3>Nude Leo</h3>
                 <div class="product-card-price">349 kr</div>
                 <p>Leopard, 3D-swirl och guldpärlor</p>
 
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Sugar Swirl')">
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Nude Leo')">
                     Visa produkt
                 </button>
             </div>
         </div>
 
-    </div>
 
-</div>
 
-<div class="scroll-hint">
-    <span>←</span>
-    Skrolla åt sidan för fler designs
-    <span>→</span>
-</div>
-
-</section>
-
-<!-- =====================================================
-     VÅRA TÅR
-===================================================== -->
-
-<section id="tar" class="design-section">
-<div class="rubrik">
-
-    <span>Toes, your way</span>
-
-    <h2>Våra Tår</h2>
-
-    <p>
-        Välj din favoritfärg – French finns med valfri basfärg. 
-    </p>
-
-</div>
-
-<div class="design-scroll-wrapper">
-
-    <div class="naglar">
-
-        <div class="nagel-kort product-card" onclick="openToeProductDetail('White Toes')">
+        <div class="nagel-kort product-card" id="tar" onclick="openToeProductDetail('French Toes')">
             <div class="nagel-bild">
-                <img src="bilder/whitetoes1.jpg" alt="White Toes"
+                <img src="bilder/fransktar1.jpg" alt="French Toes"
                      onerror="this.style.display='none'">
-                <img src="bilder/whitetoes2.jpg" alt="White Toes – bild 2"
+                <img src="bilder/fransktar2.jpg" alt="French Toes – bild 2"
                      onerror="this.remove()">
-</div>
-
-            <div class="nagel-info">
-                <h3><span class="toe-name">White</span><span class="toe-label">Toes</span></h3>
-                <div class="product-card-price">299 kr</div>
-                <p>Enfärgad klassisk vit-nyans</p>
-
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openToeOrder('White Toes')">
-                    Visa produkt
-                </button>
             </div>
-        </div>
-
-        <div class="nagel-kort product-card" onclick="openToeProductDetail('Light Pink Toes')">
-            <div class="nagel-bild">
-                <img src="bilder/lightpinktoes1.jpg" alt="Light Pink Toes"
-                     onerror="this.style.display='none'">
-                <img src="bilder/lightpinktoes2.jpg" alt="Light Pink Toes – bild 2"
-                     onerror="this.remove()">
-</div>
-
-            <div class="nagel-info">
-                <h3><span class="toe-name">Light Pink</span><span class="toe-label">Toes</span></h3>
-                <div class="product-card-price">299 kr</div>
-                <p>Enfärgad kall ljusrosa-nyans </p>
-
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openToeOrder('Light Pink Toes')">
-                    Visa produkt
-                </button>
-            </div>
-        </div>
-
-        <div class="nagel-kort product-card" onclick="openToeProductDetail('Pink Toes')">
-            <div class="nagel-bild">
-                <img src="bilder/pinktoes1.jpg" alt="Pink Toes"
-                     onerror="this.style.display='none'">
-                <img src="bilder/pinktoes2.jpg" alt="Pink Toes – bild 2"
-                     onerror="this.remove()">
-</div>
-
-            <div class="nagel-info">
-                <h3><span class="toe-name">Pink</span><span class="toe-label">Toes</span></h3>
-                <div class="product-card-price">299 kr</div>
-                <p>Enfärgad rosa-nyans </p>
-
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openToeOrder('Pink Toes')">
-                    Visa produkt
-                </button>
-            </div>
-        </div>
-
-        <div class="nagel-kort product-card" onclick="openToeProductDetail('Nude Toes')">
-            <div class="nagel-bild">
-                <img src="bilder/nudetoes1.jpg" alt="Nude Toes"
-                     onerror="this.style.display='none'">
-                <img src="bilder/nudetoes2.jpg" alt="Nude Toes – bild 2"
-                     onerror="this.remove()">
-</div>
-
-            <div class="nagel-info">
-                <h3><span class="toe-name">Nude</span><span class="toe-label">Toes</span></h3>
-                <div class="product-card-price">299 kr</div>
-                <p>Enfärgad naturlig nude-nyans</p>
-
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openToeOrder('Nude Toes')">
-                    Visa produkt
-                </button>
-            </div>
-        </div>
-
-        <div class="nagel-kort product-card" onclick="openToeProductDetail('Peach Toes')">
-            <div class="nagel-bild">
-                <img src="bilder/peachtoes1.jpg" alt="Peach Toes"
-                     onerror="this.style.display='none'">
-                <img src="bilder/peachtoes2.jpg" alt="Peach Toes – bild 2"
-                     onerror="this.remove()">
-</div>
-
-            <div class="nagel-info">
-                <h3><span class="toe-name">Peach</span><span class="toe-label">Toes</span></h3>
-                <div class="product-card-price">299 kr</div>
-                <p>En varm persikoton med en mjuk, solkysst och fräsch känsla.</p>
-
-                <button class="knapp" type="button" onclick="event.stopPropagation(); openToeOrder('Peach Toes')">
-                    Visa produkt
-                </button>
-            </div>
-        </div>
-
-        <div class="nagel-kort product-card" onclick="openToeProductDetail('French Toes')">
-            <div class="nagel-bild">
-                <img src="bilder/frenchtoes1.jpg" alt="French Toes"
-                     onerror="this.style.display='none'">
-                <img src="bilder/frenchtoes2.jpg" alt="French Toes – bild 2"
-                     onerror="this.remove()">
-</div>
 
             <div class="nagel-info">
                 <h3><span class="toe-name">French</span><span class="toe-label">Toes</span></h3>
@@ -3340,7 +3270,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
 <div class="scroll-hint">
     <span>←</span>
-    Skrolla åt sidan för fler tådesigns
+    Skrolla åt sidan för fler designs
     <span>→</span>
 </div>
 
@@ -3363,7 +3293,7 @@ footer a:hover { color:#f2cbd7 !important; }
     </p>
 
     <p>
-        Välj form, längd och storlek och skicka sedan en inspo-bild så att vi förstår din idé.
+        Välj basfärg, form, längd och storlek och skicka sedan en inspo-bild så att vi förstår din idé.
     </p>
 
     <button class="knapp" onclick="openCustomNails()">
@@ -3402,8 +3332,7 @@ footer a:hover { color:#f2cbd7 !important; }
     </p>
 
     <p>
-        Eftersom våra tåtippar har en fast form
-        väljer du bara storlek, längd, färg och design.
+        Välj basfärg och storlek, och skicka sedan en inspo-bild så att vi kan skapa ditt eget tå-set.
     </p>
 
     <button class="knapp" onclick="openCustomToes()">
@@ -3415,7 +3344,7 @@ footer a:hover { color:#f2cbd7 !important; }
 <div class="custom-bild">
 
     <img
-        src="bilder/customtoes.jpg"
+        src="bilder/customtar1.jpg"
         alt="Custom tådesign"
         onerror="this.style.display='none'"
     >
@@ -3447,11 +3376,19 @@ footer a:hover { color:#f2cbd7 !important; }
                     <button class="knapp" type="button" onclick="event.stopPropagation(); openExtraDetail('sizekit')">Visa produkt</button>
                 </div>
             </div>
-            <div class="nagel-kort extra-card" onclick="openExtraDetail('refresh')">
+            <div class="nagel-kort extra-card" onclick="openExtraDetail('single')">
+                <div class="nagel-info">
+                    <h3>Enstaka Nagel</h3>
+                    <div class="product-card-price" data-extra-price="single"></div>
+                    <p>Har du tappat eller förstört en nagel? Beställ en enstaka ersättning.</p>
+                    <button class="knapp" type="button" onclick="event.stopPropagation(); openExtraDetail('single')">Visa produkt</button>
+                </div>
+            </div>
+<div class="nagel-kort extra-card" onclick="openExtraDetail('refresh')">
                 <div class="nagel-info">
                     <h3>Refresh</h3>
                     <div class="product-card-price" data-extra-price="refresh"></div>
-                    <p>Vi fräschar upp dina använda PressN’Pop-naglar så att de blir som nya igen.</p>
+                    <p>Vi fräschar upp dina tidigare PressN’Pop-naglar så att du kan använda dem igen.</p>
                     <button class="knapp" type="button" onclick="event.stopPropagation(); openExtraDetail('refresh')">Visa produkt</button>
                 </div>
             </div>
@@ -3459,18 +3396,11 @@ footer a:hover { color:#f2cbd7 !important; }
                 <div class="nagel-info">
                     <h3>Refresh Redesign</h3>
                     <div class="product-card-price" data-extra-price="redesign"></div>
-                    <p>Vi fräschar upp dina tidigare PressN’Pop-naglar och väljer en design ur vår kollektion. Små ändringar kan önskas.</p>
+                    <p>Vi fräschar upp dina naglar och du väljer en ny design från vår kollektion.</p>
                     <button class="knapp" type="button" onclick="event.stopPropagation(); openExtraDetail('redesign')">Visa produkt</button>
                 </div>
             </div>
-            <div class="nagel-kort extra-card" data-free-shipping="true" onclick="openExtraDetail('single')">
-                <div class="nagel-info">
-                    <h3>Enstaka nagel</h3>
-                    <div class="product-card-price" data-extra-price="single"></div>
-                    <p>Har du tappat eller förstört en nagel? Beställ en enstaka ersättning. Fri frakt ingår.</p>
-                    <button class="knapp" type="button" onclick="event.stopPropagation(); openExtraDetail('single')">Visa produkt</button>
-                </div>
-            </div>
+            
         </div>
     </div>
 </section>
@@ -3533,8 +3463,8 @@ footer a:hover { color:#f2cbd7 !important; }
     </div>
 
     <div class="size-card">
-        <h3>Tår</h3>
-        <p>Ungefärlig bredd på Tå-tippar. Samma mått gäller för alla längder.</p>
+        <h3>Toes</h3>
+        <p>Ungefärlig bredd på tåtippar. Samma mått gäller för alla längder.</p>
         <div class="size-table-split">
         <table class="size-table">
             <tr><th>Storlek</th><th>Bredd</th></tr>
@@ -3566,7 +3496,7 @@ footer a:hover { color:#f2cbd7 !important; }
         <div class="included-item"><span>01</span><div><strong>Nagelbandsputtare</strong><p>Putta försiktigt tillbaka nagelbanden innan du förbereder nageln.</p></div></div>
         <div class="included-item"><span>02</span><div><strong>Nagelfil</strong><p>Fila försiktigt över den naturliga nagelytan för att förbereda den.</p></div></div>
         <div class="included-item"><span>03</span><div><strong>Alkoholwipe</strong><p>Rengör nagelytan och låt den torka innan du fäster lösnageln.</p></div></div>
-        <div class="included-item"><span>04</span><div><strong>Glue tabs eller nagellim</strong><p>Välj ett av fästalternativen och följ instruktionerna som följer med.</p></div></div>
+        <div class="included-item"><span>04</span><div><strong>Glue tabs eller nagellim</strong><p>Välj ett av fästalternativen och pressa på naglarna.</p></div></div>
         <div class="included-item"><span>05</span><div><strong>Instruktioner</strong><p>Läs instruktionerna för applicering och skötsel innan du börjar.</p></div></div>
     </div>
     <p class="included-note">Informationen gäller både nagelset och tåset.</p>
@@ -3583,23 +3513,19 @@ footer a:hover { color:#f2cbd7 !important; }
 <h2>About us</h2>
 
         <p>
-            Vi är tre tjejer från Eskilstuna – Iliana,
-            Limar och Matilda – som snabbt lärde känna varandra
-            under första tiden i gymnasiet.
+            Vi är tre tjejer från Eskilstuna – Iliana, Limar och Matilda – som lärde känna varandra under vår första tid på gymnasiet.
         </p>
 
         <p>
-            Idén till PressN’Pop började när Iliana,
-            som länge gjort naglar på sig själv och sina
-            vänner, började på ett jobb där hon inte fick
-            ha naglar. Då föddes idén: Varför kompromissa?
-            Varför inte göra samma snygga och hållbara naglar,
-            men enkla att ta på, att ta av och sätta på igen? 
-            Den perfekta sista-minuten lösningen!
+            Idén bakom PressN’Pop växte fram när Iliana, som länge hade gjort naglar på sig själv och sina vänner, började på ett jobb där hon inte fick ha naglar. Det fick oss att börja fundera: Varför ska man behöva kompromissa mellan snygga naglar och vardagens krav?
         </p>
 
         <p>
-            Och där började PressN’Pop. 
+            Vi ville skapa ett alternativ som kombinerar salongskänsla med enkelhet. Naglar som är hållbara och snygga, men som också är enkla att applicera, ta av och återanvända. Perfekt när man vill känna sig extra fin, även med kort varsel!
+        </p>
+
+        <p>
+            Och det var så PressN’Pop föddes – med en idé om att göra fina naglar mer tillgängliga och flexibla för alla.
         </p>
 
         <div class="founders">
@@ -3775,6 +3701,12 @@ footer a:hover { color:#f2cbd7 !important; }
                 Kontakta oss så snart som möjligt på pressnpop.uf@gmail.com om du behöver ändra något. När tillverkningen har börjat kan vi inte alltid ändra beställningen. Våra press-on gelénaglar kan återanvändas om du tar av dem försiktigt, rengör dem och förvarar dem säkert. Hur länge de sitter beror bland annat på förberedelser, fästmetod och hur du sköter dem. Undvik att använda naglarna som verktyg och var försiktig med starka kemikalier.
             </div>
         </details>
+        <details class="faq-item">
+            <summary>Hur kan jag förlänga livslängden på mina press-on naglar?</summary>
+            <div class="faq-answer">
+                Ta av naglarna försiktigt, rengör bort limrester och förvara dem i asken när du inte använder dem. Om en nagel försvinner eller skadas kan du beställa en ersättningsnagel under Enstaka Nagel. Du kan också fräscha upp naglarna själv hemma eller låta oss göra det genom vår Refresh-tjänst. Om naglarna har blivit slitna eller om du har tröttnat på designen kan du välja Refresh Redesign, där vi fräschar upp naglarna och du får välja en ny design från vår kollektion.
+            </div>
+        </details>
     </div>
 
 </section>
@@ -3806,12 +3738,15 @@ footer a:hover { color:#f2cbd7 !important; }
         <div class="policy-card">
             <h3>Köp & Beställning</h3>
             <p>
-                Kontrollera att dina uppgifter, storlekar och önskemål är korrekta innan du skickar beställningen. När beställningen har skickats kontaktar vi dig med information om nästa steg och betalning via Swish.
+                Kontrollera att dina uppgifter, storlekar och önskemål är korrekta innan du skickar beställningen. Därefter betalar du via Swish. Vi kontrollerar betalningen och bekräftar sedan din beställning. Använd samma telefonnummer vid Swish som du angav i beställningen, så att vi enkelt kan matcha betalningen med rätt order.
             </p>
         </div>
 
         <div class="policy-card">
             <h3>Retur & Reklamation</h3>
+            <p>
+                Eftersom våra naglar är specialanpassade efter kundens storlekar och önskemål gäller ingen ångerrätt.
+            </p>
             <p>
                 Om du upptäcker ett fel på din beställning eller om något inte stämmer, kontakta oss så snart som möjligt på pressnpop.uf@gmail.com och beskriv problemet.
             </p>
@@ -3823,7 +3758,7 @@ footer a:hover { color:#f2cbd7 !important; }
         <div class="policy-card">
             <h3>Säkerhet & Skötsel</h3>
             <p>
-                Använd naglarna enligt instruktionerna som följer med ditt set. Var försiktig vid applicering och använd inte naglarna som verktyg. Om du upplever irritation eller obehag ska du ta bort naglarna.
+                Använd naglarna enligt instruktionerna som följer med ditt set. Var försiktig vid applicering och använd inte naglarna som verktyg. Om du upplever irritation eller obehag ska du ta bort naglarna. När du tar av dem, rengör dem försiktigt från limrester och förvara dem i sin ask så att de håller sig fina och kan återanvändas.
             </p>
         </div>
 
@@ -3850,7 +3785,7 @@ footer a:hover { color:#f2cbd7 !important; }
 <p>
     Handgjorda press-on nails från Eskilstuna 
 </p>
-<p class="payment-note" style="text-align:center; opacity:.7; font-size:11px; margin-top:12px;">Betalning sker via Swish efter att beställningen har skickats.</p>
+<p class="payment-note" style="text-align:center; opacity:.7; font-size:11px; margin-top:12px;">Betala via Swish först och skicka sedan in din beställning.</p>
 <p class="footer-links" style="margin-top:20px;">
     <a href="#faq" style="color:white; margin:0 8px;">FAQ</a>
     <a href="#policy" style="color:white; margin:0 8px;">Integritet & villkor</a>
@@ -3965,6 +3900,11 @@ footer a:hover { color:#f2cbd7 !important; }
         <button class="back-button" type="button" onclick="closeModal('extraModal')">← Tillbaka</button>
 
         <div class="product-detail-grid">
+            <div class="product-gallery" id="extraGallery" style="display:none">
+                <div class="gallery-main">
+                    <img id="extraMainImage" src="bilder/sizekit.jpg" alt="PressN’Pop Size Kit">
+                </div>
+            </div>
             <div class="product-detail-content">
                 <span class="product-label">PressN’Pop</span>
                 <h2 id="extraTitle">Produkt</h2>
@@ -3972,14 +3912,14 @@ footer a:hover { color:#f2cbd7 !important; }
                 <p id="extraDescription" class="product-description"></p>
                 <div class="product-material-note" id="extraMoreInfo"></div>
 
-                <div class="product-choice" id="extraDesignChoice" style="display:none">
-                    <h3>Välj design</h3>
-                    <div id="extraDesignOptions" class="length-options"></div>
-                </div>
-
                 <div class="product-choice" id="extraFormChoice" style="display:none">
                     <h3>Välj form</h3>
                     <div id="extraFormOptions" class="length-options"></div>
+                </div>
+
+                <div class="product-choice" id="extraDesignChoice" style="display:none">
+                    <h3>Välj design</h3>
+                    <div id="extraDesignOptions" class="length-options"></div>
                 </div>
 
                 <div class="product-choice" id="extraLengthChoice" style="display:none">
@@ -4078,7 +4018,7 @@ footer a:hover { color:#f2cbd7 !important; }
             </div>
 
             <p class="shipping-note">
-                Frakt räknas bara på nagelset och tåset: 1 set 22 kr · 2–3 set 44 kr · 4–7 set 66 kr · 8 set eller fler 88 kr. Size Kit och enstaka naglar har fri frakt. Vid Refresh betalar du själv frakten när du skickar in naglarna till oss.
+                Frakt räknas bara på nagelset och tåset: 1 set 22 kr · 2–3 set 44 kr · 4–7 set 66 kr · 8 set eller fler 88 kr. Vid Refresh betalar du själv frakten när du skickar in naglarna till oss.
             </p>
 
             <div class="swish-cart-note" style="background:#fff0f4;border:1px solid #edc3d0;border-radius:14px;padding:16px;margin:14px 0;color:#743047;line-height:1.6;">
@@ -4129,7 +4069,7 @@ footer a:hover { color:#f2cbd7 !important; }
         </div>
         <div class="form-group">
             <label>Telefonnummer som du använder vid Swish-betalningen *</label>
-            <input type="tel" id="cartCheckoutPhone" placeholder="07x xxx xx xx" autocomplete="tel" maxlength="30">
+            <input type="tel" id="cartCheckoutPhone" placeholder="07x xxx xx xx" autocomplete="tel" maxlength="20" inputmode="tel">
             <p class="file-help">Skriv samma nummer som är kopplat till den Swish-betalning du kommer att göra.</p>
         </div>
         <div class="form-group">
@@ -4145,7 +4085,7 @@ footer a:hover { color:#f2cbd7 !important; }
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                 <div class="form-group">
                     <label>Postnummer *</label>
-                    <input type="text" id="cartCheckoutPostal" placeholder="123 45" autocomplete="postal-code" maxlength="20">
+                    <input type="text" id="cartCheckoutPostal" placeholder="123 45" autocomplete="postal-code" maxlength="6" inputmode="numeric" pattern="[0-9 ]{5,6}">
                 </div>
                 <div class="form-group">
                     <label>Ort *</label>
@@ -4161,7 +4101,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div style="background:#fbecef;border:1px solid #f0d6df;border-radius:15px;padding:15px;margin-bottom:18px;color:#666;font-size:13px;line-height:1.7;">
             <strong style="color:var(--morkrosa);">Så fungerar beställningen</strong><br>
-            Betala först via Swish-knappen ovan. När du har betalat går du tillbaka hit och trycker på ”Skicka beställning”. Beställningen skickas till PressN’Pop tillsammans med eventuella inspo-bilder. Betalningen kontrolleras manuellt av oss.
+            Betala först via Swish till 1237052459. När du har betalat trycker på ”Skicka beställning”. Beställningen skickas till PressN’Pop UF och kontrolleras av oss.
         </div>
 
         <div class="step-buttons">
@@ -4412,26 +4352,6 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div class="option-grid">
 
-            <div class="option" onclick="selectRegularToeDesign(this, 'White Toes')">
-                White Toes
-            </div>
-
-            <div class="option" onclick="selectRegularToeDesign(this, 'Light Pink Toes')">
-                Light Pink Toes
-            </div> 
-            
-            <div class="option" onclick="selectRegularToeDesign(this, 'Pink Toes')">
-                Pink Toes
-            </div>
-
-            <div class="option" onclick="selectRegularToeDesign(this, 'Nude Toes')">
-                Nude Toes
-            </div>
-
-            <div class="option" onclick="selectRegularToeDesign(this, 'Peach Toes')">
-                Peach Toes
-            </div>
-
             <div class="option" onclick="selectFrenchToeDesign(this)">
                 French Toes
             </div>
@@ -4568,23 +4488,34 @@ footer a:hover { color:#f2cbd7 !important; }
     </p>
 
     <div class="progress">
-
         <span class="custom-nail-progress active"></span>
         <span class="custom-nail-progress"></span>
         <span class="custom-nail-progress"></span>
         <span class="custom-nail-progress"></span>
         <span class="custom-nail-progress"></span>
         <span class="custom-nail-progress"></span>
-
+        <span class="custom-nail-progress"></span>
     </div>
 
 
+    <!-- STEG 1 BASFÄRG -->
+    <div class="step active" id="customNailStep1">
+        <div class="step-title">1. Välj basfärg</div>
+        <div class="custom-color-grid">
+            <div class="option custom-color-option" onclick="selectCustomNail(this, 'color', 'Light Pink')"><span class="custom-color-dot" style="background:#f7cbd8"></span><span>Light Pink</span></div>
+            <div class="option custom-color-option" onclick="selectCustomNail(this, 'color', 'Pink')"><span class="custom-color-dot" style="background:#e99ab5"></span><span>Pink</span></div>
+            <div class="option custom-color-option" onclick="selectCustomNail(this, 'color', 'Nude')"><span class="custom-color-dot" style="background:#d8b09e"></span><span>Nude</span></div>
+            <div class="option custom-color-option" onclick="selectCustomNail(this, 'color', 'Peach')"><span class="custom-color-dot" style="background:#f3b18f"></span><span>Peach</span></div>
+        </div>
+        <button class="knapp" onclick="nextCustomNailStep(2)">Nästa →</button>
+    </div>
+
     <!-- STEG 1 FORM -->
 
-    <div class="step active" id="customNailStep1">
+    <div class="step" id="customNailStep2">
 
         <div class="step-title">
-            1. Välj form
+            2. Välj form
         </div>
 
         <div class="option-grid">
@@ -4603,7 +4534,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
         </div>
 
-        <button class="knapp" onclick="nextCustomNailStep(2)">
+        <button class="knapp" onclick="nextCustomNailStep(3)">
             Nästa →
         </button>
 
@@ -4612,10 +4543,10 @@ footer a:hover { color:#f2cbd7 !important; }
 
     <!-- STEG 2 LÄNGD -->
 
-    <div class="step" id="customNailStep2">
+    <div class="step" id="customNailStep3">
 
         <div class="step-title">
-            2. Välj längd
+            3. Välj längd
         </div>
 
         <div class="option-grid">
@@ -4640,11 +4571,11 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div class="step-buttons">
 
-            <button class="knapp knapp-outline" onclick="nextCustomNailStep(1)">
+            <button class="knapp knapp-outline" onclick="nextCustomNailStep(2)">
                 ← Tillbaka
             </button>
 
-            <button class="knapp" onclick="nextCustomNailStep(3)">
+            <button class="knapp" onclick="nextCustomNailStep(4)">
                 Nästa →
             </button>
 
@@ -4655,10 +4586,10 @@ footer a:hover { color:#f2cbd7 !important; }
 
     <!-- STEG 3 STORLEK -->
 
-    <div class="step" id="customNailStep3">
+    <div class="step" id="customNailStep4">
 
         <div class="step-title">
-            3. Välj dina storlekar
+            4. Välj dina storlekar
         </div>
 
         <div class="size-info-box">
@@ -4707,11 +4638,11 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div class="step-buttons">
 
-            <button class="knapp knapp-outline" onclick="nextCustomNailStep(2)">
+            <button class="knapp knapp-outline" onclick="nextCustomNailStep(3)">
                 ← Tillbaka
             </button>
 
-            <button class="knapp" onclick="nextCustomNailStep(4)">
+            <button class="knapp" onclick="nextCustomNailStep(5)">
                 Nästa →
             </button>
 
@@ -4722,10 +4653,10 @@ footer a:hover { color:#f2cbd7 !important; }
 
     <!-- STEG 4 INSPO -->
 
-    <div class="step" id="customNailStep4">
+    <div class="step" id="customNailStep5">
 
         <div class="step-title">
-            4. Visa oss din idé
+            5. Visa oss din idé
         </div>
 
         <div class="form-group">
@@ -4749,11 +4680,11 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div class="step-buttons">
 
-            <button class="knapp knapp-outline" onclick="nextCustomNailStep(3)">
+            <button class="knapp knapp-outline" onclick="nextCustomNailStep(4)">
                 ← Tillbaka
             </button>
 
-            <button class="knapp" onclick="nextCustomNailStep(5)">
+            <button class="knapp" onclick="nextCustomNailStep(6)">
                 Nästa →
             </button>
 
@@ -4764,10 +4695,10 @@ footer a:hover { color:#f2cbd7 !important; }
 
     <!-- STEG 5 ÄNDRINGAR -->
 
-    <div class="step" id="customNailStep5">
+    <div class="step" id="customNailStep6">
 
         <div class="step-title">
-            5. Vill du ändra något?
+            6. Vill du ändra något?
         </div>
 
         <div class="form-group">
@@ -4785,11 +4716,11 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div class="step-buttons">
 
-            <button class="knapp knapp-outline" onclick="nextCustomNailStep(4)">
+            <button class="knapp knapp-outline" onclick="nextCustomNailStep(5)">
                 ← Tillbaka
             </button>
 
-            <button class="knapp" onclick="nextCustomNailStep(6)">
+            <button class="knapp" onclick="nextCustomNailStep(7)">
                 Nästa →
             </button>
 
@@ -4800,10 +4731,10 @@ footer a:hover { color:#f2cbd7 !important; }
 
     <!-- STEG 6 UPPGIFTER -->
 
-    <div class="step" id="customNailStep6">
+    <div class="step" id="customNailStep7">
 
         <div class="step-title">
-            6. Dina uppgifter
+            7. Dina uppgifter
         </div>
 
         <div class="summary" id="customNailSummary"></div>
@@ -4819,7 +4750,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div class="step-buttons">
 
-            <button class="knapp knapp-outline" onclick="nextCustomNailStep(5)">
+            <button class="knapp knapp-outline" onclick="nextCustomNailStep(6)">
                 ← Tillbaka
             </button>
 
@@ -4880,62 +4811,76 @@ footer a:hover { color:#f2cbd7 !important; }
         <span class="custom-toe-progress"></span>
         <span class="custom-toe-progress"></span>
         <span class="custom-toe-progress"></span>
+        <span class="custom-toe-progress"></span>
 
     </div>
 
 
+    <!-- STEG 1 BASFÄRG -->
+    <div class="step active" id="customToeStep1">
+        <div class="step-title">1. Välj basfärg</div>
+        <div class="custom-color-grid">
+            <div class="option custom-color-option" onclick="selectCustomToeColor(this, 'Light Pink')"><span class="custom-color-dot" style="background:#f7cbd8"></span><span>Light Pink</span></div>
+            <div class="option custom-color-option" onclick="selectCustomToeColor(this, 'Pink')"><span class="custom-color-dot" style="background:#e99ab5"></span><span>Pink</span></div>
+            <div class="option custom-color-option" onclick="selectCustomToeColor(this, 'Nude')"><span class="custom-color-dot" style="background:#d8b09e"></span><span>Nude</span></div>
+            <div class="option custom-color-option" onclick="selectCustomToeColor(this, 'Peach')"><span class="custom-color-dot" style="background:#f3b18f"></span><span>Peach</span></div>
+        </div>
+        <button class="knapp" onclick="nextCustomToeStep(2)">Nästa →</button>
+    </div>
+
     <!-- STEG 1 STORLEK -->
 
-    <div class="step active" id="customToeStep1">
+    <div class="step" id="customToeStep2">
 
         <div class="step-title">
-            1. Välj storlek för varje tå
+            2. Välj storlek för varje tå
         </div>
 
-        <p class="file-help" style="margin-bottom:18px;">
-            Välj en storlek för alla 5 tår. Storlek 0 är störst och 15 är minst.
-        </p>
+        <div class="size-info-box">
+            <strong>00 är störst · 13 är minst</strong><br>
+            Välj en storlek för varje tå. Måtten visas enligt tåstorlekarna.
+        </div>
 
-        <div class="custom-toe-size-grid">
+        <div class="size-selection">
 
-            <div class="form-group">
+            <div class="finger-row">
                 <label>Stortå</label>
                 <select id="customToeThumbSize">
-                    <option value="">Välj storlek</option>
+                    <option value="">Välj</option>
                 </select>
             </div>
 
-            <div class="form-group">
+            <div class="finger-row">
                 <label>Tå 2</label>
                 <select id="customToeIndexSize">
-                    <option value="">Välj storlek</option>
+                    <option value="">Välj</option>
                 </select>
             </div>
 
-            <div class="form-group">
+            <div class="finger-row">
                 <label>Tå 3</label>
                 <select id="customToeMiddleSize">
-                    <option value="">Välj storlek</option>
+                    <option value="">Välj</option>
                 </select>
             </div>
 
-            <div class="form-group">
+            <div class="finger-row">
                 <label>Tå 4</label>
                 <select id="customToeRingSize">
-                    <option value="">Välj storlek</option>
+                    <option value="">Välj</option>
                 </select>
             </div>
 
-            <div class="form-group">
+            <div class="finger-row">
                 <label>Lilltå</label>
                 <select id="customToePinkySize">
-                    <option value="">Välj storlek</option>
+                    <option value="">Välj</option>
                 </select>
             </div>
 
         </div>
 
-        <button class="knapp" onclick="nextCustomToeStep(2)">
+        <button class="knapp" onclick="nextCustomToeStep(3)">
             Nästa →
         </button>
 
@@ -4944,10 +4889,10 @@ footer a:hover { color:#f2cbd7 !important; }
 
     <!-- STEG 2 INSPO -->
 
-    <div class="step" id="customToeStep2">
+    <div class="step" id="customToeStep3">
 
         <div class="step-title">
-            2. Visa oss din idé
+            3. Visa oss din idé
         </div>
 
         <div class="form-group">
@@ -4973,34 +4918,6 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div class="step-buttons">
 
-            <button class="knapp knapp-outline" onclick="nextCustomToeStep(1)">
-                ← Tillbaka
-            </button>
-
-            <button class="knapp" onclick="nextCustomToeStep(3)">
-                Nästa →
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- STEG 3 ÄNDRINGAR -->
-
-    <div class="step" id="customToeStep3">
-
-        <div class="step-title">
-            3. Vill du ändra något?
-        </div>
-
-        <div class="form-group">
-            <label for="customToeChanges">Ändringar från inspo-bilden</label>
-            <textarea id="customToeChanges" placeholder="T.ex. byt färg, ta bort detaljer eller lägg till glitter..."></textarea>
-        </div>
-
-        <div class="step-buttons">
-
             <button class="knapp knapp-outline" onclick="nextCustomToeStep(2)">
                 ← Tillbaka
             </button>
@@ -5014,12 +4931,40 @@ footer a:hover { color:#f2cbd7 !important; }
     </div>
 
 
-    <!-- STEG 4 UPPGIFTER -->
+    <!-- STEG 3 ÄNDRINGAR -->
 
     <div class="step" id="customToeStep4">
 
         <div class="step-title">
-            4. Dina uppgifter
+            4. Vill du ändra något?
+        </div>
+
+        <div class="form-group">
+            <label for="customToeChanges">Ändringar från inspo-bilden</label>
+            <textarea id="customToeChanges" placeholder="T.ex. byt färg, ta bort detaljer eller lägg till glitter..."></textarea>
+        </div>
+
+        <div class="step-buttons">
+
+            <button class="knapp knapp-outline" onclick="nextCustomToeStep(3)">
+                ← Tillbaka
+            </button>
+
+            <button class="knapp" onclick="nextCustomToeStep(5)">
+                Nästa →
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- STEG 4 UPPGIFTER -->
+
+    <div class="step" id="customToeStep5">
+
+        <div class="step-title">
+            5. Dina uppgifter
         </div>
 
         <div class="summary" id="customToeSummary"></div>
@@ -5035,7 +4980,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div class="step-buttons">
 
-            <button class="knapp knapp-outline" onclick="nextCustomToeStep(3)">
+            <button class="knapp knapp-outline" onclick="nextCustomToeStep(4)">
                 ← Tillbaka
             </button>
 
@@ -5431,7 +5376,10 @@ footer a:hover { color:#f2cbd7 !important; }
      }
 
      async function finalizeCartCheckout() {
-         cart = cart.filter(item => item && item.name && Number(item.quantity) > 0);
+         if (cart.some(item => !item || !item.name || !Number.isInteger(Number(item.quantity)) || Number(item.quantity) < 1 || Number(item.quantity) > 99)) {
+             alert("Kontrollera antal i varukorgen. Antalet måste vara ett heltal mellan 1 och 99.");
+             return;
+         }
          saveCart();
 
          if (!cart.length) {
@@ -5455,13 +5403,23 @@ footer a:hover { color:#f2cbd7 !important; }
              return;
          }
 
-         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-             alert("Kontrollera e-postadressen ");
+         if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+             alert("Kontrollera e-postadressen. Den måste innehålla @ och en giltig domän med punkt.");
+             return;
+         }
+
+         const phoneDigits = phone.replace(/\D/g, "");
+         if (phoneDigits.length < 8 || phoneDigits.length > 15) {
+             alert("Ange ett giltigt telefonnummer med 8–15 siffror.");
              return;
          }
 
          if (delivery === "shipping" && (!address || !postal || !city)) {
              alert("Fyll i adress, postnummer och ort för frakt ");
+             return;
+         }
+         if (delivery === "shipping" && !/^\d{3} ?\d{2}$/.test(postal)) {
+             alert("Postnumret måste bestå av exakt fem siffror, till exempel 123 45.");
              return;
          }
 
@@ -5902,7 +5860,7 @@ footer a:hover { color:#f2cbd7 !important; }
         const sizes = getNailSizeValues("order");
         if (!orderData.design) return alert("Välj en design först ");
         if (!allNailSizesSelected("order")) return alert("Välj en storlek för alla fem fingrar ");
-        addItemToCart({ cartId:makeCartId(), type:"ready_nails", productId:"nail-"+slugify(orderData.design), name:orderData.design, image:"bilder/vanillavibe1.jpg", color:orderData.color || "Original", length:orderData.length || "", sizes, quantity:getModalQuantity("orderQuantity"), customer:null, options:{design:orderData.design,color:orderData.color || "Original",length:orderData.length || "",sizes,message} });
+        addItemToCart({ cartId:makeCartId(), type:"ready_nails", productId:"nail-"+slugify(orderData.design), name:orderData.design, image:(readyProducts.find(product => product.name === orderData.design)?.image || "bilder/vanillavibe1.jpg"), color:orderData.color || "Original", length:orderData.length || "", sizes, quantity:getModalQuantity("orderQuantity"), customer:null, options:{design:orderData.design,color:orderData.color || "Original",length:orderData.length || "",sizes,message} });
         closeModal("orderModal");
         openCart();
     }
@@ -5954,27 +5912,18 @@ footer a:hover { color:#f2cbd7 !important; }
     }
 
 
-    function toeImageBase(design) {
-        const map = {
-            "White Toes": 1,
-            "Light Pink Toes": 2,
-            "Pink Toes": 3,
-            "Nude Toes": 4,
-            "Peach Toes": 5,
-            "French Toes": 6
-        };
-        return map[design] || 1;
+    function toeImageBase() {
+        return 6;
     }
 
     function renderToeOrderGallery() {
         const main = document.getElementById("toeOrderMainImage");
         const thumbs = document.getElementById("toeOrderThumbs");
         if (!main || !thumbs) return;
-        const n = toeImageBase(toeOrderData.design);
-        const images = [`bilder/tå${n}.jpg`, `bilder/tå${n}-2.jpg`, `bilder/tå${n}-3.jpg`];
+        const images = ["bilder/fransktar1.jpg", "bilder/fransktar2.jpg"];
         main.src = images[0];
-        main.alt = toeOrderData.design || "Tådesign";
-        main.onerror = () => { main.src = `bilder/tå${n}.jpg`; };
+        main.alt = "French Toes";
+        main.onerror = () => { main.src = images[1]; };
         thumbs.innerHTML = "";
         images.forEach((src, i) => {
             const b = document.createElement("button");
@@ -6147,6 +6096,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
     let customNailData = {
 
+        color: "",
         form: "",
         length: "",
         size: {
@@ -6166,6 +6116,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
         customNailData = {
 
+            color: "",
             form: "",
             length: "",
             size: {
@@ -6182,7 +6133,8 @@ footer a:hover { color:#f2cbd7 !important; }
 
 
         document.getElementById("customNailQuantity").textContent="1";
-        document.querySelectorAll("#customNailStep2 .option").forEach(option => {
+        document.querySelectorAll("#customNailStep1 .option").forEach(option => option.classList.remove("selected"));
+        document.querySelectorAll("#customNailStep3 .option").forEach(option => {
             option.style.display = "";
             option.classList.remove("selected");
         });
@@ -6217,7 +6169,7 @@ footer a:hover { color:#f2cbd7 !important; }
         // Almond finns bara i Short och Medium. Dölj de kortaste längderna
         // när Almond väljs, och rensa en eventuell ogiltig tidigare markering.
         if (type === "form") {
-            const lengthOptions = document.querySelectorAll("#customNailStep2 .option");
+            const lengthOptions = document.querySelectorAll("#customNailStep3 .option");
             lengthOptions.forEach(option => {
                 const isXShort = option.textContent.includes("X Short") && !option.textContent.includes("XX Short");
                 const isXXShort = option.textContent.includes("XX Short");
@@ -6261,7 +6213,7 @@ footer a:hover { color:#f2cbd7 !important; }
             });
 
 
-        if (number === 3) {
+        if (number === 4) {
 
             setupNailSizeSelectors(
                 "custom",
@@ -6272,7 +6224,7 @@ footer a:hover { color:#f2cbd7 !important; }
         }
 
 
-        if (number === 6) {
+        if (number === 7) {
 
             const inspo =
                 document.getElementById("customNailInspo").files[0];
@@ -6286,6 +6238,7 @@ footer a:hover { color:#f2cbd7 !important; }
                 .innerHTML = `
 
                 <strong>Din custom-design</strong>
+                <p>Basfärg: ${customNailData.color || "Inte vald"}</p>
 
                 <p>
                     Form: ${customNailData.form || "Inte vald"}
@@ -6322,7 +6275,12 @@ footer a:hover { color:#f2cbd7 !important; }
 
     function nextCustomNailStep(number) {
 
-        if (number === 2 && !customNailData.form) {
+        if (number === 2 && !customNailData.color) {
+            alert("Välj en basfärg först");
+            return;
+        }
+
+        if (number === 3 && !customNailData.form) {
 
             alert("Välj en nagelform först ");
             return;
@@ -6330,7 +6288,7 @@ footer a:hover { color:#f2cbd7 !important; }
         }
 
 
-        if (number === 3 && !customNailData.length) {
+        if (number === 4 && !customNailData.length) {
 
             alert("Välj en längd först ");
             return;
@@ -6338,7 +6296,7 @@ footer a:hover { color:#f2cbd7 !important; }
         }
 
 
-        if (number === 4) {
+        if (number === 5) {
 
             if (!allNailSizesSelected("custom")) {
 
@@ -6350,7 +6308,7 @@ footer a:hover { color:#f2cbd7 !important; }
         }
 
 
-        if (number === 5) {
+        if (number === 6) {
 
             const inspo =
                 document.getElementById("customNailInspo").files[0];
@@ -6386,7 +6344,7 @@ footer a:hover { color:#f2cbd7 !important; }
             return;
         }
         addItemToCart({ cartId:makeCartId(), type:"custom_nails",
-            unitPrice:399, productId:"custom_nails", name:"Custom Nails", image:"bilder/custom.jpg", color:"", length:customNailData.length||"", sizes, quantity:getModalQuantity("customNailQuantity"), customer:null, options:{form:customNailData.form,length:customNailData.length,sizes,changes,inspoFile:inspo.name,inspoData} });
+            unitPrice:399, productId:"custom_nails", name:"Custom Nails", image:"bilder/custom.jpg", color:customNailData.color||"", length:customNailData.length||"", sizes, quantity:getModalQuantity("customNailQuantity"), customer:null, options:{color:customNailData.color,form:customNailData.form,length:customNailData.length,sizes,changes,inspoFile:inspo.name,inspoData} });
         closeModal("customNailsModal");
         openCart();
     }
@@ -6397,6 +6355,7 @@ footer a:hover { color:#f2cbd7 !important; }
     ===================================================== */
 
     let customToeData = {
+        color: "",
         sizes: {
             thumb: "",
             index: "",
@@ -6412,6 +6371,7 @@ footer a:hover { color:#f2cbd7 !important; }
     function openCustomToes() {
 
         customToeData = {
+            color: "",
             sizes: {
                 thumb: "",
                 index: "",
@@ -6425,6 +6385,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
 
         document.getElementById("customToeQuantity").textContent="1";
+        document.querySelectorAll("#customToeStep1 .option").forEach(option => option.classList.remove("selected"));
         document
             .getElementById("customToesModal")
             .classList.add("active");
@@ -6434,6 +6395,13 @@ footer a:hover { color:#f2cbd7 !important; }
 
     }
 
+
+
+    function selectCustomToeColor(element, value) {
+        element.parentElement.querySelectorAll(".option").forEach(option => option.classList.remove("selected"));
+        element.classList.add("selected");
+        customToeData.color = value;
+    }
 
     function showCustomToeStep(number) {
 
@@ -6463,12 +6431,12 @@ footer a:hover { color:#f2cbd7 !important; }
             });
 
 
-        if (number === 1) {
+        if (number === 2) {
             setupCustomToeSizeSelectors();
         }
 
 
-        if (number === 4) {
+        if (number === 5) {
 
             const inspo =
                 document.getElementById("customToeInspo").files[0];
@@ -6481,6 +6449,7 @@ footer a:hover { color:#f2cbd7 !important; }
                 .innerHTML = `
 
                 <strong>Din custom-tådesign</strong>
+                <p>Basfärg: ${customToeData.color || "Inte vald"}</p>
 
                 <p><strong>Storlekar:</strong></p>
                 <p>Stortå: ${customToeData.sizes.thumb || "Inte vald"} ${customToeData.sizes.thumb ? "(" + toeSizes[customToeData.sizes.thumb] + ")" : ""}</p>
@@ -6531,7 +6500,12 @@ footer a:hover { color:#f2cbd7 !important; }
 
     function nextCustomToeStep(number) {
 
-        if (number === 2) {
+        if (number === 2 && !customToeData.color) {
+            alert("Välj en basfärg först");
+            return;
+        }
+
+        if (number === 3) {
             const sizes = getCustomToeSizeValues();
 
             if (!allCustomToeSizesSelected(sizes)) {
@@ -6543,7 +6517,7 @@ footer a:hover { color:#f2cbd7 !important; }
         }
 
 
-        if (number === 3) {
+        if (number === 4) {
 
             const inspo =
                 document.getElementById("customToeInspo").files[0];
@@ -6586,13 +6560,14 @@ footer a:hover { color:#f2cbd7 !important; }
             unitPrice: 399,
             productId: "custom_toes",
             name: "Custom Toes",
-            image: "bilder/customtoes.jpg",
-            color: "",
+            image: "bilder/customtar1.jpg",
+            color: customToeData.color || "",
             length: "",
             sizes,
             quantity: getModalQuantity("customToeQuantity"),
             customer: null,
             options: {
+                color: customToeData.color,
                 sizes,
                 sizeMeasurements: {
                     thumb: toeSizes[sizes.thumb] || "",
@@ -6693,12 +6668,7 @@ footer a:hover { color:#f2cbd7 !important; }
     ===================================================== */
 
     const readyToes = [
-        { name: "White Toes", price: 299, description: "White Toes är ett klassiskt helvitt tåset för en ren, fräsch och minimalistisk look.", gelInfo: "Naglarna är byggda med gelén SOFT WHITE från Depend som är en vit nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/whitetoes1.jpg", images: ["bilder/whitetoes1.jpg","bilder/whitetoes2.jpg"] },
-        { name: "Light Pink Toes", price: 299, description: "Light Pink Toes har en ljusrosa, diskret nyans som ger tårna ett mjukt och elegant uttryck.", gelInfo: "Naglarna är byggda med gelén PINK RIBBON från Chewali som är en ljusrosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/lightpinktoes1.jpg", images: ["bilder/lightpinktoes1.jpg","bilder/lightpinktoes2.jpg"] },
-        { name: "Pink Toes", price: 299, description: "Pink Toes ger en tydligare rosa färg och en mjuk, feminin känsla – fint när du vill ha lite mer färg.", gelInfo: "Naglarna är byggda med gelén FANCY PINK från Missfancy som är en rosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/pinktoes1.jpg", images: ["bilder/pinktoes1.jpg","bilder/pinktoes2.jpg"] },
-        { name: "Nude Toes", price: 299, description: "Nude Toes har en naturlig nude-ton som är enkel att matcha med olika outfits och tillfällen.", gelInfo: "Naglarna är byggda med gelén DUNE från Chewali som är en nude nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/nudetoes1.jpg", images: ["bilder/nudetoes1.jpg","bilder/nudetoes2.jpg"] },
-        { name: "Peach Toes", price: 299, description: "Peach Toes har en varm persikoton som ger en fräsch och mjuk färg på tårna.", gelInfo: "Naglarna är byggda med gelén SOFT PEACH från Missfancy som är en peach nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/peachtoes1.jpg", images: ["bilder/peachtoes1.jpg","bilder/peachtoes2.jpg"] },
-        { name: "French Toes", price: 349, description: "French Toes har en klassisk french-design. Välj basfärg mellan Light Pink, Pink, Nude eller Peach för att anpassa uttrycket.", gelInfo: "Basfärgen är byggd med gelén PINK RIBBON från Chewali (ljusrosa), FANCY PINK från Missfancy (rosa), DUNE från Chewali (nude) eller SOFT PEACH från Missfancy (peach), beroende på vilken färg du väljer. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/frenchtoes1.jpg", images: ["bilder/frenchtoes1.jpg","bilder/frenchtoes2.jpg"] }
+        { name: "French Toes", price: 349, description: "French Toes har en klassisk french-design. Välj basfärg mellan Light Pink, Pink, Nude eller Peach för att anpassa uttrycket.", gelInfo: "Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.", image: "bilder/fransktar1.jpg", images: ["bilder/fransktar1.jpg", "bilder/fransktar2.jpg"] }
     ];
 
     const toeColors = [
@@ -6713,8 +6683,8 @@ footer a:hover { color:#f2cbd7 !important; }
     const readyProducts = [
         {
             id: 1,
-            name: "Vanilla Vibe", price: 199,
-            description: "Vanilla Vibe är ett klassiskt enfärgat set i en mjuk nude nyans för en ren, naturlig och minimalistisk look. Välj önskad färg i produktvyn.", gelInfo: "Naglarna är byggda med gelén DUNE från Chewali som är en nude nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
+            name: "Nude", price: 199,
+            description: "Nude är ett klassiskt enfärgat set i en mjuk nude nyans för en ren, naturlig och minimalistisk look. Välj önskad färg i produktvyn.", gelInfo: "Naglarna är byggda med gelén DUNE från Chewali som är en nude nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
             image: "bilder/vanillavibe1.jpg",
             images: ["bilder/vanillavibe1.jpg", "bilder/vanillavibe2.jpg"],
             colors: [
@@ -6724,36 +6694,12 @@ footer a:hover { color:#f2cbd7 !important; }
                 { name: "Röd", value: "Röd", hex: "#b94b65" }
             ]
         },
+
+
         {
             id: 2,
-            name: "Coco Cloud", price: 279,
-            description: "Coco Cloud är en klassisk fransk manikyr med 3D-charms i form av en blomma. Ett mjukt och elegant set med en liten detalj som gör det extra speciellt.", gelInfo: "Naglarna är byggda med gelén PINK RIBBON från Chewali som är en ljusrosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
-            image: "bilder/cococloud1.jpg",
-            images: ["bilder/cococloud1.jpg", "bilder/cococloud2.jpg"],
-            colors: [
-                { name: "Original nude", value: "Original nude", hex: "#e7c7b9" },
-                { name: "Nude", value: "Nude", hex: "#d8b09e" },
-                { name: "Vit", value: "Vit", hex: "#ffffff" },
-                { name: "Rosa", value: "Rosa", hex: "#e8a7bb" }
-            ]
-        },
-        {
-            id: 3,
-            name: "Peach Pop", price: 199,
-            description: "Peach Pop är ett enfärgat set i en fräsch, mjuk peach nyans. Enkelt, snyggt och lätt att matcha med allt.", gelInfo: "Naglarna är byggda med gelén SOFT PEACH från Missfancy som är en peach nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
-            image: "bilder/peachpop1.jpg",
-            images: ["bilder/peachpop1.jpg", "bilder/peachpop2.jpg"],
-            colors: [
-                { name: "Original", value: "Original", hex: "#e8c6d0" },
-                { name: "Baby pink", value: "Baby pink", hex: "#f7cbd8" },
-                { name: "Lavendel", value: "Lavendel", hex: "#c7b7dc" },
-                { name: "Vit", value: "Vit", hex: "#ffffff" }
-            ]
-        },
-        {
-            id: 4,
-            name: "Pearl Press", price: 279,
-            description: "Pearl Press är en klassisk vit fransk manikyr för en ren, fräsch och tidlös look som passar till alla tillfällen.", gelInfo: "Naglarna är byggda med gelén FANCY PINK från Missfancy som är en rosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
+            name: "Pink French", price: 299,
+            description: "Pink French är en klassisk vit fransk manikyr för en ren, fräsch och tidlös look som passar till alla tillfällen.", gelInfo: "Naglarna är byggda med gelén FANCY PINK från Missfancy som är en rosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
             image: "bilder/pearlpress1.jpg",
             images: ["bilder/pearlpress1.jpg", "bilder/pearlpress2.jpg"],
             colors: [
@@ -6764,9 +6710,9 @@ footer a:hover { color:#f2cbd7 !important; }
             ]
         },
         {
-            id: 5,
-            name: "Bubble Bliss", price: 349,
-            description: "Bubble Bliss har 3D-blomma, guldpärlor och 3D-swirls för en lekfull och detaljrik look som verkligen märks.", gelInfo: "Naglarna är byggda med gelén FANCY PINK från Missfancy som är en rosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
+            id: 3,
+            name: "Pink Flower", price: 349,
+            description: "Pink Flower har 3D-blomma, guldpärlor och 3D-swirls för en lekfull och detaljrik look som verkligen märks.", gelInfo: "Naglarna är byggda med gelén FANCY PINK från Missfancy som är en rosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
             image: "bilder/bubblebliss1.jpg",
             images: ["bilder/bubblebliss1.jpg", "bilder/bubblebliss2.jpg"],
             colors: [
@@ -6777,9 +6723,9 @@ footer a:hover { color:#f2cbd7 !important; }
             ]
         },
         {
-            id: 6,
-            name: "Sugar Swirl", price: 349,
-            description: "Sugar Swirl har leopardmönster, lite 3D-swirl och guldpärlor för en piffig och uttrycksfull look med mycket personlighet.", gelInfo: "Naglarna är byggda med gelén DUNE från Chewali som är en nude nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
+            id: 4,
+            name: "Nude Leo", price: 349,
+            description: "Nude Leo har leopardmönster, lite 3D-swirl och guldpärlor för en piffig och uttrycksfull look med mycket personlighet.", gelInfo: "Naglarna är byggda med gelén DUNE från Chewali som är en nude nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
             image: "bilder/sugerswirl1.jpg",
             images: ["bilder/sugerswirl1.jpg", "bilder/sugerswirl2.jpg"],
             colors: [
@@ -6838,6 +6784,21 @@ footer a:hover { color:#f2cbd7 !important; }
     function fileToDataURL(file) { return new Promise((resolve,reject)=>{ const r=new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(file); }); }
 
     let cart = JSON.parse(localStorage.getItem("pressnpopCart") || "[]");
+    const legacyNailNames = {
+        "Vanilla Vibe": { name: "Nude", image: "bilder/vanillavibe1.jpg", price: 199 },
+        "Pearl Press": { name: "Pink French", image: "bilder/pearlpress1.jpg", price: 299 },
+        "Bubble Bliss": { name: "Pink Flower", image: "bilder/bubblebliss1.jpg", price: 349 },
+        "Sugar Swirl": { name: "Nude Leo", image: "bilder/sugerswirl1.jpg", price: 349 }
+    };
+    if (Array.isArray(cart)) {
+        cart = cart.map(item => {
+            const legacy = legacyNailNames[item?.name];
+            if (!legacy || !["ready_nails", undefined, null].includes(item?.type)) return item;
+            return { ...item, name: legacy.name, image: legacy.image, unitPrice: legacy.price, productId: "nail-" + slugify(legacy.name), options: { ...(item.options || {}), design: legacy.name } };
+        });
+    } else {
+        cart = [];
+    }
     let selectedDelivery = localStorage.getItem("pnpDelivery") || "pickup";
     let currentProduct = null;
     let currentProductType = "nails";
@@ -6853,18 +6814,15 @@ footer a:hover { color:#f2cbd7 !important; }
         if (!item || !item.name) return;
 
         const readyPriceByName = {
-            "White": 249,
-            "Light Pink": 299,
-            "Pink": 299,
-            "Nude": 299,
-            "Peach": 299,
-            "French": 349,
-            "White Toes": 249,
-            "Light Pink Toes": 299,
-            "Pink Toes": 299,
-            "Nude Toes": 299,
-            "Peach Toes": 299,
-            "French Toes": 349
+            "Nude": 199,
+            "Pink French": 299,
+            "Pink Flower": 349,
+            "Nude Leo": 349,
+            "French Toes": 349,
+            "Vanilla Vibe": 199,
+            "Pearl Press": 299,
+            "Bubble Bliss": 349,
+            "Sugar Swirl": 349
         };
 
         const normalized = {
@@ -6921,7 +6879,9 @@ footer a:hover { color:#f2cbd7 !important; }
     function setupUnifiedProductModal(product, isToe) {
         document.getElementById("productTitle").textContent = product.name;
         document.getElementById("productDescription").textContent = product.description;
-        document.getElementById("productGelInfo").textContent = product.gelInfo || "Naglarna är byggda med geleprodukter som är starka, hållbara och köpta från Sverige och EU. Gelén är fri från skadliga kemikalier.";
+        document.getElementById("productGelInfo").textContent = product.name === "French Toes"
+            ? "Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier."
+            : (product.gelInfo || "Naglarna är byggda med geleprodukter som är starka, hållbara och köpta från Sverige och EU. Gelén är fri från skadliga kemikalier.");
         const priceEl = document.getElementById("productPrice");
         if (priceEl) priceEl.textContent = `${Number(product.price || 0).toLocaleString("sv-SE")} kr`;
         document.getElementById("productQuantity").textContent = "1";
@@ -7219,13 +7179,13 @@ footer a:hover { color:#f2cbd7 !important; }
         },
         refresh: {
             name: "Refresh", type: "extra_refresh", mode: "service",
-            description: "Vi fräschar upp dina använda PressN’Pop-naglar så att de blir som nya igen.",
-            more: "<strong>Vad är Refresh?</strong>Refresh är vår uppfräschning för press-on naglar som du tidigare har köpt av oss. Vi rengör bort limrester, fräschar upp glansen och ser över formen, så att naglarna känns som nya igen.<br><br><strong>Varför erbjuder vi det?</strong>Våra naglar är handgjorda och gjorda för att användas flera gånger. Med Refresh får dina favoriter ett längre liv – det är både billigare än ett nytt set och bättre för miljön.<br><br><strong>Så skickar du in dina naglar</strong>Du står själv för frakten när du skickar naglarna till oss. Lägg en liten lapp i paketet med ditt namn och telefonnummer så att vi kan hitta och koppla naglarna till rätt beställning.<br><br><strong>Bra att veta</strong>Gäller endast naglar som är köpta från PressN’Pop. Du lägger Refresh i varukorgen och betalar som vanligt, så hör vi av oss efter din beställning."
+            description: "Vi fräschar upp dina tidigare PressN’Pop-naglar så att du kan använda dem igen.",
+            more: "<strong>Vad är Refresh?</strong>Vi fräschar upp dina tidigare PressN’Pop-naglar genom att rengöra bort limrester och fräscha upp glans och form. Du behåller alltså din befintliga design – du väljer ingen ny design med Refresh.<br><br><strong>Varför erbjuder vi det?</strong>Våra naglar är handgjorda och gjorda för att användas flera gånger. Med Refresh får dina favoriter ett längre liv – det är både billigare än ett nytt set och bättre för miljön.<br><br><strong>Så skickar du in dina naglar</strong>Du står själv för frakten när du skickar naglarna till oss. Lägg en liten lapp i paketet med ditt namn och telefonnummer så att vi kan hitta och koppla naglarna till rätt beställning.<br><br><strong>Bra att veta</strong>Gäller endast naglar som är köpta från PressN’Pop. Du lägger Refresh i varukorgen och betalar som vanligt, så hör vi av oss efter din beställning."
         },
         redesign: {
             name: "Refresh Redesign", type: "extra_redesign", mode: "service",
-            description: "Vi fräschar upp dina tidigare PressN’Pop-naglar och väljer en design ur vår kollektion. Små ändringar kan önskas.",
-            more: "<strong>Vad är Refresh Redesign?</strong>Redesign är Refresh med ett extra steg. Vi gör allt som ingår i Refresh – rengör bort limrester och fräschar upp glans och form – och väljer dessutom en befintlig design ur kollektionen. Basfärgen kan inte ändras. För tår erbjuds Original basfärg eller French.<br><br><strong>Varför erbjuder vi det?</strong>Är du less på en design men naglarna är hela? Istället för att köpa ett nytt set kan du ge de du redan har ett nytt liv. Det sparar pengar och är bättre för miljön.<br><br><strong>Så skickar du in dina naglar</strong>Du står själv för frakten när du skickar naglarna till oss. Lägg en liten lapp i paketet med ditt namn och telefonnummer så att vi kan hitta och koppla naglarna till rätt beställning.<br><br><strong>Bra att veta</strong>Gäller endast naglar som är köpta från PressN’Pop. Du lägger Redesign i varukorgen och betalar som vanligt, så hör vi av oss efter din beställning."
+            description: "Vi fräschar upp dina tidigare PressN’Pop-naglar och du väljer en ny design från vår kollektion.",
+            more: "<strong>Vad är Refresh Redesign?</strong>Refresh Redesign innebär att vi först fräschar upp dina tidigare PressN’Pop-naglar genom att rengöra bort limrester och fräscha upp glans och form. Därefter får du själv välja en ny design från vår kollektion. Basfärgen kan inte ändras. För tår erbjuds Original basfärg eller French.<br><br><strong>Varför erbjuder vi det?</strong>Är du less på en design men naglarna är hela? Istället för att köpa ett nytt set kan du ge de du redan har ett nytt liv. Det sparar pengar och är bättre för miljön.<br><br><strong>Så skickar du in dina naglar</strong>Du står själv för frakten när du skickar naglarna till oss. Lägg en liten lapp i paketet med ditt namn och telefonnummer så att vi kan hitta och koppla naglarna till rätt beställning.<br><br><strong>Bra att veta</strong>Gäller endast naglar som är köpta från PressN’Pop. Du lägger Redesign i varukorgen och betalar som vanligt, så hör vi av oss efter din beställning."
         },
         single: {
             name: "Enstaka nagel", type: "extra_single", mode: "single",
@@ -7260,24 +7220,24 @@ footer a:hover { color:#f2cbd7 !important; }
         document.getElementById("extraQuantity").textContent = "1";
 
         const show = (id, visible) => { const el = document.getElementById(id); if (el) el.style.display = visible ? "block" : "none"; };
-        show("extraDesignChoice", info.mode === "single" || kind === "redesign");
+        show("extraGallery", kind === "sizekit");
+        show("extraDesignChoice", kind === "redesign");
         show("extraFormChoice", info.mode === "kit" || info.mode === "single");
         show("extraLengthChoice", false);
-        show("extraSizeChoice", info.mode === "single");
+        show("extraSizeChoice", false);
         show("extraChangesChoice", info.mode === "single" || kind === "redesign");
         document.getElementById("extraChanges").value = "";
 
         const formOptions = info.mode === "kit"
             ? [["Almond Short", "Almond Short"], ["Almond Medium", "Almond Medium"], ["Coffin", "Coffin"], ["Square", "Square"], ["Tår", "Tår"]]
-            : [["Almond", "Almond"], ["Coffin", "Coffin"], ["Square", "Square"]];
+            : [["Almond", "Almond"], ["Coffin", "Coffin"], ["Square", "Square"], ["Tår", "Tår"]];
         document.getElementById("extraFormOptions").innerHTML = formOptions.map(([value, label]) =>
             `<button type="button" class="choice-button" data-form="${value}" onclick="selectExtraForm(this)">${label}</button>`
         ).join("");
 
         if (info.mode === "single") {
-            document.getElementById("extraDesignOptions").innerHTML = ["Vanilla Vibe","Peach Pop","Pearl Press","Coco Cloud","Bubble Bliss","Sugar Swirl"].map(n => getProductByName(n)).filter(Boolean).map(product =>
-                `<button type="button" class="choice-button" data-design="${product.name}" onclick="selectExtraDesign(this)">${product.name}</button>`
-            ).join("");
+            document.getElementById("extraDesignOptions").innerHTML = "";
+            document.getElementById("extraLengthOptions").innerHTML = "";
             renderSingleNailSelections();
         } else if (kind === "redesign") {
             document.getElementById("extraDesignOptions").innerHTML =
@@ -7287,7 +7247,7 @@ footer a:hover { color:#f2cbd7 !important; }
                    <button type="button" class="choice-button" onclick="selectRedesignType(this,'toes')">Tår – Original basfärg eller French</button>
                  </div>
                  <div id="redesignCollection" class="length-options" style="margin-top:12px"></div>
-                 <p class="step-hint">Välj först naglar eller tår och sedan design. För tår kan du välja Original basfärg eller French. Priset är 20 kr lägre än motsvarande design i kollektionen.</p>`;
+                 <p class="step-hint"><span style="font-size:12px;">Välj först naglar eller tår och sedan önskad design.</span> <span style="font-size:12px;">Priset är 20 kr lägre än motsvarande design i kollektionen.</span></p>`;
             renderRedesignCollection();
             document.getElementById("extraChanges").placeholder = "Små ändringar, t.ex. ta bort en liten detalj...";
         }
@@ -7307,10 +7267,10 @@ footer a:hover { color:#f2cbd7 !important; }
         const container = document.getElementById("redesignCollection");
         if (!container || !extraState || extraState.kind !== "redesign") return;
         const designs = extraState.redesignType === "toes"
-            ? [{name:"Original basfärg", price:179}, {name:"French Toes", price:269}]
-            : [{name:"Original basfärg", price:179}, ...readyProducts.slice(2).map((product, index) => ({
+            ? [{name:"Original basfärg", price:179}, {name:"French Toes", price:279}]
+            : [{name:"Original basfärg", price:179}, ...readyProducts.filter(product => product.name !== "Nude").map(product => ({
                 ...product,
-                price: index < 2 ? 269 : 329
+                price: product.name === "Pink French" ? 279 : (product.name === "Pink Flower" ? 329 : 329)
             }))];
         container.innerHTML = designs.map(product => {
             const price = product.price;
@@ -7323,6 +7283,12 @@ footer a:hover { color:#f2cbd7 !important; }
         extraState.design = button.dataset.design || "";
         document.querySelectorAll("#extraDesignOptions .choice-button").forEach(item => item.classList.remove("selected"));
         button.classList.add("selected");
+        if (EXTRA_PRODUCTS[extraState.kind]?.mode === "single") {
+            extraState.length = "";
+            document.getElementById("extraLengthChoice").style.display = "block";
+            document.getElementById("extraSizeChoice").style.display = "none";
+            renderExtraLengthOptions();
+        }
         updateRedesignPrice();
     }
 
@@ -7336,26 +7302,37 @@ footer a:hover { color:#f2cbd7 !important; }
     function renderExtraLengthOptions() {
         const container = document.getElementById("extraLengthOptions");
         if (!container) return;
-        const lengths = extraState.form === "Almond" ? ["Medium", "Short"] : ["Medium", "Short", "ExtraShort", "XXShort"];
+        const isToe = extraState.form === "Tår";
+        const lengths = isToe ? ["20 mm", "18 mm", "16 mm"] : (extraState.form === "Almond" ? ["Medium", "Short"] : ["Medium", "Short", "ExtraShort", "XXShort"]);
         const mmLabels = { Medium: "25 mm", Short: "23 mm", ExtraShort: "20 mm", XXShort: "17 mm" };
         if (!lengths.includes(extraState.length)) extraState.length = "";
         container.innerHTML = lengths.map(length => {
             const label = length === "ExtraShort" ? "X Short" : length === "XXShort" ? "XX Short" : length;
+            const note = isToe ? "Stortåns längd" : mmLabels[length];
             const selected = extraState.length === length ? " selected" : "";
-            return `<button type="button" class="choice-button${selected}" data-length="${length}" onclick="selectExtraLength(this)">${label}<small class="length-mm-note">${mmLabels[length]}</small></button>`;
+            return `<button type="button" class="choice-button${selected}" data-length="${length}" onclick="selectExtraLength(this)">${label}<small class="length-mm-note">${note}</small></button>`;
         }).join("");
     }
 
     function selectExtraForm(button) {
         extraState.form = button.dataset.form || "";
         if (EXTRA_PRODUCTS[extraState.kind].mode === "single") {
-            extraState.nailSelections.forEach(selection => { selection.size = ""; });
+            extraState.design = "";
+            extraState.length = "";
+            extraState.nailSelections.forEach(selection => { selection.size = ""; selection.finger = ""; });
         }
         document.querySelectorAll("#extraFormOptions .choice-button").forEach(item => item.classList.remove("selected"));
         button.classList.add("selected");
         if (EXTRA_PRODUCTS[extraState.kind].mode === "single") {
-            document.getElementById("extraLengthChoice").style.display = "block";
-            renderExtraLengthOptions();
+            const isToe = extraState.form === "Tår";
+            const designs = isToe ? ["French Toes"] : ["Nude", "Pink French", "Pink Flower", "Nude Leo"];
+            document.getElementById("extraDesignOptions").innerHTML = designs.map(name =>
+                `<button type="button" class="choice-button" data-design="${name}" onclick="selectExtraDesign(this)">${name}</button>`
+            ).join("");
+            document.getElementById("extraDesignChoice").style.display = "block";
+            document.getElementById("extraLengthChoice").style.display = "none";
+            document.getElementById("extraSizeChoice").style.display = "none";
+            document.getElementById("extraLengthOptions").innerHTML = "";
             updateExtraSizeOptions();
         }
     }
@@ -7364,6 +7341,7 @@ footer a:hover { color:#f2cbd7 !important; }
         extraState.length = button.dataset.length || "";
         document.querySelectorAll("#extraLengthOptions .choice-button").forEach(item => item.classList.remove("selected"));
         button.classList.add("selected");
+        document.getElementById("extraSizeChoice").style.display = "block";
         updateExtraSizeOptions();
     }
 
@@ -7373,23 +7351,29 @@ footer a:hover { color:#f2cbd7 !important; }
         if (!Array.isArray(extraState.nailSelections) || !extraState.nailSelections.length) {
             extraState.nailSelections = [{ finger: "", size: "" }];
         }
-        const fingers = ["Tumme", "Pekfinger", "Långfinger", "Ringfinger", "Lillfinger"];
-        const sizes = getNailSizeChart(extraState.form || "Almond", extraState.length || "Medium");
+        const isToe = extraState.form === "Tår";
+        const digits = isToe ? ["Stortå", "Tå 2", "Tå 3", "Tå 4", "Lilltå"] : ["Tumme", "Pekfinger", "Långfinger", "Ringfinger", "Lillfinger"];
+        const sizes = isToe ? toeSizes : getNailSizeChart(extraState.form || "Almond", extraState.length || "Medium");
+        const sizeKeys = Object.keys(sizes).sort((a, b) => {
+            if (isToe && a === "00") return -1;
+            if (isToe && b === "00") return 1;
+            return Number(a) - Number(b);
+        });
         container.innerHTML = extraState.nailSelections.map((selection, index) => `
             <div class="extra-finger-row single-nail-selection" style="margin-top:10px;align-items:end">
-                <label>Nagel ${index + 1} – finger
+                <label>${isToe ? "Tå" : "Nagel"} ${index + 1} – ${isToe ? "vilken tå" : "finger"}
                     <select data-single-finger="${index}" onchange="updateSingleNailSelection(${index}, 'finger', this.value)">
-                        <option value="">Välj finger</option>
-                        ${fingers.map(finger => `<option value="${finger}" ${selection.finger === finger ? "selected" : ""}>${finger}</option>`).join("")}
+                        <option value="">Välj ${isToe ? "tå" : "finger"}</option>
+                        ${digits.map(digit => `<option value="${digit}" ${selection.finger === digit ? "selected" : ""}>${digit}</option>`).join("")}
                     </select>
                 </label>
                 <label>Storlek
                     <select data-single-size="${index}" onchange="updateSingleNailSelection(${index}, 'size', this.value)">
                         <option value="">Välj storlek</option>
-                        ${Object.keys(sizes).map(size => `<option value="${size}" ${String(selection.size) === String(size) ? "selected" : ""}>Storlek ${String(size) === "0" ? "00" : size} – ${sizes[size]}</option>`).join("")}
+                        ${sizeKeys.map(size => `<option value="${size}" ${String(selection.size) === String(size) ? "selected" : ""}>Storlek ${isToe ? size : (String(size) === "0" ? "00" : size)} – ${sizes[size]}</option>`).join("")}
                     </select>
                 </label>
-                ${index > 0 ? `<button type="button" class="choice-button" onclick="removeSingleNailSelection(${index})" style="grid-column:1/-1">Ta bort nagel</button>` : ""}
+                ${index > 0 ? `<button type="button" class="choice-button" onclick="removeSingleNailSelection(${index})" style="grid-column:1/-1">Ta bort ${isToe ? "tå" : "nagel"}</button>` : ""}
             </div>
         `).join("");
     }
@@ -7431,7 +7415,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
         if ((info.mode === "single" || kind === "redesign") && !extraState.design) { alert("Välj en design först "); return; }
         if (info.mode !== "service" && !extraState.form) { alert("Välj en form först "); return; }
-        if (info.mode === "single" && !extraState.length) { alert("Välj en längd först "); return; }
+        if (info.mode === "single" && extraState.form !== "Tår" && !extraState.length) { alert("Välj en längd först "); return; }
 
         const options = {};
         let name = info.name;
@@ -7462,12 +7446,14 @@ footer a:hover { color:#f2cbd7 !important; }
                 if (selection.size === "") { alert(`Välj storlek för nagel ${i + 1}.`); return; }
             }
             extraState.nailSelections.forEach(selection => {
-                const chart = getNailSizeChart(extraState.form, extraState.length);
+                const isToe = extraState.form === "Tår";
+                const chart = isToe ? toeSizes : getNailSizeChart(extraState.form, extraState.length);
                 const singleOptions = {
                     form: extraState.form,
                     length: extraState.length,
                     design: extraState.design,
                     finger: selection.finger,
+                    ...(isToe ? { toe: selection.finger } : {}),
                     size: selection.size,
                     sizeMm: chart[selection.size] || ""
                 };
@@ -7583,22 +7569,18 @@ footer a:hover { color:#f2cbd7 !important; }
         return !!item && typeof item.type === "string" && item.type.startsWith("protection_");
     }
 
-    function toggleCartProtection(key) {
+    function changeCartProtectionQuantity(key, delta) {
         const info = PROTECTION_INFO[key];
         if (!info) return;
-        if (cart.some(item => item.type === info.type)) {
+        const existing = cart.find(item => item.type === info.type);
+        const current = existing ? Math.max(0, Number(existing.quantity) || 0) : 0;
+        const next = Math.max(0, Math.min(99, current + delta));
+        if (next === 0) {
             cart = cart.filter(item => item.type !== info.type);
+        } else if (existing) {
+            existing.quantity = next;
         } else {
-            cart.push({
-                cartId: makeCartId(),
-                type: info.type,
-                name: info.name,
-                image: extraPlaceholder(info.name),
-                quantity: 1,
-                customer: null,
-                options: { note: info.note },
-                unitPrice: PROTECTION_PRICES[key]
-            });
+            cart.push({ cartId: makeCartId(), type: info.type, name: info.name, image: extraPlaceholder(info.name), quantity: next, customer: null, options: { note: info.note }, unitPrice: PROTECTION_PRICES[key] });
         }
         saveCart();
     }
@@ -7613,14 +7595,16 @@ footer a:hover { color:#f2cbd7 !important; }
             <p class="protection-sub">Gäller ett nagelset. Lägg till, ta bort eller hoppa över.</p>
             <div class="protection-grid">
             ${options.map(([key, title]) => {
-                const added = cart.some(item => item.type === PROTECTION_INFO[key].type);
+                const protectionItem = cart.find(item => item.type === PROTECTION_INFO[key].type);
+                const quantity = protectionItem ? Math.max(0, Number(protectionItem.quantity) || 0) : 0;
+                const added = quantity > 0;
                 const d = PROTECTION_DETAILS[key];
                 const open = !!protectionOpen[key];
                 return `<div class="protection-option${added ? " selected" : ""}">
                     <div class="protection-option-top"><span>${title}</span><span>${PROTECTION_PRICES[key].toLocaleString("sv-SE")} kr</span></div>
                     <p class="protection-short">${d.short}</p>
                     <div class="protection-actions">
-                        <button type="button" class="protection-add" onclick="toggleCartProtection('${key}')">${added ? "✓ Tillagt" : "Lägg till"}</button>
+                        <div class="quantity-control protection-quantity"><button type="button" onclick="changeCartProtectionQuantity('${key}', -1)" aria-label="Ta bort ett skydd">−</button><span>${quantity}</span><button type="button" onclick="changeCartProtectionQuantity('${key}', 1)" aria-label="Lägg till ett skydd">+</button></div>
                         <button type="button" onclick="toggleProtectionInfo('${key}')" aria-expanded="${open}">${open ? "Visa mindre" : "Läs mer"}</button>
                     </div>
                     ${open ? `<div class="protection-more"><ul>${d.points.map(p => `<li>${p}</li>`).join("")}</ul></div>` : ""}
@@ -7660,7 +7644,7 @@ footer a:hover { color:#f2cbd7 !important; }
     function countsTowardShipping(item) {
         // Endast vanliga nagelset och tåset påverkar frakttrappan.
         // Skydd och extra tjänster/produkter ska inte höja frakten.
-        return isSetItem(item);
+        return isSetItem(item) || (item && item.type === "extra_single");
     }
 
     function getShippingFee() {
@@ -7702,9 +7686,6 @@ footer a:hover { color:#f2cbd7 !important; }
     }
 
     function getCartItemDisplayName(item) {
-        if (item.type === "ready_toes") {
-            return String(item.name || "").replace(/\s+Toes$/i, "");
-        }
         return item.name || "Produkt";
     }
 
@@ -7760,8 +7741,7 @@ footer a:hover { color:#f2cbd7 !important; }
                 item.options?.finger ? `Finger: ${item.options.finger}` : "",
                 (item.options?.finger && item.options?.size !== undefined && item.options.size !== "") ? `Storlek: ${item.options.size === "0" ? "00" : item.options.size}${item.options.sizeMm ? ` (${item.options.sizeMm})` : ""}` : "",
                 item.options?.changes ? `${"Ändringar"}: ${item.options.changes}` : "",
-                item.options?.note || "",
-                item.type === "ready_toes" ? "Toes" : ""
+                item.options?.note || ""
             ].filter(Boolean).join("<br>");
 
             return `
