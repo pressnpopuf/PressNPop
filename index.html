@@ -1717,6 +1717,22 @@
         transform: scale(1.03);
     }
 
+    /* Kompakt produktvy för Enstaka nagel, Refresh och Refresh Redesign.
+       Size Kit behåller sin befintliga layout och storlek. */
+    #extraModal .product-modal-box.extra-compact {
+        max-width: 680px;
+        padding: 30px;
+    }
+
+    #extraModal .product-modal-box.extra-compact .product-detail-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    #extraModal .product-modal-box.extra-compact .product-detail-content {
+        padding-right: 0;
+    }
+
     .product-modal-box {
         background: #fffaf8;
         width: 100%;
@@ -2892,7 +2908,7 @@ footer a:hover { color:#f2cbd7 !important; }
 /* Tydlig fraktbubbla för produkter med fri frakt */
 .extra-card { position:relative; overflow:visible; }
 .extra-card[data-free-shipping="true"]::before {
- content:"✦ Fri frakt"; position:absolute; z-index:5; top:10px; left:18px;
+ content:"Fri frakt"; position:absolute; z-index:5; top:10px; left:18px;
  padding:6px 13px; border-radius:999px; background:#a84368; color:#fff;
  font:500 12px/1.2 "Poppins",sans-serif; box-shadow:0 4px 12px rgba(168,67,104,.22);
 }
@@ -7175,7 +7191,7 @@ footer a:hover { color:#f2cbd7 !important; }
         sizekit: {
             name: "Size Kit", type: "extra_sizekit", mode: "kit",
             description: "Osäker på vilken storlek som passar? Med Size Kit testar du dig fram innan du beställer ett set.",
-            more: "<strong>Vad är Size Kit?</strong>Välj ett kit för fingernaglar eller tånaglar. För fingernaglar får du prova storlekarna 0–11 i den form du väljer. För tår får du prova tåstorlekarna 0–15.<br><br><strong>Varför erbjuder vi det?</strong>Prova storlekarna hemma så att du vet vilka som passar innan du beställer ett set. Du behöver inte gissa eller mäta själv.<br><br><strong>Välj nedan</strong>Välj den form du vill prova, eller välj Tår om du vill hitta rätt storlekar för tånaglar. Size Kit har fri frakt."
+            more: "<strong>Vad är Size Kit?</strong>Välj ett kit för fingernaglar eller tånaglar. För fingernaglar får du prova storlekarna 0–11 i den form du väljer. För tår får du prova tåstorlekarna 00–13.<br><br><strong>Varför erbjuder vi det?</strong>Prova storlekarna hemma så att du vet vilka som passar innan du beställer ett set. Du behöver inte gissa eller mäta själv.<br><br><strong>Välj nedan</strong>Välj den form du vill prova, eller välj Tår om du vill hitta rätt storlekar för tånaglar. Size Kit har fri frakt."
         },
         refresh: {
             name: "Refresh", type: "extra_refresh", mode: "service",
@@ -7210,6 +7226,11 @@ footer a:hover { color:#f2cbd7 !important; }
     function openExtraDetail(kind) {
         const info = EXTRA_PRODUCTS[kind];
         if (!info) return;
+
+        const extraModalBox = document.querySelector("#extraModal .product-modal-box");
+        if (extraModalBox) {
+            extraModalBox.classList.toggle("extra-compact", ["single", "refresh", "redesign"].includes(kind));
+        }
 
         extraState = { kind, design: "", form: "", length: "", quantity: 1, redesignType: "nails", nailSelections: [{ finger: "", size: "" }] };
 
@@ -7423,7 +7444,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
         if (info.mode !== "service") options.form = extraState.form;
         if (kind === "sizekit" && extraState.form === "Tår") {
-            options.form = "Tår (storlekar 0–15)";
+            options.form = "Tår (storlekar 00–13)";
             name = "Size Kit – Tår";
         }
 
