@@ -3013,6 +3013,43 @@ footer a:hover { color:#f2cbd7 !important; }
         .custom-color-dot { flex-basis: 26px; width: 26px; height: 26px; }
     }
 </style>
+
+<style id="pressnpop-final-adjustments">
+/* Centrera underrubriken i kontaktsektionen. */
+.kontakt .rubrik span {
+    display: block !important;
+    width: 100%;
+    text-align: center;
+    transform: none !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* Ge grundarnas namn- och rollrutor mer utrymme och jämnare text. */
+.founders {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+}
+.founders .founder {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 14px 10px;
+    box-sizing: border-box;
+}
+.founders .founder span {
+    font-size: 11px;
+    line-height: 1.5;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+@media (max-width: 600px) {
+    .founders { gap: 7px; }
+    .founders .founder { padding: 12px 5px; }
+    .founders .founder span { font-size: 10px; }
+}
+</style>
+
 </head>
 <body>
 
@@ -3557,17 +3594,17 @@ footer a:hover { color:#f2cbd7 !important; }
 
             <div class="founder">
                 <strong>Iliana</strong>
-                <span>Founder<br>Nail Artist</span>
+                <span>Founder &amp;<br>Nail Artist</span>
             </div>
 
             <div class="founder">
                 <strong>Limar</strong>
-                <span>Co-Founder<br>Marketing Manager</span>
+                <span>Co-Founder &amp;<br>Marketing Manager</span>
             </div>
 
             <div class="founder">
                 <strong>Matilda</strong>
-                <span>Co-Founder<br>Financial Manager</span>
+                <span>Co-Founder &amp;<br>Financial Manager</span>
             </div>
 
         </div>
@@ -3855,7 +3892,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
                 <div class="included-product-note">
                     <strong>I varje nagel- och tåset ingår:</strong>
-                    nagelbandsputtare, alkoholwipe, glue tabs, nagellim, nagelfil samt en lapp med instruktioner för applicering och skötsel av dina press-on naglar.
+                    nagelbandsputtare, Alkoholpad, glue tabs, nagellim, nagelfil samt en lapp med instruktioner för applicering och skötsel av dina press-on naglar.
                 </div>
 
                 <div class="product-choice" id="productColorChoice" style="display:none">
@@ -4005,7 +4042,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
         <div style="background:#fbecef;border:1px solid #f0d6df;border-radius:15px;padding:15px 17px;margin-bottom:18px;color:#666;font-size:12px;line-height:1.6;">
             <strong style="color:var(--morkrosa);">I varje nagel- och tåset ingår:</strong><br>
-            Nagelbandsputtare · Alcoholwipe · Glue tabs · Nagellim · Nagelfil · Lapp med instruktioner för applicering och skötsel
+            Nagelbandsputtare · Alkoholpad · Glue tabs · Nagellim · Nagelfil · Lapp med instruktioner för applicering och skötsel
         </div>
 
         <div id="cartItems"></div>
@@ -4042,7 +4079,7 @@ footer a:hover { color:#f2cbd7 !important; }
             </div>
 
             <p class="shipping-note">
-                Fler set ger högre frakt: 1 set 22 kr · 2–3 set 44 kr · 4–7 set 66 kr · 8 eller fler 88 kr. Refresh: du betalar frakten när du skickar naglarna till oss.
+                Fler set ger högre frakt: 1 set 22 kr · 2–3 set 44 kr · 4–7 set 66 kr · 8 eller fler 88 kr.
             </p>
 
             <div class="swish-cart-note" style="background:#fff0f4;border:1px solid #edc3d0;border-radius:14px;padding:16px;margin:14px 0;color:#743047;line-height:1.6;">
@@ -6369,7 +6406,7 @@ footer a:hover { color:#f2cbd7 !important; }
             return;
         }
         addItemToCart({ cartId:makeCartId(), type:"custom_nails",
-            unitPrice:399, productId:"custom_nails", name:"Custom Nails", image:"bilder/custom.jpeg", color:customNailData.color||"", length:customNailData.length||"", sizes, quantity:getModalQuantity("customNailQuantity"), customer:null, options:{color:customNailData.color,form:customNailData.form,length:customNailData.length,sizes,changes,inspoFile:inspo.name,inspoData} });
+            unitPrice:399, productId:"custom_nails", name:"Custom Nails", image:extraPlaceholder("Custom Nails"), color:customNailData.color||"", length:customNailData.length||"", sizes, quantity:getModalQuantity("customNailQuantity"), customer:null, options:{color:customNailData.color,form:customNailData.form,length:customNailData.length,sizes,changes,inspoFile:inspo.name,inspoData} });
         closeModal("customNailsModal");
         openCart();
     }
@@ -6585,7 +6622,7 @@ footer a:hover { color:#f2cbd7 !important; }
             unitPrice: 399,
             productId: "custom_toes",
             name: "Custom Toes",
-            image: "bilder/customtar1.png",
+            image: extraPlaceholder("Custom Toes"),
             color: customToeData.color || "",
             length: "",
             sizes,
@@ -7186,7 +7223,7 @@ footer a:hover { color:#f2cbd7 !important; }
 
     // ---- Mer från PressN’Pop: Size Kit, Refresh, Refresh Redesign, Enstaka nagel ----
     // ÄNDRA PRISERNA HÄR (kr per st):
-    const EXTRA_PRICES = { sizekit: 59, refresh: 149, redesign: 179, single: 59 };
+    const EXTRA_PRICES = { sizekit: 59, refresh: 149, redesign: 169, single: 59 };
     // Skydd som erbjuds innan totalen visas (kr, ett fast pris per beställning):
     const PROTECTION_PRICES = { size: 189, item: 99 };
 
@@ -7298,10 +7335,10 @@ footer a:hover { color:#f2cbd7 !important; }
         const container = document.getElementById("redesignCollection");
         if (!container || !extraState || extraState.kind !== "redesign") return;
         const designs = extraState.redesignType === "toes"
-            ? [{name:"Original basfärg", price:179}, {name:"French Toes", price:279}]
-            : [{name:"Original basfärg", price:179}, ...readyProducts.filter(product => product.name !== "Nude").map(product => ({
+            ? [{name:"Original basfärg", price:169}, {name:"French Toes", price:269}]
+            : [{name:"Original basfärg", price:169}, ...readyProducts.filter(product => product.name !== "Nude").map(product => ({
                 ...product,
-                price: product.name === "Pink French" ? 279 : (product.name === "Pink Flower" ? 329 : 329)
+                price: product.name === "Pink French" ? 269 : (product.name === "Pink Flower" ? 319 : 319)
             }))];
         container.innerHTML = designs.map(product => {
             const price = product.price;
@@ -7659,7 +7696,14 @@ footer a:hover { color:#f2cbd7 !important; }
         }
         if (item.type === "extra_sizekit") return EXTRA_PRICES.sizekit;
         if (item.type === "extra_refresh") return EXTRA_PRICES.refresh;
-        if (item.type === "extra_redesign") return EXTRA_PRICES.redesign;
+        if (item.type === "extra_redesign") {
+            // Uppdatera även äldre varukorgar som sparat de tidigare redesignpriserna.
+            const design = item.options?.design || "";
+            if (design === "Original basfärg") return 169;
+            if (design === "Pink French" || design === "French Toes") return 269;
+            if (design) return 319;
+            return EXTRA_PRICES.redesign;
+        }
         if (item.type === "extra_single") return EXTRA_PRICES.single;
         if (item.type === "protection_size") return PROTECTION_PRICES.size;
         if (item.type === "protection_item") return PROTECTION_PRICES.item;
@@ -7673,9 +7717,8 @@ footer a:hover { color:#f2cbd7 !important; }
     }
 
     function countsTowardShipping(item) {
-        // Endast vanliga nagelset och tåset påverkar frakttrappan.
-        // Skydd och extra tjänster/produkter ska inte höja frakten.
-        return isSetItem(item) || (item && item.type === "extra_single");
+        // Alla varor räknas till frakten utom Size Kit, som har fri frakt.
+        return !!item && item.type !== "extra_sizekit";
     }
 
     function getShippingFee() {
