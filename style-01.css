@@ -3070,4 +3070,48 @@ footer a:hover { color:#f2cbd7 !important; }
         outline: 2px solid var(--rosa);
         outline-offset: 3px;
     }
+/* SLUTLIG FIX – horisontell skrollning och centrerad sektion */
+.design-scroll-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 1180px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    overflow: hidden !important;
+}
 
+.design-scroll-wrapper .naglar {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    gap: 22px !important;
+    padding: 10px 5px 24px !important;
+
+    scroll-behavior: smooth !important;
+    scroll-snap-type: x mandatory !important;
+}
+
+.design-scroll-wrapper .nagel-kort {
+    display: block !important;
+    flex: 0 0 290px !important;
+    width: 290px !important;
+    min-width: 290px !important;
+    max-width: 290px !important;
+    scroll-snap-align: start;
+}
+
+@media (max-width: 600px) {
+    .design-scroll-wrapper .nagel-kort {
+        flex: 0 0 min(78vw, 300px) !important;
+        width: min(78vw, 300px) !important;
+        min-width: min(78vw, 300px) !important;
+    }
+}
