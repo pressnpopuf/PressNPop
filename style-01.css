@@ -2934,25 +2934,38 @@ footer a:hover { color:#f2cbd7 !important; }
 
 /* Enhetlig, horisontellt skrollbar produktlayout för både naglar och tår */
 .design-scroll-wrapper { overflow: hidden; }
+/* Horisontell produktlayout för både naglar och tår */
+.design-scroll-wrapper {
+    position: relative;
+    overflow: hidden;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+}
+
 .design-scroll-wrapper .naglar {
     display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
     align-items: stretch;
     gap: 22px;
 
-    overflow-x: hidden !important;
+    overflow-x: auto !important;
     overflow-y: hidden !important;
 
     padding: 10px 5px 24px;
-    scroll-snap-type: none;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
+
 .design-scroll-wrapper .nagel-kort {
-    flex: 0 1 290px !important;
-    width: 290px !important;
-    max-width: 100%;
+    flex: 0 0 clamp(250px, 28vw, 310px) !important;
+    width: auto !important;
     min-width: 0;
+    scroll-snap-align: start;
 }
+
 .design-scroll-wrapper .nagel-bild {
     aspect-ratio: 1.08 / 1;
     overflow: hidden;
