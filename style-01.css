@@ -754,7 +754,20 @@
         box-shadow: 0 15px 35px rgba(70, 35, 45, 0.07);
     }
 
-    .about-us-photo { width:100%; max-width:320px; aspect-ratio:4 / 3; object-fit:cover; border-radius:22px; margin:0 auto 22px; display:block; background:#fbecef; }
+    .about-us-photo {
+    width: 100%;
+    max-width: 320px;
+    height: 240px;
+
+    object-fit: cover;
+    object-position: center;
+
+    display: block;
+    margin: 0 auto 22px;
+
+    border-radius: 22px;
+    overflow: hidden;
+}
 
     .about-card .big-flower {
         font-size: 75px;
