@@ -2747,15 +2747,34 @@
         return !isSizeKit;
     }
 
-    function getShippingFee() {
-        if (selectedDelivery !== "shipping") return 0;
-        const count = cart.filter(countsTowardShipping).reduce((total, item) => total + Math.max(0, Number(item.quantity) || 0), 0);
-        if (count <= 0) return 0;
-        if (count === 1) return 22;
-        if (count <= 3) return 44;
-        if (count <= 7) return 66;
-        return 88;
+    
+function getShippingFee() {
+    if (selectedDelivery !== "shipping") return 0;
+
+    const shippingItems = cart.filter(countsTowardShipping);
+    const count = shippingItems.reduce(
+        (total, item) => total + Math.max(0, Number(item.quantity) || 0),
+        0
+    );
+
+    if (count <= 0) return 0;
+
+    // Egen frakttrappa för beställningar med enbart enstaka naglar.
+    const onlySingleNails = shippingItems.every(
+        item => String(item.type || "").trim().toLowerCase() === "extra_single"
+    );
+
+    if (onlySingleNails) {
+        return Math.ceil(count / 10) * 22;
     }
+
+    // Alla övriga beställningar behåller den gamla fraktberäkningen.
+    if (count === 1) return 22;
+    if (count <= 3) return 44;
+    if (count <= 7) return 66;
+    return 88;
+}
+
 
     function selectDelivery(choice) {
         selectedDelivery = choice === "shipping" ? "shipping" : "pickup";
