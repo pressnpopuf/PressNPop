@@ -1,0 +1,34 @@
+
+/* Centrera underrubriken i kontaktsektionen. */
+.kontakt .rubrik span {
+    display: block !important;
+    width: 100%;
+    text-align: center;
+    transform: none !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* Ge grundarnas namn- och rollrutor mer utrymme och jämnare text. */
+.founders {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+}
+.founders .founder {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 14px 10px;
+    box-sizing: border-box;
+}
+.founders .founder span {
+    font-size: 11px;
+    line-height: 1.5;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+@media (max-width: 600px) {
+    .founders { gap: 7px; }
+    .founders .founder { padding: 12px 5px; }
+    .founders .founder span { font-size: 10px; }
+}
