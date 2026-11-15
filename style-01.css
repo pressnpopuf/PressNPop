@@ -2936,22 +2936,22 @@ footer a:hover { color:#f2cbd7 !important; }
 .design-scroll-wrapper { overflow: hidden; }
 .design-scroll-wrapper .naglar {
     display: flex !important;
-    flex-wrap: nowrap !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
     align-items: stretch;
     gap: 22px;
-    overflow-x: auto !important;
+
+    overflow-x: hidden !important;
     overflow-y: hidden !important;
+
     padding: 10px 5px 24px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--rosa) #f8e8ed;
+    scroll-snap-type: none;
 }
 .design-scroll-wrapper .nagel-kort {
-    flex: 0 0 clamp(250px, 28vw, 310px) !important;
-    width: auto !important;
+    flex: 0 1 290px !important;
+    width: 290px !important;
+    max-width: 100%;
     min-width: 0;
-    scroll-snap-align: start;
 }
 .design-scroll-wrapper .nagel-bild {
     aspect-ratio: 1.08 / 1;
