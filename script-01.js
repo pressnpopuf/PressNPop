@@ -317,6 +317,14 @@
      }
 
      async function sendOrderAutomatically(subject, body, customerName, customerEmail, files, onProgress) {
+         // En enda checkout-körning skickar samtliga bilder i ordning.
+         // Låset skyddar mot att två parallella körningar startas.
+         if (window.pressNPopSendingImages) {
+             window.lastOrderSendError = "Beställningen håller redan på att skickas.";
+             return false;
+         }
+         window.pressNPopSendingImages = true;
+         try {
          // Skicka inte en order tyst utan inspo-bilderna som kunden valt.
          const totalBytes = files.reduce((sum, file) => sum + Math.floor((file.base64.length * 3) / 4), 0);
          if (totalBytes > 9 * 1024 * 1024) {
@@ -359,6 +367,9 @@
          const result = await postOrderToFormSubmit(subject, body, customerName, customerEmail, files);
          window.lastOrderSendError = result.ok ? "" : result.message;
          return result.ok;
+         } finally {
+             window.pressNPopSendingImages = false;
+         }
      }
 
      const SWISH_BUSINESS_NUMBER = "1237052459";
@@ -498,7 +509,7 @@
                      subject, body, `${firstName} ${lastName}`, email, attachments,
                      (current, total) => {
                          if (button) button.textContent = total > 1
-                             ? `Skickar bild ${current} av ${total}...`
+                             ? `Skickar bild ${current} av ${total} automatiskt...`
                              : "Skickar beställning...";
                      }
                  );
@@ -2722,8 +2733,18 @@
     }
 
     function countsTowardShipping(item) {
-        // Alla varor räknas till frakten utom Size Kit, som har fri frakt.
-        return !!item && item.type !== "extra_sizekit";
+        // Size Kit har alltid fri frakt och ska aldrig påverka frakttrappan.
+        // Kontrollera både produkttyp och namn så att även äldre varukorgar
+        // med ett äldre/saknat type-värde hanteras korrekt.
+        if (!item) return false;
+        const type = String(item.type || "").trim().toLowerCase();
+        const name = String(item.name || "").trim().toLowerCase();
+        const isSizeKit = type === "extra_sizekit" ||
+            type === "sizekit" ||
+            name === "size kit" ||
+            name.startsWith("size kit –") ||
+            name.startsWith("size kit -");
+        return !isSizeKit;
     }
 
     function getShippingFee() {
@@ -2989,4 +3010,3 @@ Object.assign(translations,answerTranslations);
  document.querySelectorAll('.language-option').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang)));
  apply('sv');
 })();
-
