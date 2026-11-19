@@ -1102,7 +1102,7 @@
                     Fortsätt shoppa
                 </button>
                 <button class="knapp" type="button" onclick="checkoutCart()">
-                    Gå till betalning
+                    Nästa →
                 </button>
             </div>
 
@@ -1118,7 +1118,7 @@
     <div class="modal-box">
         <button class="close" type="button" onclick="closeModal('cartCheckoutModal')">×</button>
         <h2>Slutför din beställning </h2>
-        <p class="modal-subtitle">Fyll i uppgifterna en gång. Vi använder förnamn, efternamn och telefonnummer exakt som du anger dem för att kunna matcha beställningen med din Swish-betalning.</p>
+        <p class="modal-subtitle">Fyll i uppgifterna. Vi använder förnamn, efternamn och telefonnummer exakt som du anger dem för att kunna matcha beställningen med din Swish-betalning.</p>
 
         <div class="form-group">
             <label>Förnamn *</label>
@@ -1131,7 +1131,7 @@
         <div class="form-group">
             <label>Telefonnummer som du använder vid Swish-betalningen *</label>
             <input type="tel" id="cartCheckoutPhone" placeholder="07XXXXXXXX" autocomplete="tel-national" maxlength="10" minlength="10" inputmode="numeric" pattern="0[0-9]{9}" oninput="this.value = this.value.replace(/\D/g, '').slice(0, 10)">
-            <p class="file-help">Skriv samma nummer som är kopplat till den Swish-betalning du kommer att göra.</p>
+            <p class="file-help">Skriv samma nummer som är kopplat till den Swish-betalning du gjort.</p>
         </div>
         <div class="form-group">
             <label>E-post *</label>
@@ -1162,7 +1162,7 @@
 
         <div style="background:#fbecef;border:1px solid #f0d6df;border-radius:15px;padding:15px;margin-bottom:18px;color:#666;font-size:13px;line-height:1.7;">
             <strong style="color:var(--morkrosa);">Så fungerar beställningen</strong><br>
-            Betala först via Swish till 1237052459. När du har betalat trycker på ”Skicka beställning”. Beställningen skickas till PressN’Pop UF och kontrolleras av oss.
+            Betala först via Swish till 123 705 24 59. När du har betalat trycker på ”Skicka beställning”. Beställningen skickas till PressN’Pop UF och kontrolleras av oss.
         </div>
 
         <div class="step-buttons">
@@ -1356,7 +1356,7 @@
             <h2>Tack för din beställning!</h2>
 
             <p>
-                Din beställning är förberedd.
+                Din beställning är skickad!
                 Vi återkommer till dig så snart som möjligt.
             </p>
 
@@ -1514,7 +1514,7 @@
             <h2>Tack för din beställning!</h2>
 
             <p>
-                Din beställning är förberedd.
+                Din beställning är skickad!
                 Vi återkommer till dig så snart som möjligt.
             </p>
 
@@ -1734,7 +1734,7 @@
             >
 
             <div class="file-help">
-                Ladda upp din inspirationsbild. Vi komprimerar den automatiskt och visar storleken efter komprimering här nedanför. Dina uppladdade inspo-bilder får tillsammans vara högst 9 MB.
+                Ladda upp din inspirationsbild. Dina uppladdade inspo-bilder får tillsammans vara högst 9 MB.
             </div>
 
             <div class="file-name" id="customNailInspoName"></div>
@@ -1988,7 +1988,7 @@
             >
 
             <div class="file-help">
-                Ladda upp din inspirationsbild. Vi komprimerar den automatiskt och visar storleken efter komprimering här nedanför. Dina uppladdade inspo-bilder får tillsammans vara högst 9 MB.
+                Ladda upp din inspirationsbild. Dina uppladdade inspo-bilder får tillsammans vara högst 9 MB.
             </div>
 
             <div class="file-name" id="customToeInspoName"></div>
