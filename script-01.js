@@ -305,10 +305,17 @@
              return postOrderViaHiddenForm(Array.from(formData.entries()), files);
          }
 
+         // Beställningar utan bilder behöver inte multipart/form-data.
+         // Skicka ett kompakt URL-kodat formulär direkt, utan bilagehantering.
+         const simpleFields = new URLSearchParams();
+         for (const [key, value] of formData.entries()) simpleFields.append(key, value);
          const response = await fetch("https://formsubmit.co/ajax/pressnpop.uf@gmail.com", {
              method: "POST",
-             headers: { "Accept": "application/json" },
-             body: formData
+             headers: {
+                 "Accept": "application/json",
+                 "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+             },
+             body: simpleFields.toString()
          });
          const result = await response.json().catch(() => ({}));
          const ok = response.ok && (result.success === true || result.success === "true");
@@ -3028,4 +3035,146 @@ Object.assign(translations,answerTranslations);
  function inputValue(){return document.getElementById('faqSearch')?.value||'';}
  document.querySelectorAll('.language-option').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang)));
  apply('sv');
+})();
+
+
+/* =====================================================
+   INTERAKTIV STORLEKSGUIDE + KONTAKTFORMULÄR
+===================================================== */
+(function () {
+  const root = document.getElementById('sizeWizard');
+  if (root) {
+    const nailCharts = {
+      'Almond Medium': { '0':17, '1':16, '2':15, '3':14, '4':13, '5':12.5, '6':12, '7':11.5, '8':11, '9':10.5, '10':9.5, '11':8.5 },
+      'Almond Short': { '0':19, '1':17.5, '2':16, '3':15, '4':14.5, '5':14, '6':13.5, '7':13, '8':12, '9':11, '10':10, '11':9 },
+      Square: { '0':17, '1':16, '2':15, '3':14, '4':13, '5':12, '6':12, '7':11, '8':11, '9':10, '10':9, '11':8 },
+      Coffin: { '0':16.5, '1':16, '2':15, '3':14.5, '4':14, '5':12.5, '6':12, '7':11.5, '8':11, '9':10.5, '10':9.5, '11':8.5 }
+    };
+    const toeChart = {'00':23,'0':21.5,'1':20.5,'2':20,'3':19,'4':18,'5':15,'6':14,'7':13,'8':12,'9':10.5,'10':10,'11':9,'12':8,'13':7};
+    const labels = { toes:['Stortå','Tå 2','Tå 3','Tå 4','Lilltå'], nails:['Tumme','Pekfinger','Långfinger','Ringfinger','Lillfinger'] };
+    let kind = '', shape = 'Almond Medium';
+    const steps = [...root.querySelectorAll('.size-step')];
+    const showStep = n => {
+      steps.forEach(el => el.hidden = Number(el.dataset.step) !== n);
+      root.querySelectorAll('[data-step-dot]').forEach(dot => {
+        const d=Number(dot.dataset.stepDot); dot.classList.toggle('active',d<=n); dot.classList.toggle('current',d===n);
+      });
+      root.querySelector('#sizeResults').hidden=true;
+      root.querySelector('#sizeMeasureError').hidden=true;
+    };
+    const setKind = selected => {
+      kind=selected;
+      root.querySelectorAll('[data-size-kind]').forEach(b=>b.classList.toggle('selected',b.dataset.sizeKind===kind));
+      const isNails=kind==='nails';
+      root.querySelector('#sizeStepTwoTitle').textContent='Välj formen du vill köpa';
+      root.querySelector('#sizeStepTwoCopy').textContent='Storlekarna skiljer sig mellan olika former. Välj den form du vill beställa.';
+      root.querySelector('#sizeShapeOptions').hidden=!isNails;
+      root.querySelectorAll('[data-step-dot]').forEach(dot=>{dot.hidden=!isNails && dot.dataset.stepDot==='2';});
+      if (isNails) showStep(2); else prepareMeasurements();
+    };
+    root.querySelectorAll('[data-size-kind]').forEach(b=>b.addEventListener('click',()=>setKind(b.dataset.sizeKind)));
+    root.querySelectorAll('[data-size-shape]').forEach(b=>b.addEventListener('click',()=>{
+      shape=b.dataset.sizeShape; root.querySelectorAll('[data-size-shape]').forEach(x=>x.classList.toggle('selected',x===b));
+    }));
+    function prepareMeasurements(){
+      const names=labels[kind]; names.forEach((name,i)=>root.querySelector('#sizeLabel'+i).textContent=name);
+      root.querySelector('#sizeStepThreeNumber').textContent=kind==='nails'?'3':'2';
+      root.querySelector('#sizeMeasureTitle').textContent=kind==='nails'?'Fyll i måtten för dina fem naglar':'Fyll i måtten för dina fem tår';
+      root.querySelectorAll('#sizeMeasureGrid input').forEach(input=>input.value='');
+      root.querySelector('#sizeResults').hidden=true;
+      showStep(3);
+    }
+    root.querySelectorAll('[data-size-back]').forEach(b=>b.addEventListener('click',()=>showStep(kind==='toes'?1:Number(b.dataset.sizeBack))));
+    root.querySelector('[data-size-next="3"]').addEventListener('click',prepareMeasurements);
+    const fmt = n => Number(n).toLocaleString('sv-SE',{maximumFractionDigits:1});
+    root.querySelector('#findMySizes').addEventListener('click',()=>{
+      const fields=[...root.querySelectorAll('#sizeMeasureGrid input')];
+      const values=fields.map(x=>Number(String(x.value).replace(',','.')));
+      if(values.some((v,i)=>!fields[i].value.trim()||!Number.isFinite(v)||v<=0||v>40)){
+        root.querySelector('#sizeMeasureError').hidden=false; fields.find((x,i)=>!x.value.trim()||!Number.isFinite(values[i])||values[i]<=0||values[i]>40)?.focus(); return;
+      }
+      root.querySelector('#sizeMeasureError').hidden=true;
+      const chart=kind==='toes'?toeChart:nailCharts[shape];
+      const results=values.map((rawMm,i)=>{
+        // Round the entered measurement to the nearest 0.5 mm (not always upwards).
+        // Example: 10.2 -> 10.0 mm, while 10.3 -> 10.5 mm.
+        const mm=Math.round(rawMm*2)/2;
+        const distances=Object.entries(chart).map(([size,width])=>({size,width,diff:Math.abs(width-mm)}));
+        const min=Math.min(...distances.map(x=>x.diff));
+        // If two different widths are equally close, choose the larger width.
+        const closestWidth=Math.max(...distances.filter(x=>Math.abs(x.diff-min)<0.001).map(x=>x.width));
+        const sameWidth=distances.filter(x=>Math.abs(x.width-closestWidth)<0.001).sort((a,b)=>Number(a.size)-Number(b.size));
+        // Combine equal-width size numbers only for the Square nail shape.
+        const matches=(kind==='nails' && shape==='Square' && sameWidth.length>1)
+          ? [{size:sameWidth.map(x=>x.size).join('/'),width:closestWidth}]
+          : [{size:sameWidth[0].size,width:closestWidth}];
+        return {label:labels[kind][i],mm,matches};
+      });
+      const resultBox=root.querySelector('#sizeResults');
+      const english=document.documentElement.lang==='en';
+      const resultTitle=english?'Here are your recommended sizes':'Här är dina rekommenderade storlekar';
+      const resultIntro=english
+        ? `Suggested size for each ${kind==='toes'?'toe':'finger'} based on your measurement and ${kind==='toes'?'our toe tips':`${shape} shape`}.`
+        : `Storlek för varje ${kind==='toes'?'tå':'finger'} utifrån måttet du angav och ${kind==='toes'?'våra tåtippar':`formen ${shape}`}.`;
+      const resultNote=english?'The suggested size is an estimate based on the closest width.':'Storleksförslaget är en uppskattning utifrån närmaste bredd.';
+      resultBox.innerHTML=`<div class="size-result-heading"><span>${english?'YOUR RESULT':'DITT RESULTAT'}</span><h3>${resultTitle}</h3><p>${resultIntro}</p></div><div class="size-result-tiles">${results.map(r=>`<div class="size-result-tile"><strong>${r.label}</strong>${r.matches.map(m=>`<span>${m.size==='00'?'00':m.size} <small class="size-result-width">(${fmt(m.width)} mm)</small></span>`).join('')}</div>`).join('')}</div><p class="size-result-note">${resultNote}</p><button type="button" class="size-back-button size-restart-button">${english?'Start over':'Börja om'}</button>`;
+      resultBox.hidden=false;
+      resultBox.querySelector('.size-restart-button').addEventListener('click',()=>{kind='';shape='Almond Medium';root.querySelectorAll('[data-size-kind]').forEach(x=>x.classList.remove('selected'));root.querySelectorAll('[data-size-shape]').forEach(x=>x.classList.toggle('selected',x.dataset.sizeShape==='Almond Medium'));showStep(1);});
+      resultBox.scrollIntoView({behavior:'smooth',block:'nearest'});
+    });
+    root.querySelectorAll('[data-step-dot]').forEach(dot=>{dot.hidden=false;});
+    showStep(1);
+  }
+
+  const referenceToggle=document.getElementById('toggleSizeReference');
+  const referencePanel=document.getElementById('sizeReferencePanel');
+  if(referenceToggle&&referencePanel){referenceToggle.addEventListener('click',()=>{const open=referencePanel.hidden;referencePanel.hidden=!open;referenceToggle.setAttribute('aria-expanded',String(open));referenceToggle.textContent=open?'Dölj storleksmått':'Visa storleksmått';});
+    referencePanel.querySelectorAll('[data-reference-kind]').forEach(button=>button.addEventListener('click',()=>{const toes=button.dataset.referenceKind==='toes';referencePanel.querySelectorAll('[data-reference-kind]').forEach(b=>b.classList.toggle('selected',b===button));referencePanel.querySelector('.size-reference-nails').hidden=toes;referencePanel.querySelector('.size-reference-toes').hidden=!toes;}));}
+
+  const contactToggle=document.getElementById('toggleContactForm');
+  const contactPanel=document.getElementById('contactFormPanel');
+  if(contactToggle&&contactPanel){contactToggle.addEventListener('click',()=>{const open=contactPanel.hidden;contactPanel.hidden=!open;contactToggle.setAttribute('aria-expanded',String(open));if(open)contactPanel.scrollIntoView({behavior:'smooth',block:'nearest'});});}
+
+  const form=document.getElementById('pressnpopContactForm');
+  if(form){
+    form.addEventListener('submit',async event=>{
+      event.preventDefault();
+      const button=document.getElementById('contactSubmitButton');
+      const status=document.getElementById('contactFormStatus');
+      if(!form.reportValidity()) return;
+      const original=button.textContent; button.disabled=true; button.textContent='Skickar...'; status.textContent=''; status.className='contact-form-status';
+      const data=new FormData(form);
+      data.set('_subject','Ny kontaktfråga – PressN’Pop UF');
+      data.set('_template','table');
+      data.set('_captcha','false');
+      // Låt företaget svara direkt till avsändarens adress.
+      data.set('_replyto',String(data.get('email')||'').trim());
+      const controller=new AbortController();
+      const timeout=setTimeout(()=>controller.abort(),20000);
+      try{
+        const response=await fetch('https://formsubmit.co/ajax/pressnpop.uf@gmail.com',{
+          method:'POST',headers:{'Accept':'application/json'},body:data,signal:controller.signal
+        });
+        const result=await response.json().catch(()=>null);
+        // FormSubmit kan returnera success som boolean eller strängen "true".
+        // Ett HTTP 200-svar ensamt räcker inte som bekräftelse.
+        if(!response.ok||!result||(result.success!==true&&result.success!=='true')){
+          throw new Error(result&&result.message||'Ingen bekräftelse från mejltjänsten.');
+        }
+        status.textContent='Tack! Mejltjänsten har tagit emot ditt meddelande. Vi återkommer så snart vi kan.';
+        status.classList.add('success');
+        form.reset();
+      }catch(error){
+        console.warn('Kontaktformuläret kunde inte bekräfta skickningen:',error);
+        status.textContent=error.name==='AbortError'
+          ? 'Det tog för lång tid att få svar. Kontrollera om meddelandet kom fram innan du försöker igen, eller mejla pressnpop.uf@gmail.com.'
+          : 'Det gick inte att bekräfta att meddelandet skickades. Försök igen eller mejla pressnpop.uf@gmail.com.';
+        status.classList.add('error');
+      }finally{
+        clearTimeout(timeout);
+        button.disabled=false;
+        button.textContent=original;
+      }
+    });
+  }
 })();

@@ -27,3 +27,563 @@ html { scroll-behavior: smooth; }
     border-radius: 12px;
     display: block;
 }
+
+
+/* Ny stegvis storleksguide */
+.size-wizard{max-width:1000px;margin:0 auto 34px;padding:clamp(20px,4vw,38px);background:rgba(255,255,255,.96);border:1px solid #f0dce1;border-radius:28px;box-shadow:0 14px 38px rgba(70,35,45,.08)}
+.size-step-indicator{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 auto 30px;max-width:330px}
+.size-step-indicator span{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#f7e9ed;color:#9a7a84;font-size:13px;font-weight:600;flex:0 0 auto}
+.size-step-indicator span.active{background:#d98aa4;color:white}.size-step-indicator i{height:1px;background:#ead4dc;flex:1}
+.size-step{text-align:center}.size-step[hidden],.size-results[hidden]{display:none!important}
+.size-step-kicker,.contact-form-intro>span,.size-result-heading>span{font-size:10px;letter-spacing:2px;font-weight:600;color:#b58a55}
+.size-step h3,.contact-form-intro h3,.size-result-heading h3{font-family:'Dancing Script',cursive;color:#a84368;font-size:clamp(29px,4vw,39px);margin:4px 0 8px}
+.size-step>p:not(.size-step-kicker){color:#786b70;font-size:13px;line-height:1.7;margin:0 auto 22px;max-width:620px}
+.size-kind-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;max-width:650px;margin:25px auto 4px}
+.size-kind-button{min-width:0;border:1px solid #efd8e0;border-radius:19px;background:#fffafa;padding:23px 14px;display:flex;flex-direction:column;align-items:center;gap:7px;color:#76535f;cursor:pointer;font:inherit;transition:.2s}
+.size-kind-button>span{font-size:27px;color:#c27b94}.size-kind-button strong{font-size:17px;color:#a84368}.size-kind-button small{font-size:11px;color:#88767d}.size-kind-button:hover,.size-kind-button.selected{border-color:#d98aa4;background:#fff0f4;box-shadow:0 7px 18px #d98aa422}
+.size-shape-options{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:20px 0 28px}.size-shape-options button{border:1px solid #e8cbd5;background:#fff;border-radius:30px;padding:10px 22px;color:#865b6b;font:500 13px Poppins,sans-serif;cursor:pointer}.size-shape-options button.selected,.size-shape-options button:hover{background:#d98aa4;border-color:#d98aa4;color:white}
+.size-wizard-actions{display:flex;justify-content:center;gap:10px;margin-top:25px}.size-primary-button,.size-back-button{border-radius:30px;padding:12px 24px;font:500 13px Poppins,sans-serif;cursor:pointer;transition:.2s}.size-primary-button{border:1px solid #d98aa4;background:#d98aa4;color:#fff;box-shadow:0 6px 16px #d98aa433}.size-primary-button:hover{background:#a84368}.size-back-button{border:1px solid #e8cbd5;background:#fff;color:#925d70}.size-measure-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(6px,2vw,15px);max-width:690px;margin:25px auto 0}
+.size-measure-grid label{min-width:0;display:flex;flex-direction:column;align-items:center;gap:8px;color:#805d69;font-size:clamp(9px,1.5vw,12px);font-weight:500;white-space:nowrap}
+.size-measure-grid input{width:100%;max-width:112px;min-width:0;height:48px;border:1px solid #e7cfd7;border-radius:12px;background:#fffafa;text-align:center;color:#513c44;font:500 15px Poppins,sans-serif;padding:5px 3px;outline:none}
+.size-measure-grid input:focus{border-color:#d98aa4;box-shadow:0 0 0 3px #d98aa422}.size-measure-grid input::placeholder{color:#bdaab0;font-size:11px}
+.size-measure-error{color:#b43d5f!important;font-size:12px!important;margin-top:12px!important}
+.size-results{margin:30px auto 0;max-width:720px;padding:24px;background:#fff8fa;border:1px solid #f0dce1;border-radius:20px;text-align:left}.size-result-heading{text-align:center}.size-result-heading p{font-size:12px;color:#806e75;line-height:1.6}.size-result-list{margin:18px 0}.size-result-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid #f0dce1}.size-result-row>div:first-child{display:flex;flex-direction:column;gap:3px}.size-result-row>div:first-child strong{font-size:13px;color:#694c57}.size-result-row small{font-size:10px;color:#95838a}.size-result-match{display:flex;align-items:center;gap:7px}.size-result-match strong{font-size:14px;color:#a84368;background:#f9e5eb;border-radius:9px;padding:6px 9px}.size-result-note{font-size:11px;color:#89777e;line-height:1.6}.size-restart-button{display:block;margin:18px auto 0}
+/* Kontaktformulär */
+.contact-form-card{width:min(100%,690px);margin:24px auto 36px;padding:clamp(20px,4vw,34px);background:#fff;border:1px solid #f0dce1;border-radius:25px;box-shadow:0 10px 30px rgba(70,35,45,.06);text-align:left}.contact-form-intro{text-align:center;margin-bottom:22px}.contact-form-intro p{font-size:12px;color:#88777d}.contact-form-grid{display:grid;grid-template-columns:1fr;gap:8px}.contact-form-grid label{font-size:12px;font-weight:500;color:#76535f;margin-top:7px}.contact-form-grid input,.contact-form-grid select,.contact-form-grid textarea{width:100%;min-width:0;border:1px solid #e8d5dc;border-radius:12px;padding:12px 14px;background:#fffdfd;color:#493b40;font:400 13px Poppins,sans-serif;outline:none}.contact-form-grid textarea{resize:vertical;min-height:120px}.contact-form-grid input:focus,.contact-form-grid select:focus,.contact-form-grid textarea:focus{border-color:#d98aa4;box-shadow:0 0 0 3px #d98aa422}.contact-submit-button{display:block;width:100%;margin-top:18px;border:0;border-radius:30px;background:#d98aa4;color:white;padding:14px 20px;font:500 13px Poppins,sans-serif;cursor:pointer;transition:.2s}.contact-submit-button:hover{background:#a84368}.contact-submit-button:disabled{opacity:.65;cursor:wait}.contact-form-status{min-height:18px;margin:12px 0 0;text-align:center;font-size:12px;line-height:1.5;color:#806e75}.contact-form-status.success{color:#347653}.contact-form-status.error{color:#b43d5f}
+@media(max-width:600px){.size-wizard{padding:20px 13px;border-radius:21px}.size-step-indicator{margin-bottom:23px}.size-kind-options{gap:9px}.size-kind-button{padding:18px 8px}.size-measure-grid{gap:5px}.size-measure-grid label{font-size:9px;letter-spacing:-.2px}.size-measure-grid input{height:43px;border-radius:9px;font-size:13px}.size-results{padding:17px 12px}.size-result-row{gap:6px}.size-result-match{gap:4px}.size-result-match strong{padding:5px 6px;font-size:12px}.size-wizard-actions{gap:8px}.size-primary-button,.size-back-button{padding:11px 17px;font-size:12px}.contact-form-card{margin:22px auto 30px;padding:21px 16px}}
+@media(max-width:360px){.size-measure-grid{gap:3px}.size-measure-grid label{font-size:8px}.size-measure-grid input{height:40px;padding:3px 1px}}
+
+/* Förfinad storleksguide och utfällbara avsnitt */
+.size-wizard-title{margin:0 auto 24px;text-align:center}
+.size-wizard-title>span{display:none}
+.size-wizard-title h2{margin:0;color:inherit;font-family:'Cormorant Garamond',serif;font-size:clamp(39px,4.5vw,54px);font-weight:600;letter-spacing:-.4px}
+.size-shape-options{display:grid;grid-template-columns:repeat(2,minmax(120px,170px));justify-content:center;gap:12px;max-width:380px;margin:22px auto 28px}
+.size-shape-options button{min-height:82px;border:1px solid #e8cbd5;border-radius:12px;background:#fffafa;padding:15px 10px;color:#865b6b;font:500 13px Poppins,sans-serif;cursor:pointer;transition:.2s;box-shadow:0 3px 10px rgba(70,35,45,.035)}
+.size-shape-options button.selected,.size-shape-options button:hover{background:#fff0f4;border:2px solid #d98aa4;color:#a84368;box-shadow:0 6px 16px #d98aa422}
+.size-result-tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:22px 0}
+.size-result-tile{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:13px 5px;border:1px solid #efd8e0;border-radius:12px;background:#fff; text-align:center}
+.size-result-tile>strong{font-size:11px;color:#76535f;overflow-wrap:anywhere}
+.size-result-tile>span{font-size:22px;font-weight:600;color:#a84368}
+.size-result-tile>small{font-size:9px;color:#95838a}
+.size-reference-toggle-wrap{text-align:center;margin:28px auto 40px}
+.size-reference-toggle,.contact-form-trigger{border:1px solid #d98aa4;border-radius:10px;background:#fff;color:#a84368;padding:13px 26px;font:500 13px Poppins,sans-serif;cursor:pointer;transition:.2s}
+.size-reference-toggle:hover,.contact-form-trigger:hover{background:#fff0f4}
+.size-reference-panel{margin:24px auto 0;max-width:1100px;padding:clamp(14px,3vw,26px);border:1px solid #f0dce1;border-radius:20px;background:#fffafa}
+.size-reference-choice{display:flex;justify-content:center;gap:10px;margin:0 auto 22px}
+.size-reference-choice button{min-width:110px;border:1px solid #e8cbd5;border-radius:9px;background:white;padding:10px 20px;color:#865b6b;font:500 13px Poppins,sans-serif;cursor:pointer}
+.size-reference-choice button.selected{background:#d98aa4;border-color:#d98aa4;color:white}
+.size-reference-panel [hidden]{display:none!important}
+.size-reference-panel .size-content{margin-top:0}
+.size-reference-toes .size-content{grid-template-columns:minmax(0,1fr)}
+.contact-form-trigger-wrap{text-align:center;margin:28px auto 20px}
+.contact-form-card[hidden]{display:none!important}
+@media(max-width:600px){
+ .size-shape-options{grid-template-columns:repeat(2,minmax(0,1fr));max-width:330px;gap:9px}
+ .size-shape-options button{min-height:76px;border-radius:10px;padding:12px 6px}
+ .size-result-tiles{gap:5px}
+ .size-result-tile{padding:11px 2px;border-radius:9px;gap:6px}
+ .size-result-tile>strong{font-size:9px}
+ .size-result-tile>span{font-size:18px}
+ .size-result-tile>small{font-size:8px}
+ .size-reference-panel{padding:12px 8px}
+}
+
+
+/* Finjusteringar av storleksguiden */
+.size-wizard-title h2{color:var(--morkrosa)!important}
+.size-shape-options{grid-template-columns:repeat(4,minmax(0,1fr));max-width:720px;gap:10px}
+.size-shape-options button{min-width:0;min-height:88px;padding:12px 8px}
+.size-result-tile>span{display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.15}
+.size-result-tile .size-result-width{font-size:10px;font-weight:500;color:#806e75;white-space:nowrap}
+.size-reference-nails[hidden],.size-reference-toes[hidden]{display:none!important}
+@media(max-width:600px){
+ .size-shape-options{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;max-width:100%}
+ .size-shape-options button{min-height:74px;padding:9px 3px;font-size:10px;overflow-wrap:anywhere}
+ .size-result-tile>span{font-size:15px}
+ .size-result-tile .size-result-width{font-size:8px}
+}
+
+
+/* Storleksmåtten för naglar: exakt fyra jämnstora kort i en rad. */
+.size-reference-nails .size-content{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  align-items:stretch;
+  gap:12px;
+}
+.size-reference-nails .size-card{
+  width:auto !important;
+  min-width:0;
+  height:100%;
+  grid-column:auto !important;
+  justify-self:stretch !important;
+  padding:clamp(8px,1.4vw,18px);
+}
+.size-reference-nails .size-card h3{font-size:clamp(14px,1.7vw,25px);overflow-wrap:anywhere}
+.size-reference-nails .size-card p{font-size:clamp(9px,.9vw,12px);line-height:1.45}
+.size-reference-nails .size-table{font-size:clamp(8px,.85vw,11px)}
+.size-reference-nails .size-table th,.size-reference-nails .size-table td{padding:clamp(3px,.55vw,7px) 2px}
+@media(max-width:600px){
+  .size-reference-nails .size-content{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:5px}
+  .size-reference-nails .size-card{padding:7px 3px;border-radius:10px}
+  .size-reference-nails .size-card h3{font-size:clamp(10px,3vw,14px);line-height:1.2}
+  .size-reference-nails .size-card p{font-size:8px;min-height:0}
+  .size-reference-nails .size-table{font-size:8px}
+  .size-reference-nails .size-table th,.size-reference-nails .size-table td{padding:4px 1px}
+  .size-reference-nails .size-note{font-size:7px}
+}
+
+
+/* Visuell förfining: tydligare kontraster och elegantare typografi */
+:root {
+  --rosa: #cf7896;
+  --morkrosa: #b94f76;
+  --ljusrosa: #f7e3ea;
+  --text: #392b32;
+  --rubrik-rosa: #c45f83;
+  --underrubrik-mork: #503543;
+  --brodtext-mork: #5f5158;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif !important;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2 {
+  font-family: 'Cormorant Garamond', serif !important;
+  color: var(--rubrik-rosa) !important;
+  font-weight: 600;
+  letter-spacing: -.025em;
+  text-rendering: optimizeLegibility;
+}
+
+h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', serif !important;
+  color: var(--underrubrik-mork) !important;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  text-rendering: optimizeLegibility;
+}
+
+/* Stora sektionsrubriker får rosa accent, medan underrubrikerna hålls mörka. */
+.rubrik h2,
+.hero-text h1,
+.size-wizard-title h2 {
+  color: var(--rubrik-rosa) !important;
+}
+.hero-text h2,
+.size-step h3,
+.contact-form-intro h3,
+.size-result-heading h3,
+.policy-card h3,
+.nagel-info h3,
+.faq-item summary {
+  color: var(--underrubrik-mork) !important;
+}
+
+p, li, label, .faq-answer, .rubrik p {
+  color: var(--brodtext-mork);
+  font-family: 'DM Sans', sans-serif;
+}
+
+button, input, select, textarea,
+.size-shape-options button,
+.size-primary-button, .size-back-button,
+.size-reference-toggle, .contact-form-trigger,
+.contact-submit-button {
+  font-family: 'DM Sans', sans-serif !important;
+}
+
+.site-detail-menu-heading {
+  font-family: 'Cormorant Garamond', serif !important;
+  color: var(--rubrik-rosa) !important;
+  font-size: 31px;
+}
+
+@media (max-width: 600px) {
+  h1, h2 { letter-spacing: -.015em; }
+}
+
+
+/* Anpassningar enligt senaste önskemål */
+/* Priser använder samma gråsvarta färg som den vanliga texten. */
+.product-card-price,
+#extraPrice,
+#swishCheckoutAmount {
+  color: var(--text, #392b32) !important;
+}
+
+/* Poppins används endast på de uttryckligen utpekade texterna. */
+.logo-text,
+.length-guide-option > span,
+.size-reference-nails .size-card > h3,
+.social-card h3 {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Valen Tår/Naglar behåller den eleganta Cormorant-stilen. */
+.size-kind-button > strong,
+.size-reference-choice button {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  /* En nagelform per skärmhöjd: scrolla ned för nästa form. */
+  .size-reference-nails .size-content {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px;
+  }
+  .size-reference-nails .size-card {
+    width: 100% !important;
+    min-height: calc(100svh - 48px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 22px 18px !important;
+  }
+  .size-reference-nails .size-card h3 {
+    font-size: 25px !important;
+    margin-bottom: 8px;
+  }
+  .size-reference-nails .size-card p {
+    font-size: 12px !important;
+    margin-bottom: 18px;
+  }
+  .size-reference-nails .size-table {
+    width: 100%;
+    font-size: 12px !important;
+  }
+  .size-reference-nails .size-table th,
+  .size-reference-nails .size-table td {
+    padding: 8px 5px !important;
+  }
+
+  /* De fem måttfälten staplas på mobil, men ligger kvar i rad på dator. */
+  .size-measure-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    max-width: 380px;
+    gap: 10px;
+  }
+  .size-measure-grid label {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(100px, .8fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+    white-space: normal;
+    text-align: left;
+    font-size: 12px !important;
+  }
+  .size-measure-grid input {
+    width: 100%;
+    max-width: none;
+    height: 46px;
+  }
+}
+
+
+/* PressN'Pop – kalligrafisk accent inspirerad av logotypen */
+.hero-text h1,
+.length-guide-option > span,
+.size-shape-options button,
+.size-reference-nails .size-card h3,
+.social-card h3 {
+    font-family: 'Alex Brush', 'Dancing Script', cursive !important;
+    font-weight: 400 !important;
+    color: #a84368;
+    letter-spacing: 0;
+}
+
+.hero-text h1 {
+    font-size: clamp(76px, 8vw, 112px);
+    line-height: 1.05;
+    margin: 4px 0 12px;
+}
+
+.length-guide-option > span {
+    font-size: clamp(25px, 2.5vw, 33px);
+    line-height: 1.15;
+}
+
+.size-shape-options button {
+    font-size: clamp(19px, 2vw, 26px);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+.size-reference-nails .size-card h3 {
+    font-size: clamp(22px, 2.2vw, 31px);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+.social-card h3 {
+    font-size: clamp(27px, 2.8vw, 36px);
+    line-height: 1.1;
+}
+
+@media (max-width: 600px) {
+    .hero-text h1 { font-size: clamp(66px, 17vw, 88px); }
+    .length-guide-option > span { font-size: 27px; }
+    .size-shape-options button { font-size: clamp(16px, 4vw, 21px); }
+    .size-reference-nails .size-card h3 { font-size: clamp(18px, 4vw, 23px); }
+    .social-card h3 { font-size: 29px; }
+}
+
+
+/* =========================================================
+   TYPOGRAFI – enhetlig, klassisk och lättläst
+   Fyra typsnitt totalt: DM Sans, Cormorant Garamond,
+   Poppins och Parisienne.
+========================================================= */
+:root {
+  --font-body: 'DM Sans', sans-serif;
+  --font-heading: 'Cormorant Garamond', serif;
+  --font-ui: 'Poppins', sans-serif;
+  --font-script: 'Parisienne', cursive;
+  --ink: #171417;
+  --soft-pink: #b34f73;
+  --deep-pink: #a84368;
+}
+
+/* Brödtext och all löpande information: ren och lättläst. */
+html, body, body * {
+  font-family: var(--font-body);
+}
+body {
+  color: var(--ink);
+}
+p, li, small, label, .description, .product-card-description,
+.faq-item, .faq-answer, .founder span, .site-detail,
+.size-card p, .size-table, .size-measure-grid,
+input, textarea, select {
+  color: var(--ink);
+  font-family: var(--font-body) !important;
+  line-height: 1.55;
+}
+
+/* Små rubriker: samma sans-serif som informationstexten, rosa. */
+h4, h5, h6,
+.section-subtitle, .eyebrow, .small-heading,
+.faq-item h3, .founder h3,
+.site-detail-menu-heading {
+  color: var(--soft-pink) !important;
+  font-family: var(--font-body) !important;
+  font-weight: 600;
+  letter-spacing: .015em;
+}
+
+/* Mellanstora rubriker och produktnamn: klassisk serif, svarta. */
+h2, h3,
+.product-card h3, .product-card-title,
+.nagel-kort h3, .size-kind-button > strong,
+.size-reference-choice button {
+  color: var(--ink);
+  font-family: var(--font-heading) !important;
+  font-weight: 600;
+}
+
+/* Stora sektionsrubriker: rosa, eleganta och tydliga. */
+h1, .rubrik, .section-title,
+.hero-text h1 {
+  color: var(--deep-pink) !important;
+  font-family: var(--font-heading) !important;
+  font-weight: 500;
+}
+
+/* Handstil används sparsamt och mer återhållet än tidigare. */
+.logo-text,
+.length-guide-option > span,
+.size-shape-options button,
+.size-reference-nails .size-card h3,
+.social-card h3 {
+  font-family: var(--font-script) !important;
+  font-weight: 400 !important;
+  color: var(--deep-pink) !important;
+  letter-spacing: 0;
+}
+
+/* Knappar – samma enkla stil som de små rubrikerna. */
+button, .bestall-knapp, .knapp, .knapp-outline,
+.back-button, .step-buttons button, .add-cart-button,
+.cart-button, .choice-button, .delivery-choice-button,
+.account-button, .file-picker-trigger,
+button span, .bestall-knapp span, .knapp span {
+  font-family: var(--font-body) !important;
+  font-weight: 600 !important;
+  letter-spacing: .01em;
+}
+
+/* Små informationsrubriker hålls rosa även i komponenter. */
+.size-step-title, .size-wizard h3,
+.faq-search-wrap label, .cart-section-title,
+.form-section-title {
+  color: var(--soft-pink) !important;
+  font-family: var(--font-body) !important;
+  font-weight: 600;
+}
+
+/* Undvik att gamla regler ger texter onödigt stora eller dekorativa former. */
+.hero-text h1 {
+  font-size: clamp(58px, 7vw, 88px);
+  line-height: 1.12;
+}
+.length-guide-option > span {
+  font-size: clamp(25px, 2.4vw, 32px);
+  line-height: 1.2;
+}
+.size-shape-options button {
+  font-size: clamp(19px, 2vw, 25px);
+  line-height: 1.2;
+}
+.size-reference-nails .size-card h3 {
+  font-size: clamp(22px, 2.2vw, 29px);
+  line-height: 1.2;
+}
+.social-card h3 {
+  font-size: clamp(26px, 2.6vw, 33px);
+  line-height: 1.15;
+}
+@media (max-width: 600px) {
+  .hero-text h1 { font-size: clamp(52px, 14vw, 72px); }
+  .length-guide-option > span { font-size: 27px; }
+  .size-shape-options button { font-size: clamp(17px, 4vw, 21px); }
+  .size-reference-nails .size-card h3 { font-size: clamp(19px, 4vw, 24px); }
+  .social-card h3 { font-size: 28px; }
+}
+
+
+/* TYPOGRAFI – nedtonad, klassisk accent utan överdriven skrivstil.
+   Cormorant Garamond används som elegant rubrikstil, aldrig som
+   en dekorativ handskriftsfont. */
+:root {
+  --font-body: 'DM Sans', sans-serif;
+  --font-heading: 'Cormorant Garamond', serif;
+  --font-ui: 'Poppins', sans-serif;
+  --ink: #171417;
+  --soft-pink: #b34f73;
+  --deep-pink: #a84368;
+}
+
+/* Ta bort alla tidigare skrivstilsregler och ersätt med diskret serif. */
+.logo-text,
+.hero-text h1,
+.length-guide-option > span,
+.size-shape-options button,
+.size-reference-nails .size-card h3,
+.social-card h3 {
+  font-family: var(--font-heading) !important;
+  font-style: italic !important;
+  font-weight: 500 !important;
+  letter-spacing: -.025em !important;
+  color: var(--deep-pink) !important;
+  text-shadow: none !important;
+}
+
+/* Ordmärket på startsidan ska vara tydligt och elegant, inte snirkligt. */
+.hero-text h1 {
+  font-size: clamp(58px, 7vw, 88px) !important;
+  line-height: 1.05 !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  letter-spacing: -.045em !important;
+}
+
+/* Logotypen i navigationen följer samma klassiska uttryck. */
+.logo-text {
+  font-size: clamp(24px, 2.4vw, 34px);
+  font-style: italic !important;
+}
+
+/* Storleksval och sociala rubriker: lätt kursiv serif, inte handskrift. */
+.length-guide-option > span { font-size: clamp(24px, 2.3vw, 31px) !important; }
+.size-shape-options button { font-size: clamp(18px, 1.9vw, 24px) !important; }
+.size-reference-nails .size-card h3 { font-size: clamp(22px, 2.1vw, 28px) !important; }
+.social-card h3 { font-size: clamp(25px, 2.5vw, 32px) !important; }
+
+/* Storleksguidens fråga blir en mellanrubrik: diskret serif, svart. */
+.size-step[data-step="1"] > h3 {
+  font-family: var(--font-heading) !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  font-size: clamp(25px, 2.6vw, 32px) !important;
+  line-height: 1.2 !important;
+  letter-spacing: -.02em !important;
+  color: var(--ink) !important;
+  margin-bottom: 8px;
+}
+
+/* Håll beskrivningen under frågan enkel och svart. */
+.size-step[data-step="1"] > p:not(.size-step-kicker) {
+  font-family: var(--font-body) !important;
+  color: var(--ink) !important;
+}
+
+/* Inga andra dekorativa script-typsnitt ska kunna slå igenom. */
+[style*="Dancing Script"], [style*="Alex Brush"], [style*="Parisienne"] {
+  font-family: var(--font-heading) !important;
+}
+@media (max-width: 600px) {
+  .hero-text h1 { font-size: clamp(50px, 13vw, 70px) !important; }
+  .logo-text { font-size: 23px; }
+}
+
+
+/* PRESSN'POP – skrivstilen från den uppladdade logotypreferensen.
+   Denna accent används ENDAST på de uttryckligen önskade namnen. */
+:root { --font-logo-script: 'Alex Brush', cursive; }
+
+.hero-text h1,
+.logo-text,
+.length-guide-option > span,
+.size-shape-options button,
+.size-reference-nails .size-card h3,
+.social-card h3 {
+  font-family: var(--font-logo-script) !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--deep-pink, #a84368) !important;
+  text-shadow: none !important;
+}
+
+/* Logotypen på startsidan får mer plats för de svepande bokstäverna. */
+.hero-text h1 {
+  font-size: clamp(68px, 8vw, 108px) !important;
+  line-height: 1.08 !important;
+  margin: 4px 0 12px !important;
+}
+
+/* Övriga markerade ord får samma skrivstil, i en balanserad storlek. */
+.logo-text { font-size: clamp(27px, 2.8vw, 38px) !important; }
+.length-guide-option > span {
+  font-size: clamp(29px, 2.8vw, 37px) !important;
+  line-height: 1.15 !important;
+}
+.size-shape-options button {
+  font-size: clamp(24px, 2.3vw, 31px) !important;
+  line-height: 1.15 !important;
+}
+.size-reference-nails .size-card h3 {
+  font-size: clamp(27px, 2.5vw, 34px) !important;
+  line-height: 1.15 !important;
+}
+.social-card h3 {
+  font-size: clamp(31px, 3vw, 39px) !important;
+  line-height: 1.15 !important;
+}
+@media (max-width: 600px) {
+  .hero-text h1 { font-size: clamp(62px, 16vw, 88px) !important; }
+  .logo-text { font-size: 27px !important; }
+  .length-guide-option > span { font-size: 30px !important; }
+  .size-shape-options button { font-size: 24px !important; }
+  .size-reference-nails .size-card h3 { font-size: 28px !important; }
+  .social-card h3 { font-size: 32px !important; }
+}
