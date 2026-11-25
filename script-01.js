@@ -2274,6 +2274,7 @@
     // ---- Mer från PressN’Pop: Size Kit, Refresh, Refresh Redesign, Enstaka nagel ----
     // ÄNDRA PRISERNA HÄR (kr per st):
     const EXTRA_PRICES = { sizekit: 59, refresh: 149, redesign: 169, single: 59 };
+    const REDESIGN_NAIL_MIN = 169;
     // Skydd som erbjuds innan totalen visas (kr, ett fast pris per beställning):
     const PROTECTION_PRICES = { size: 189, item: 99 };
 
@@ -2386,10 +2387,7 @@
         if (!container || !extraState || extraState.kind !== "redesign") return;
         const designs = extraState.redesignType === "toes"
             ? [{name:"Original basfärg", price:169}, {name:"French Toes", price:269}]
-            : [{name:"Original basfärg", price:169}, ...readyProducts.filter(product => product.name !== "Nude").map(product => ({
-                ...product,
-                price: ["Pink French", "Light French"].includes(product.name) ? 269 : product.name === "Light Pink" ? 169 : (product.name === "Pink Flower" ? 319 : 319)
-            }))];
+            : [{name:"Basfärg", price:169}, {name:"French", price:269}, {name:"Flower", price:319}, {name:"Leo", price:319}];
         container.innerHTML = designs.map(product => {
             const price = product.price;
             const displayName = product.name === "Original basfärg" && document.documentElement.lang === "en" ? "Original Base Color" : product.name;
@@ -2414,7 +2412,7 @@
     function updateRedesignPrice() {
         if (!extraState || extraState.kind !== "redesign") return;
         const selected = document.querySelector("#redesignCollection .choice-button.selected");
-        const price = selected ? Number(selected.dataset.price || 0) : EXTRA_PRICES.redesign;
+        const price = selected ? Number(selected.dataset.price || 0) : (extraState.redesignType === "toes" ? EXTRA_PRICES.redesign : REDESIGN_NAIL_MIN);
         document.getElementById("extraPrice").textContent = `${price.toLocaleString("sv-SE")} kr`;
     }
 
@@ -2750,8 +2748,8 @@
         if (item.type === "extra_redesign") {
             // Uppdatera även äldre varukorgar som sparat de tidigare redesignpriserna.
             const design = item.options?.design || "";
-            if (design === "Original basfärg" || design === "Light Pink") return 169;
-            if (design === "Pink French" || design === "Light French" || design === "French Toes") return 269;
+            if (design === "Basfärg" || design === "Original basfärg" || design === "Light Pink") return 169;
+            if (design === "French" || design === "Pink French" || design === "Light French" || design === "French Toes") return 269;
             if (design) return 319;
             return EXTRA_PRICES.redesign;
         }

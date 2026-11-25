@@ -273,3 +273,7 @@
 #extraModal #extraFormChoice h3,
 #extraModal #extraDesignChoice h3,
 #extraModal #extraChangesChoice h3 { font-size: 17px; }
+
+/* Vit text i sidfoten, även betalningsnotis och copyright. */
+footer, footer p, footer p strong, footer a, footer a:hover { color: #fff !important; }
+footer .payment-note, footer .footer-small { opacity: 1 !important; }
