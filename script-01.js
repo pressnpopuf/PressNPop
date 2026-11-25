@@ -2337,7 +2337,7 @@
                    <button type="button" class="choice-button" onclick="selectRedesignType(this,'toes')">${document.documentElement.lang === "en" ? "Toes – Original Base Color or French" : "Tår – Original basfärg eller French"}</button>
                  </div>
                  <div id="redesignCollection" class="length-options" style="margin-top:12px"></div>
-                 <p class="step-hint"><span style="font-size:12px;">Välj först naglar eller tår och sedan önskad design.</span> <span style="font-size:12px;">Priset är 20 kr lägre än motsvarande design i kollektionen.</span></p>`;
+                 <p class="step-hint"><span style="font-size:12px;">Välj först naglar eller tår och sedan önskad design.</span> <span style="font-size:12px;">Priset är 30 kr lägre än motsvarande design i kollektionen.</span></p>`;
             renderRedesignCollection();
             document.getElementById("extraChanges").placeholder = "Små ändringar, t.ex. ta bort en liten detalj...";
         }

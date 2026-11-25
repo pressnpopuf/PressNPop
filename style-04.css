@@ -255,3 +255,21 @@
   font-size: clamp(16px, 6.6cqw, 26px) !important;
   display: flex !important; align-items: center; justify-content: center;
 }
+
+/* Selected product choice headings */
+#productModal #productFormChoice h3,
+#productModal #productSizeHeading,
+#extraModal #extraFormChoice h3,
+#extraModal #extraDesignChoice h3 { font-size: 15px; }
+@media (max-width: 500px) {
+  #productModal #productFormChoice h3,
+  #productModal #productSizeHeading { font-size: 14px; }
+}
+
+/* Match product description heading size. */
+#productModal #productFormChoice h3,
+#productModal #productSizeHeading,
+#productModal #productChangesChoice h3,
+#extraModal #extraFormChoice h3,
+#extraModal #extraDesignChoice h3,
+#extraModal #extraChangesChoice h3 { font-size: 13px; }
