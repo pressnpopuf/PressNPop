@@ -1778,6 +1778,19 @@
                 { name: "Röd", value: "Röd", hex: "#b94b65" }
             ]
         },
+        {
+            id: 5,
+            name: "Light Pink", price: 199,
+            description: "Light Pink är ett klassiskt enfärgat set i en mjuk ljusrosa nyans för en ren, naturlig och minimalistisk look. ", gelInfo: "Naglarna är byggda med gelén PINK RIBBON från Chewali som är en ljusrosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
+            image: "bilder/lightpink1.jpeg",
+            images: ["bilder/lightpink1.jpeg", "bilder/lightpink2.jpeg"],
+            colors: [
+                { name: "Original rosa", value: "Original rosa", hex: "#e7a1b8" },
+                { name: "Baby pink", value: "Baby pink", hex: "#f7cbd8" },
+                { name: "Vit", value: "Vit", hex: "#ffffff" },
+                { name: "Röd", value: "Röd", hex: "#b94b65" }
+            ]
+        },
 
 
         {
@@ -1786,6 +1799,19 @@
             description: "Pink French är en klassisk vit fransk manikyr för en ren, fräsch och tidlös look som passar till alla tillfällen.", gelInfo: "Naglarna är byggda med gelén FANCY PINK från Missfancy som är en rosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
             image: "bilder/pearlpress1.jpg",
             images: ["bilder/pearlpress1.jpg", "bilder/pearlpress2.jpg"],
+            colors: [
+                { name: "Original röd", value: "Original röd", hex: "#b94b65" },
+                { name: "Mörkröd", value: "Mörkröd", hex: "#8d2946" },
+                { name: "Rosa", value: "Rosa", hex: "#e8a7bb" },
+                { name: "Vit", value: "Vit", hex: "#ffffff" }
+            ]
+        },
+        {
+            id: 6,
+            name: "Light French", price: 299,
+            description: "Light French är en klassisk vit fransk manikyr för en ren, fräsch och tidlös look som passar till alla tillfällen.", gelInfo: "Naglarna är byggda med gelén PINK RIBBON från Chewali som är en ljusrosa nyans. Alla våra geler är starka, hållbara, köpta från Sverige och fria från skadliga kemikalier.",
+            image: "bilder/lightfrench1.jpg",
+            images: ["bilder/lightfrench1.jpg", "bilder/lightfrench2.jpg"],
             colors: [
                 { name: "Original röd", value: "Original röd", hex: "#b94b65" },
                 { name: "Mörkröd", value: "Mörkröd", hex: "#8d2946" },
@@ -1899,6 +1925,8 @@
 
         const readyPriceByName = {
             "Nude": 199,
+            "Light Pink": 199,
+            "Light French": 299,
             "Pink French": 299,
             "Pink Flower": 349,
             "Nude Leo": 349,
@@ -2006,7 +2034,7 @@
         const changesEl = document.getElementById("productChanges");
         if (changesEl) changesEl.value = "";
         const changesChoice = document.getElementById("productChangesChoice");
-        const noSmallChanges = !isToe && ["Nude", "Pink French"].includes(product.name);
+        const noSmallChanges = !isToe && ["Nude", "Light Pink", "Pink French", "Light French"].includes(product.name);
         if (changesChoice) changesChoice.style.display = (isToe || noSmallChanges) ? "none" : "block";
 
         const colorChoice = document.getElementById("productColorChoice");
@@ -2360,7 +2388,7 @@
             ? [{name:"Original basfärg", price:169}, {name:"French Toes", price:269}]
             : [{name:"Original basfärg", price:169}, ...readyProducts.filter(product => product.name !== "Nude").map(product => ({
                 ...product,
-                price: product.name === "Pink French" ? 269 : (product.name === "Pink Flower" ? 319 : 319)
+                price: ["Pink French", "Light French"].includes(product.name) ? 269 : product.name === "Light Pink" ? 169 : (product.name === "Pink Flower" ? 319 : 319)
             }))];
         container.innerHTML = designs.map(product => {
             const price = product.price;
@@ -2416,7 +2444,7 @@
         button.classList.add("selected");
         if (EXTRA_PRODUCTS[extraState.kind].mode === "single") {
             const isToe = extraState.form === "Tår";
-            const designs = isToe ? ["French Toes"] : ["Nude", "Pink French", "Pink Flower", "Nude Leo"];
+            const designs = isToe ? ["French Toes"] : ["Nude", "Light Pink", "Pink French", "Light French", "Pink Flower", "Nude Leo"];
             document.getElementById("extraDesignOptions").innerHTML = designs.map(name =>
                 `<button type="button" class="choice-button" data-design="${name}" onclick="selectExtraDesign(this)">${name}</button>`
             ).join("");
@@ -2722,8 +2750,8 @@
         if (item.type === "extra_redesign") {
             // Uppdatera även äldre varukorgar som sparat de tidigare redesignpriserna.
             const design = item.options?.design || "";
-            if (design === "Original basfärg") return 169;
-            if (design === "Pink French" || design === "French Toes") return 269;
+            if (design === "Original basfärg" || design === "Light Pink") return 169;
+            if (design === "Pink French" || design === "Light French" || design === "French Toes") return 269;
             if (design) return 319;
             return EXTRA_PRICES.redesign;
         }

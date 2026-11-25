@@ -70,7 +70,9 @@
         <div class="site-menu-sublist">
             <a href="#naglar" onclick="closeSiteDetailMenu()">Se alla naglar</a>
             <a href="#naglar" onclick="openMenuProduct('Nude')">Nude</a>
+            <a href="#naglar" onclick="openMenuProduct('Light Pink')">Light Pink</a>
             <a href="#naglar" onclick="openMenuProduct('Pink French')">Pink French</a>
+            <a href="#naglar" onclick="openMenuProduct('Light French')">Light French</a>
             <a href="#naglar" onclick="openMenuProduct('Pink Flower')">Pink Flower</a>
             <a href="#naglar" onclick="openMenuProduct('Nude Leo')">Nude Leo</a>
         </div>
@@ -218,6 +220,25 @@
             </div>
         </div>
 
+        <div class="nagel-kort product-card" onclick="openProductDetail(5)">
+            <div class="nagel-bild">
+                <img src="bilder/lightpink1.jpeg" alt="Light Pink naglar"
+                     onerror="this.style.display='none'">
+                <img src="bilder/lightpink2.jpeg" alt="Light Pink naglar – bild 2"
+                     onerror="this.remove()">
+</div>
+
+            <div class="nagel-info">
+                <h3>Light Pink</h3>
+                <div class="product-card-price">199 kr</div>
+                <p>Enfärgad ljusrosa nyans</p>
+
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Light Pink')">
+                    Visa produkt
+                </button>
+            </div>
+        </div>
+
         
 
         <div class="nagel-kort product-card" onclick="openProductDetail(2)">
@@ -234,6 +255,25 @@
                 <p>Klassisk vit french </p>
 
                 <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Pink French')">
+                    Visa produkt
+                </button>
+            </div>
+        </div>
+
+        <div class="nagel-kort product-card" onclick="openProductDetail(6)">
+            <div class="nagel-bild">
+                <img src="bilder/lightfrench1.jpg" alt="Light French naglar"
+                     onerror="this.style.display='none'">
+                <img src="bilder/lightfrench2.jpg" alt="Light French naglar – bild 2"
+                     onerror="this.remove()">
+</div>
+
+            <div class="nagel-info">
+                <h3>Light French</h3>
+                <div class="product-card-price">299 kr</div>
+                <p>Klassisk vit french </p>
+
+                <button class="knapp" type="button" onclick="event.stopPropagation(); openProductDetailByName('Light French')">
                     Visa produkt
                 </button>
             </div>
